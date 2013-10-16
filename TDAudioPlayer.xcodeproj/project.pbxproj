@@ -1,1140 +1,602 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>5FB9BA3E41E64E259FC86067</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Warn for TODO and FIXME comments</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>KEYWORDS="TODO:|FIXME:|\?\?\?:|\!\!\!:"
-FILE_EXTENSIONS="h|m|mm|c|cpp"
-find -E "${SRCROOT}" -ipath "${SRCROOT}/pods" -prune -o \( -regex ".*\.($FILE_EXTENSIONS)$" \) -print0 | xargs -0 egrep --with-filename --line-number --only-matching "($KEYWORDS).*\$" | perl -p -e "s/($KEYWORDS)/ warning: \$1/"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>1</string>
-		</dict>
-		<key>EABB060A180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB061C180F0C96006E7D66</string>
-				<string>EABB063E180F0C96006E7D66</string>
-				<string>EABB0615180F0C96006E7D66</string>
-				<string>EABB0614180F0C96006E7D66</string>
-			</array>
-			<key>indentWidth</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-			<key>tabWidth</key>
-			<string>4</string>
-			<key>usesTabs</key>
-			<string>0</string>
-		</dict>
-		<key>EABB060B180F0C96006E7D66</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>CLASSPREFIX</key>
-				<string>TD</string>
-				<key>LastUpgradeCheck</key>
-				<string>0500</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Tony DiPasquale</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>EABB0636180F0C96006E7D66</key>
-					<dict>
-						<key>TestTargetID</key>
-						<string>EABB0612180F0C96006E7D66</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>EABB060E180F0C96006E7D66</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>EABB060A180F0C96006E7D66</string>
-			<key>productRefGroup</key>
-			<string>EABB0614180F0C96006E7D66</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>EABB0612180F0C96006E7D66</string>
-				<string>EABB0636180F0C96006E7D66</string>
-			</array>
-		</dict>
-		<key>EABB060E180F0C96006E7D66</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>EABB0646180F0C96006E7D66</string>
-				<string>EABB0647180F0C96006E7D66</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>EABB060F180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0627180F0C96006E7D66</string>
-				<string>EABB0630180F0C96006E7D66</string>
-				<string>EABB0623180F0C96006E7D66</string>
-				<string>EABB062D180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0610180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0619180F0C96006E7D66</string>
-				<string>EABB061B180F0C96006E7D66</string>
-				<string>EABB0617180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0611180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0632180F0C96006E7D66</string>
-				<string>EABB0621180F0C96006E7D66</string>
-				<string>EABB062A180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0612180F0C96006E7D66</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>EABB0648180F0C96006E7D66</string>
-			<key>buildPhases</key>
-			<array>
-				<string>EABB060F180F0C96006E7D66</string>
-				<string>EABB0610180F0C96006E7D66</string>
-				<string>EABB0611180F0C96006E7D66</string>
-				<string>5FB9BA3E41E64E259FC86067</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>TDAudioPlayer</string>
-			<key>productName</key>
-			<string>TDAudioPlayer</string>
-			<key>productReference</key>
-			<string>EABB0613180F0C96006E7D66</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>EABB0613180F0C96006E7D66</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>TDAudioPlayer.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>EABB0614180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0613180F0C96006E7D66</string>
-				<string>EABB0637180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0615180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0616180F0C96006E7D66</string>
-				<string>EABB0618180F0C96006E7D66</string>
-				<string>EABB061A180F0C96006E7D66</string>
-				<string>EABB0638180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0616180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>EABB0617180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0616180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0618180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreGraphics.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreGraphics.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>EABB0619180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0618180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB061A180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>UIKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/UIKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>EABB061B180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB061A180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB061C180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB064F180F0D1F006E7D66</string>
-				<string>EABB064E180F0CE2006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>TDAudioPlayer</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB061D180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB061E180F0C96006E7D66</string>
-				<string>EABB061F180F0C96006E7D66</string>
-				<string>EABB0622180F0C96006E7D66</string>
-				<string>EABB0624180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB061E180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>TDAudioPlayer-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB061F180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0620180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0620180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0621180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB061F180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0622180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0623180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0622180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0624180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>TDAudioPlayer-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0625180F0C96006E7D66</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>TDAppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0626180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>TDAppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0627180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0626180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0628180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0629180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>Main.storyboard</string>
-			<key>path</key>
-			<string>/Users/tony/dev/audioplayer-ios/TDAudioPlayer/TDAudioPlayer/Demo</string>
-			<key>sourceTree</key>
-			<string>&lt;absolute&gt;</string>
-		</dict>
-		<key>EABB0629180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.storyboard</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/Main.storyboard</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB062A180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0628180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB062B180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>TDMasterViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB062C180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>TDMasterViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB062D180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB062C180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB062E180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>TDDetailViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB062F180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>TDDetailViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0630180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB062F180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0631180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0632180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0631180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0633180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0645180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0634180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0639180F0C96006E7D66</string>
-				<string>EABB063B180F0C96006E7D66</string>
-				<string>EABB063A180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0635180F0C96006E7D66</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>EABB0643180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>EABB0636180F0C96006E7D66</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>EABB064B180F0C96006E7D66</string>
-			<key>buildPhases</key>
-			<array>
-				<string>EABB0633180F0C96006E7D66</string>
-				<string>EABB0634180F0C96006E7D66</string>
-				<string>EABB0635180F0C96006E7D66</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>EABB063D180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>TDAudioPlayerTests</string>
-			<key>productName</key>
-			<string>TDAudioPlayerTests</string>
-			<key>productReference</key>
-			<string>EABB0637180F0C96006E7D66</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>EABB0637180F0C96006E7D66</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>TDAudioPlayerTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>EABB0638180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>EABB0639180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0638180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB063A180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0616180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB063B180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB061A180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB063C180F0C96006E7D66</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>EABB060B180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>EABB0612180F0C96006E7D66</string>
-			<key>remoteInfo</key>
-			<string>TDAudioPlayer</string>
-		</dict>
-		<key>EABB063D180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>EABB0612180F0C96006E7D66</string>
-			<key>targetProxy</key>
-			<string>EABB063C180F0C96006E7D66</string>
-		</dict>
-		<key>EABB063E180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0644180F0C96006E7D66</string>
-				<string>EABB063F180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>TDAudioPlayerTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB063F180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0640180F0C96006E7D66</string>
-				<string>EABB0641180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0640180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>TDAudioPlayerTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0641180F0C96006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0642180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0642180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0643180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0641180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0644180F0C96006E7D66</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>TDAudioPlayerTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB0645180F0C96006E7D66</key>
-		<dict>
-			<key>fileRef</key>
-			<string>EABB0644180F0C96006E7D66</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>EABB0646180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_MISSING_NEWLINE</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES</string>
-				<key>GCC_WARN_CHECK_SWITCH_STATEMENTS</key>
-				<string>YES</string>
-				<key>GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED</key>
-				<string>YES</string>
-				<key>GCC_WARN_MISSING_PARENTHESES</key>
-				<string>YES</string>
-				<key>GCC_WARN_SHADOW</key>
-				<string>YES</string>
-				<key>GCC_WARN_SIGN_COMPARE</key>
-				<string>YES</string>
-				<key>GCC_WARN_TYPECHECK_CALLS_TO_PRINTF</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_LABEL</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VALUE</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>EABB0647180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_MISSING_NEWLINE</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES</string>
-				<key>GCC_WARN_CHECK_SWITCH_STATEMENTS</key>
-				<string>YES</string>
-				<key>GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED</key>
-				<string>YES</string>
-				<key>GCC_WARN_MISSING_PARENTHESES</key>
-				<string>YES</string>
-				<key>GCC_WARN_SHADOW</key>
-				<string>YES</string>
-				<key>GCC_WARN_SIGN_COMPARE</key>
-				<string>YES</string>
-				<key>GCC_WARN_TYPECHECK_CALLS_TO_PRINTF</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_LABEL</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VALUE</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>EABB0648180F0C96006E7D66</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>EABB0649180F0C96006E7D66</string>
-				<string>EABB064A180F0C96006E7D66</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>EABB0649180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>EABB064A180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>EABB064B180F0C96006E7D66</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>EABB064C180F0C96006E7D66</string>
-				<string>EABB064D180F0C96006E7D66</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>EABB064C180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/TDAudioPlayer.app/TDAudioPlayer</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>TDAudioPlayerTests/TDAudioPlayerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>EABB064D180F0C96006E7D66</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/TDAudioPlayer.app/TDAudioPlayer</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>TDAudioPlayer/TDAudioPlayer-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>TDAudioPlayerTests/TDAudioPlayerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>EABB064E180F0CE2006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>EABB0625180F0C96006E7D66</string>
-				<string>EABB0626180F0C96006E7D66</string>
-				<string>EABB0628180F0C96006E7D66</string>
-				<string>EABB062B180F0C96006E7D66</string>
-				<string>EABB062C180F0C96006E7D66</string>
-				<string>EABB062E180F0C96006E7D66</string>
-				<string>EABB062F180F0C96006E7D66</string>
-				<string>EABB0631180F0C96006E7D66</string>
-				<string>EABB061D180F0C96006E7D66</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Demo</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EABB064F180F0D1F006E7D66</key>
-		<dict>
-			<key>children</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>AudioPlayerLibrary</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>EABB060B180F0C96006E7D66</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EA17D7DC180F138A002763B8 /* TDAudioFileStream.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7D5180F138A002763B8 /* TDAudioFileStream.m */; };
+		EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7D7180F138A002763B8 /* TDAudioQueue.m */; };
+		EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7D9180F138A002763B8 /* TDAudioQueueBuffer.m */; };
+		EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7DB180F138A002763B8 /* TDAudioStream.m */; };
+		EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */; };
+		EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
+		EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0618180F0C96006E7D66 /* CoreGraphics.framework */; };
+		EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
+		EABB0621180F0C96006E7D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EABB061F180F0C96006E7D66 /* InfoPlist.strings */; };
+		EABB0623180F0C96006E7D66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0622180F0C96006E7D66 /* main.m */; };
+		EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0626180F0C96006E7D66 /* TDAppDelegate.m */; };
+		EABB062A180F0C96006E7D66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EABB0628180F0C96006E7D66 /* Main.storyboard */; };
+		EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB062C180F0C96006E7D66 /* TDMasterViewController.m */; };
+		EABB0630180F0C96006E7D66 /* TDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB062F180F0C96006E7D66 /* TDDetailViewController.m */; };
+		EABB0632180F0C96006E7D66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EABB0631180F0C96006E7D66 /* Images.xcassets */; };
+		EABB0639180F0C96006E7D66 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0638180F0C96006E7D66 /* XCTest.framework */; };
+		EABB063A180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
+		EABB063B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
+		EABB0643180F0C96006E7D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EABB0641180F0C96006E7D66 /* InfoPlist.strings */; };
+		EABB0645180F0C96006E7D66 /* TDAudioPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0644180F0C96006E7D66 /* TDAudioPlayerTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EABB063C180F0C96006E7D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EABB060B180F0C96006E7D66 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EABB0612180F0C96006E7D66;
+			remoteInfo = TDAudioPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EA17D7D4180F138A002763B8 /* TDAudioFileStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioFileStream.h; sourceTree = "<group>"; };
+		EA17D7D5180F138A002763B8 /* TDAudioFileStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioFileStream.m; sourceTree = "<group>"; };
+		EA17D7D6180F138A002763B8 /* TDAudioQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueue.h; sourceTree = "<group>"; };
+		EA17D7D7180F138A002763B8 /* TDAudioQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueue.m; sourceTree = "<group>"; };
+		EA17D7D8180F138A002763B8 /* TDAudioQueueBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueBuffer.h; sourceTree = "<group>"; };
+		EA17D7D9180F138A002763B8 /* TDAudioQueueBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueBuffer.m; sourceTree = "<group>"; };
+		EA17D7DA180F138A002763B8 /* TDAudioStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioStream.h; sourceTree = "<group>"; };
+		EA17D7DB180F138A002763B8 /* TDAudioStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioStream.m; sourceTree = "<group>"; };
+		EA17D7E0180F1393002763B8 /* TDAudioInputStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioInputStreamer.h; sourceTree = "<group>"; };
+		EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioInputStreamer.m; sourceTree = "<group>"; };
+		EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TDAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EABB0616180F0C96006E7D66 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EABB0618180F0C96006E7D66 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EABB061A180F0C96006E7D66 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EABB061E180F0C96006E7D66 /* TDAudioPlayer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TDAudioPlayer-Info.plist"; sourceTree = "<group>"; };
+		EABB0620180F0C96006E7D66 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EABB0622180F0C96006E7D66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EABB0624180F0C96006E7D66 /* TDAudioPlayer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TDAudioPlayer-Prefix.pch"; sourceTree = "<group>"; };
+		EABB0625180F0C96006E7D66 /* TDAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAppDelegate.h; sourceTree = "<group>"; };
+		EABB0626180F0C96006E7D66 /* TDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDAppDelegate.m; sourceTree = "<group>"; };
+		EABB0629180F0C96006E7D66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EABB062B180F0C96006E7D66 /* TDMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDMasterViewController.h; sourceTree = "<group>"; };
+		EABB062C180F0C96006E7D66 /* TDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDMasterViewController.m; sourceTree = "<group>"; };
+		EABB062E180F0C96006E7D66 /* TDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDDetailViewController.h; sourceTree = "<group>"; };
+		EABB062F180F0C96006E7D66 /* TDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDDetailViewController.m; sourceTree = "<group>"; };
+		EABB0631180F0C96006E7D66 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		EABB0637180F0C96006E7D66 /* TDAudioPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDAudioPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EABB0638180F0C96006E7D66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		EABB0640180F0C96006E7D66 /* TDAudioPlayerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TDAudioPlayerTests-Info.plist"; sourceTree = "<group>"; };
+		EABB0642180F0C96006E7D66 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EABB0644180F0C96006E7D66 /* TDAudioPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDAudioPlayerTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EABB0610180F0C96006E7D66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */,
+				EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */,
+				EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EABB0634180F0C96006E7D66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EABB0639180F0C96006E7D66 /* XCTest.framework in Frameworks */,
+				EABB063B180F0C96006E7D66 /* UIKit.framework in Frameworks */,
+				EABB063A180F0C96006E7D66 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EA17D7D1180F1329002763B8 /* AudioStreamer */ = {
+			isa = PBXGroup;
+			children = (
+				EA17D7E0180F1393002763B8 /* TDAudioInputStreamer.h */,
+				EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */,
+				EA17D7D3180F1360002763B8 /* Classes */,
+			);
+			path = AudioStreamer;
+			sourceTree = "<group>";
+		};
+		EA17D7D2180F1333002763B8 /* AudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AudioPlayer;
+			sourceTree = "<group>";
+		};
+		EA17D7D3180F1360002763B8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				EA17D7D4180F138A002763B8 /* TDAudioFileStream.h */,
+				EA17D7D5180F138A002763B8 /* TDAudioFileStream.m */,
+				EA17D7D6180F138A002763B8 /* TDAudioQueue.h */,
+				EA17D7D7180F138A002763B8 /* TDAudioQueue.m */,
+				EA17D7D8180F138A002763B8 /* TDAudioQueueBuffer.h */,
+				EA17D7D9180F138A002763B8 /* TDAudioQueueBuffer.m */,
+				EA17D7DA180F138A002763B8 /* TDAudioStream.h */,
+				EA17D7DB180F138A002763B8 /* TDAudioStream.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		EABB060A180F0C96006E7D66 = {
+			isa = PBXGroup;
+			children = (
+				EABB061C180F0C96006E7D66 /* TDAudioPlayer */,
+				EABB063E180F0C96006E7D66 /* TDAudioPlayerTests */,
+				EABB0615180F0C96006E7D66 /* Frameworks */,
+				EABB0614180F0C96006E7D66 /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		EABB0614180F0C96006E7D66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */,
+				EABB0637180F0C96006E7D66 /* TDAudioPlayerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EABB0615180F0C96006E7D66 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EABB0616180F0C96006E7D66 /* Foundation.framework */,
+				EABB0618180F0C96006E7D66 /* CoreGraphics.framework */,
+				EABB061A180F0C96006E7D66 /* UIKit.framework */,
+				EABB0638180F0C96006E7D66 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EABB061C180F0C96006E7D66 /* TDAudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				EABB064F180F0D1F006E7D66 /* AudioPlayerLibrary */,
+				EABB064E180F0CE2006E7D66 /* Demo */,
+			);
+			path = TDAudioPlayer;
+			sourceTree = "<group>";
+		};
+		EABB061D180F0C96006E7D66 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EABB061E180F0C96006E7D66 /* TDAudioPlayer-Info.plist */,
+				EABB061F180F0C96006E7D66 /* InfoPlist.strings */,
+				EABB0622180F0C96006E7D66 /* main.m */,
+				EABB0624180F0C96006E7D66 /* TDAudioPlayer-Prefix.pch */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EABB063E180F0C96006E7D66 /* TDAudioPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				EABB0644180F0C96006E7D66 /* TDAudioPlayerTests.m */,
+				EABB063F180F0C96006E7D66 /* Supporting Files */,
+			);
+			path = TDAudioPlayerTests;
+			sourceTree = "<group>";
+		};
+		EABB063F180F0C96006E7D66 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EABB0640180F0C96006E7D66 /* TDAudioPlayerTests-Info.plist */,
+				EABB0641180F0C96006E7D66 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EABB064E180F0CE2006E7D66 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				EABB0625180F0C96006E7D66 /* TDAppDelegate.h */,
+				EABB0626180F0C96006E7D66 /* TDAppDelegate.m */,
+				EABB0628180F0C96006E7D66 /* Main.storyboard */,
+				EABB062B180F0C96006E7D66 /* TDMasterViewController.h */,
+				EABB062C180F0C96006E7D66 /* TDMasterViewController.m */,
+				EABB062E180F0C96006E7D66 /* TDDetailViewController.h */,
+				EABB062F180F0C96006E7D66 /* TDDetailViewController.m */,
+				EABB0631180F0C96006E7D66 /* Images.xcassets */,
+				EABB061D180F0C96006E7D66 /* Supporting Files */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		EABB064F180F0D1F006E7D66 /* AudioPlayerLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				EA17D7D2180F1333002763B8 /* AudioPlayer */,
+				EA17D7D1180F1329002763B8 /* AudioStreamer */,
+			);
+			path = AudioPlayerLibrary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EABB0612180F0C96006E7D66 /* TDAudioPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EABB0648180F0C96006E7D66 /* Build configuration list for PBXNativeTarget "TDAudioPlayer" */;
+			buildPhases = (
+				EABB060F180F0C96006E7D66 /* Sources */,
+				EABB0610180F0C96006E7D66 /* Frameworks */,
+				EABB0611180F0C96006E7D66 /* Resources */,
+				5FB9BA3E41E64E259FC86067 /* Warn for TODO and FIXME comments */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TDAudioPlayer;
+			productName = TDAudioPlayer;
+			productReference = EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EABB0636180F0C96006E7D66 /* TDAudioPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EABB064B180F0C96006E7D66 /* Build configuration list for PBXNativeTarget "TDAudioPlayerTests" */;
+			buildPhases = (
+				EABB0633180F0C96006E7D66 /* Sources */,
+				EABB0634180F0C96006E7D66 /* Frameworks */,
+				EABB0635180F0C96006E7D66 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EABB063D180F0C96006E7D66 /* PBXTargetDependency */,
+			);
+			name = TDAudioPlayerTests;
+			productName = TDAudioPlayerTests;
+			productReference = EABB0637180F0C96006E7D66 /* TDAudioPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EABB060B180F0C96006E7D66 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = TD;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Tony DiPasquale";
+				TargetAttributes = {
+					EABB0636180F0C96006E7D66 = {
+						TestTargetID = EABB0612180F0C96006E7D66;
+					};
+				};
+			};
+			buildConfigurationList = EABB060E180F0C96006E7D66 /* Build configuration list for PBXProject "TDAudioPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EABB060A180F0C96006E7D66;
+			productRefGroup = EABB0614180F0C96006E7D66 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EABB0612180F0C96006E7D66 /* TDAudioPlayer */,
+				EABB0636180F0C96006E7D66 /* TDAudioPlayerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EABB0611180F0C96006E7D66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EABB0632180F0C96006E7D66 /* Images.xcassets in Resources */,
+				EABB0621180F0C96006E7D66 /* InfoPlist.strings in Resources */,
+				EABB062A180F0C96006E7D66 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EABB0635180F0C96006E7D66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EABB0643180F0C96006E7D66 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5FB9BA3E41E64E259FC86067 /* Warn for TODO and FIXME comments */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Warn for TODO and FIXME comments";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nFILE_EXTENSIONS=\"h|m|mm|c|cpp\"\nfind -E \"${SRCROOT}\" -ipath \"${SRCROOT}/pods\" -prune -o \\( -regex \".*\\.($FILE_EXTENSIONS)$\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EABB060F180F0C96006E7D66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */,
+				EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */,
+				EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */,
+				EABB0630180F0C96006E7D66 /* TDDetailViewController.m in Sources */,
+				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
+				EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */,
+				EA17D7DC180F138A002763B8 /* TDAudioFileStream.m in Sources */,
+				EABB0623180F0C96006E7D66 /* main.m in Sources */,
+				EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EABB0633180F0C96006E7D66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EABB0645180F0C96006E7D66 /* TDAudioPlayerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EABB063D180F0C96006E7D66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EABB0612180F0C96006E7D66 /* TDAudioPlayer */;
+			targetProxy = EABB063C180F0C96006E7D66 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EABB061F180F0C96006E7D66 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EABB0620180F0C96006E7D66 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EABB0628180F0C96006E7D66 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EABB0629180F0C96006E7D66 /* Base */,
+			);
+			name = Main.storyboard;
+			path = "/Users/tony/dev/audioplayer-ios/TDAudioPlayer/TDAudioPlayer/Demo";
+			sourceTree = "<absolute>";
+		};
+		EABB0641180F0C96006E7D66 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EABB0642180F0C96006E7D66 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EABB0646180F0C96006E7D66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		EABB0647180F0C96006E7D66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EABB0649180F0C96006E7D66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				INFOPLIST_FILE = "TDAudioPlayer/TDAudioPlayer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		EABB064A180F0C96006E7D66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				INFOPLIST_FILE = "TDAudioPlayer/TDAudioPlayer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		EABB064C180F0C96006E7D66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TDAudioPlayer.app/TDAudioPlayer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "TDAudioPlayerTests/TDAudioPlayerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		EABB064D180F0C96006E7D66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TDAudioPlayer.app/TDAudioPlayer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				INFOPLIST_FILE = "TDAudioPlayerTests/TDAudioPlayerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EABB060E180F0C96006E7D66 /* Build configuration list for PBXProject "TDAudioPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EABB0646180F0C96006E7D66 /* Debug */,
+				EABB0647180F0C96006E7D66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EABB0648180F0C96006E7D66 /* Build configuration list for PBXNativeTarget "TDAudioPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EABB0649180F0C96006E7D66 /* Debug */,
+				EABB064A180F0C96006E7D66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EABB064B180F0C96006E7D66 /* Build configuration list for PBXNativeTarget "TDAudioPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EABB064C180F0C96006E7D66 /* Debug */,
+				EABB064D180F0C96006E7D66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EABB060B180F0C96006E7D66 /* Project object */;
+}

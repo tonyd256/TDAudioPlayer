@@ -12,6 +12,7 @@
 		EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7D9180F138A002763B8 /* TDAudioQueueBuffer.m */; };
 		EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7DB180F138A002763B8 /* TDAudioStream.m */; };
 		EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */; };
+		EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */; };
 		EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
 		EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0618180F0C96006E7D66 /* CoreGraphics.framework */; };
 		EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
@@ -20,7 +21,6 @@
 		EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0626180F0C96006E7D66 /* TDAppDelegate.m */; };
 		EABB062A180F0C96006E7D66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EABB0628180F0C96006E7D66 /* Main.storyboard */; };
 		EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB062C180F0C96006E7D66 /* TDMasterViewController.m */; };
-		EABB0630180F0C96006E7D66 /* TDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB062F180F0C96006E7D66 /* TDDetailViewController.m */; };
 		EABB0632180F0C96006E7D66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EABB0631180F0C96006E7D66 /* Images.xcassets */; };
 		EABB0639180F0C96006E7D66 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0638180F0C96006E7D66 /* XCTest.framework */; };
 		EABB063A180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
@@ -50,6 +50,8 @@
 		EA17D7DB180F138A002763B8 /* TDAudioStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioStream.m; sourceTree = "<group>"; };
 		EA17D7E0180F1393002763B8 /* TDAudioInputStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioInputStreamer.h; sourceTree = "<group>"; };
 		EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioInputStreamer.m; sourceTree = "<group>"; };
+		EA17D7E4180F1A89002763B8 /* TDSingleStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingleStreamViewController.h; sourceTree = "<group>"; };
+		EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingleStreamViewController.m; sourceTree = "<group>"; };
 		EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TDAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EABB0616180F0C96006E7D66 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EABB0618180F0C96006E7D66 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,8 +65,6 @@
 		EABB0629180F0C96006E7D66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EABB062B180F0C96006E7D66 /* TDMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDMasterViewController.h; sourceTree = "<group>"; };
 		EABB062C180F0C96006E7D66 /* TDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDMasterViewController.m; sourceTree = "<group>"; };
-		EABB062E180F0C96006E7D66 /* TDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDDetailViewController.h; sourceTree = "<group>"; };
-		EABB062F180F0C96006E7D66 /* TDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDDetailViewController.m; sourceTree = "<group>"; };
 		EABB0631180F0C96006E7D66 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EABB0637180F0C96006E7D66 /* TDAudioPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDAudioPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EABB0638180F0C96006E7D66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -208,10 +208,10 @@
 				EABB0628180F0C96006E7D66 /* Main.storyboard */,
 				EABB062B180F0C96006E7D66 /* TDMasterViewController.h */,
 				EABB062C180F0C96006E7D66 /* TDMasterViewController.m */,
-				EABB062E180F0C96006E7D66 /* TDDetailViewController.h */,
-				EABB062F180F0C96006E7D66 /* TDDetailViewController.m */,
 				EABB0631180F0C96006E7D66 /* Images.xcassets */,
 				EABB061D180F0C96006E7D66 /* Supporting Files */,
+				EA17D7E4180F1A89002763B8 /* TDSingleStreamViewController.h */,
+				EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -344,7 +344,7 @@
 				EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */,
 				EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */,
 				EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */,
-				EABB0630180F0C96006E7D66 /* TDDetailViewController.m in Sources */,
+				EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */,
 				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
 				EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */,
 				EA17D7DC180F138A002763B8 /* TDAudioFileStream.m in Sources */,
@@ -504,8 +504,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
-				INFOPLIST_FILE = "TDAudioPlayer/TDAudioPlayer-Info.plist";
+				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
+				INFOPLIST_FILE = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -517,8 +517,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
-				INFOPLIST_FILE = "TDAudioPlayer/TDAudioPlayer-Info.plist";
+				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
+				INFOPLIST_FILE = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

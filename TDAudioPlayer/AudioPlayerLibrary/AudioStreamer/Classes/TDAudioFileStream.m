@@ -10,7 +10,7 @@
 
 @interface TDAudioFileStream ()
 
-@property (assign, atomic) AudioFileStreamID audioFileStreamID;
+@property (assign, nonatomic) AudioFileStreamID audioFileStreamID;
 
 - (void)didChangeProperty:(AudioFileStreamPropertyID)propertyID flags:(UInt32 *)flags;
 - (void)didReceivePackets:(const void *)packets descriptions:(AudioStreamPacketDescription *)descriptions numberOfPackets:(UInt32)numberOfPackets numberOfBytes:(UInt32)numberOfBytes;

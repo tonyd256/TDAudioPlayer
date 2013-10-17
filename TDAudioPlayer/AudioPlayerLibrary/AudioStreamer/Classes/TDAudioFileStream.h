@@ -21,12 +21,12 @@
 
 @interface TDAudioFileStream : NSObject
 
-@property (assign, atomic) AudioStreamBasicDescription basicDescription;
-@property (assign, atomic) UInt64 byteCount;
-@property (assign, atomic) UInt32 packetBufferSize;
-@property (assign, atomic) void *magicCookieData;
-@property (assign, atomic) UInt32 magicCookieLength;
-@property (assign, atomic) BOOL discontinuous;
+@property (assign, nonatomic) AudioStreamBasicDescription basicDescription;
+@property (assign, nonatomic) UInt64 byteCount;
+@property (assign, nonatomic) UInt32 packetBufferSize;
+@property (assign, nonatomic) void *magicCookieData;
+@property (assign, nonatomic) UInt32 magicCookieLength;
+@property (assign, nonatomic) BOOL discontinuous;
 @property (weak, nonatomic) id<TDAudioFileStreamDelegate> delegate;
 
 - (instancetype)init;

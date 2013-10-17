@@ -12,11 +12,11 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 @interface TDAudioQueueBuffer ()
 
-@property (assign, atomic) AudioQueueBufferRef audioQueueBuffer;
-@property (assign, atomic) NSUInteger size;
-@property (assign, atomic) NSUInteger fillPosition;
-@property (assign, atomic) AudioStreamPacketDescription *packetDescriptions;
-@property (assign, atomic) NSUInteger numberOfPacketDescriptions;
+@property (assign, nonatomic) AudioQueueBufferRef audioQueueBuffer;
+@property (assign, nonatomic) NSUInteger size;
+@property (assign, nonatomic) NSUInteger fillPosition;
+@property (assign, nonatomic) AudioStreamPacketDescription *packetDescriptions;
+@property (assign, nonatomic) NSUInteger numberOfPacketDescriptions;
 
 @end
 
@@ -96,6 +96,16 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 - (BOOL)isEqual:(AudioQueueBufferRef)audioQueueBuffer
 {
     return audioQueueBuffer == self.audioQueueBuffer;
+}
+
+- (void)freeFromAudioQueue:(AudioQueueRef)audioQueue
+{
+    AudioQueueFreeBuffer(audioQueue, _audioQueueBuffer);
+}
+
+- (void)dealloc
+{
+    free(_packetDescriptions);
 }
 
 @end

@@ -10,7 +10,6 @@
 
 @interface TDAudioStream () <NSStreamDelegate>
 
-//@property (strong, atomic) NSInputStream *stream;
 @property (assign, nonatomic) CFReadStreamRef stream;
 
 @end
@@ -35,7 +34,6 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     self = [super init];
     if (!self) return nil;
 
-//    _stream = inputStream;
     _stream = (__bridge CFReadStreamRef)inputStream;
 
     return self;
@@ -53,26 +51,23 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
         return nil;
     }
 
-    CFReadStreamRef stream = CFReadStreamCreateForHTTPRequest(NULL, message);
+    _stream = CFReadStreamCreateForHTTPRequest(NULL, message);
     CFRelease(message);
 
-    if (!stream) {
+    if (!_stream) {
         NSLog(@"Error creating CFReadStreamRef");
         return nil;
     }
 
-    if (CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue) == false) {
+    if (CFReadStreamSetProperty(_stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue) == false) {
         NSLog(@"Error setting autoredirect property");
-        return nil;
     }
 
     CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
 
-    /*if (!*/CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);//) {
-//        NSLog(@"Error setting proxy settings");
-//        CFRelease(proxySettings);
-//        return nil;
-//    }
+    if (!CFReadStreamSetProperty(_stream, kCFStreamPropertyHTTPProxy, proxySettings)) {
+        NSLog(@"Error setting proxy settings");
+    }
 
     CFRelease(proxySettings);
 
@@ -84,48 +79,34 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
                                       (NSString *)kCFStreamSSLValidatesCertificateChain: @NO,
                                       (NSString *)kCFStreamSSLPeerName: [NSNull null]};
 
-        if (!CFReadStreamSetProperty(stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings))) {
+        if (!CFReadStreamSetProperty(_stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings))) {
             NSLog(@"Error setting ssl settings");
         }
     }
 
-//    _stream = (__bridge NSInputStream *)stream;
-    _stream = stream;
-
     return self;
+}
+
+- (void)dealloc
+{
+    CFRelease(_stream);
 }
 
 - (void)open
 {
     CFStreamClientContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
     CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable | kCFStreamEventOpenCompleted | kCFStreamEventCanAcceptBytes, TDReadStreamCallback, &context);
-    CFReadStreamScheduleWithRunLoop(self.stream, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+    CFReadStreamScheduleWithRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 
     if (!CFReadStreamOpen(self.stream)) {
         NSLog(@"Error opening stream");
         return;
-    }
-
-//    self.stream.delegate = self;
-//    [self.stream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-//    [self.stream open];
-}
-
-- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
-{
-    if (eventCode == NSStreamEventHasBytesAvailable) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventHasData];
-    } else if (eventCode == NSStreamEventEndEncountered) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventEnd];
-    } else if (eventCode == NSStreamEventErrorOccurred) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventError];
     }
 }
 
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength
 {
     return CFReadStreamRead(self.stream, data, maxLength);
-//    return [self.stream read:data maxLength:maxLength];
 }
 
 @end

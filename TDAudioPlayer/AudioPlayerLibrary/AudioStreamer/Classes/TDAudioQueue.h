@@ -11,6 +11,7 @@
 
 typedef enum TDAudioQueueState {
     TDAudioQueueStateBuffering,
+    TDAudioQueueStateWaitingToStop,
     TDAudioQueueStateStopped,
     TDAudioQueueStatePaused,
     TDAudioQueueStateWaitingToPlay,
@@ -41,5 +42,6 @@ typedef enum TDAudioQueueState {
 - (void)play;
 - (void)pause;
 - (void)stop;
+- (void)finish;
 
 @end

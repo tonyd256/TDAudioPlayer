@@ -10,6 +10,7 @@
 
 @interface TDAudioInputStreamer : NSObject
 
+@property (assign, nonatomic) NSUInteger audioStreamReadMaxLength;
 @property (assign, nonatomic) NSUInteger audioQueueBufferSize;
 @property (assign, nonatomic) NSUInteger audioQueueBufferCount;
 

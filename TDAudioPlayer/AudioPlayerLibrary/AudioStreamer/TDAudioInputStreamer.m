@@ -12,18 +12,20 @@
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
 
-const UInt32 kAudioQueueBufferSize = 1024;
-const UInt32 kAudioQueueBufferCount = 5;
+const UInt32 kAudioStreamReadMaxLength = 512;
+const UInt32 kAudioQueueBufferSize = 4096;
+const UInt32 kAudioQueueBufferCount = 16;
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
 @property (strong, nonatomic) NSThread *audioStreamerThread;
 @property (strong, nonatomic) NSCondition *waitForQueueCondition;
 @property (strong, nonatomic) NSObject *mutex;
+@property (assign, nonatomic) BOOL isPlaying;
 
-@property (strong, atomic) TDAudioStream *audioStream;
-@property (strong, atomic) TDAudioFileStream *audioFileStream;
-@property (strong, atomic) TDAudioQueue *audioQueue;
+@property (strong, nonatomic) TDAudioStream *audioStream;
+@property (strong, nonatomic) TDAudioFileStream *audioFileStream;
+@property (strong, nonatomic) TDAudioQueue *audioQueue;
 
 @end
 
@@ -58,6 +60,7 @@ const UInt32 kAudioQueueBufferCount = 5;
     NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]], @"Must be on main thread to start audio streaming");
 
     _audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(startAudioStreamer) object:nil];
+    [_audioStreamerThread setName:@"TDAudioStreamerThread"];
     [_audioStreamerThread start];
 }
 
@@ -68,10 +71,24 @@ const UInt32 kAudioQueueBufferCount = 5;
     _audioFileStream = [[TDAudioFileStream alloc] init];
     _audioFileStream.delegate = self;
 
+    self.isPlaying = YES;
+
     [self.audioStream open];
+
+    while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
+
+    NSLog(@"Done");
 }
 
 #pragma mark - Properties
+
+- (NSUInteger)audioStreamReadMaxLength
+{
+    if (!_audioStreamReadMaxLength)
+        _audioStreamReadMaxLength = kAudioStreamReadMaxLength;
+
+    return _audioStreamReadMaxLength;
+}
 
 - (NSUInteger)audioQueueBufferSize
 {
@@ -96,9 +113,13 @@ const UInt32 kAudioQueueBufferCount = 5;
     @synchronized(self.mutex) {
         if (event == TDAudioStreamEventHasData) {
             uint8_t bytes[self.audioQueueBufferSize];
-            UInt32 length = [audioStream readData:bytes maxLength:512];
+            UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
 
             [self.audioFileStream parseData:bytes length:length];
+        } else if (event == TDAudioStreamEventEnd) {
+            // clean up
+            self.isPlaying = NO;
+            [self.audioQueue stop];
         }
     }
 }
@@ -172,6 +193,15 @@ const UInt32 kAudioQueueBufferCount = 5;
     [self.waitForQueueCondition lock];
     [self.waitForQueueCondition signal];
     [self.waitForQueueCondition unlock];
+}
+
+#pragma mark - Cleanup
+
+- (void)dealloc
+{
+    self.audioStream = nil;
+    self.audioFileStream = nil;
+    self.audioQueue = nil;
 }
 
 @end

@@ -21,4 +21,6 @@
 
 - (BOOL)isEqual:(AudioQueueBufferRef)audioQueueBuffer;
 
+- (void)freeFromAudioQueue:(AudioQueueRef)audioQueue;
+
 @end

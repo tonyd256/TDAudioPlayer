@@ -17,6 +17,10 @@
 		EA17D7EC180FAD88002763B8 /* TDPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7EB180FAD88002763B8 /* TDPlaylist.m */; };
 		EA17D7F0180FB963002763B8 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7EF180FB963002763B8 /* TDTrack.m */; };
 		EA17D7F318105C1D002763B8 /* TDMultiStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */; };
+		EA17D7F51811C2D8002763B8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F41811C2D8002763B8 /* AVFoundation.framework */; };
+		EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */; };
+		EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */; };
+		EA17D7FC1811D9CD002763B8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */; };
 		EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
 		EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0618180F0C96006E7D66 /* CoreGraphics.framework */; };
 		EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
@@ -64,6 +68,11 @@
 		EA17D7EF180FB963002763B8 /* TDTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrack.m; sourceTree = "<group>"; };
 		EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiStreamViewController.h; sourceTree = "<group>"; };
 		EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiStreamViewController.m; sourceTree = "<group>"; };
+		EA17D7F41811C2D8002763B8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioControlViewController.h; sourceTree = "<group>"; };
+		EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioControlViewController.m; sourceTree = "<group>"; };
+		EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TDAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EABB0616180F0C96006E7D66 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EABB0618180F0C96006E7D66 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -90,6 +99,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA17D7FC1811D9CD002763B8 /* MediaPlayer.framework in Frameworks */,
+				EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */,
+				EA17D7F51811C2D8002763B8 /* AVFoundation.framework in Frameworks */,
 				EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */,
 				EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */,
 				EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */,
@@ -180,6 +192,9 @@
 		EABB0615180F0C96006E7D66 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */,
+				EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */,
+				EA17D7F41811C2D8002763B8 /* AVFoundation.framework */,
 				EABB0616180F0C96006E7D66 /* Foundation.framework */,
 				EABB0618180F0C96006E7D66 /* CoreGraphics.framework */,
 				EABB061A180F0C96006E7D66 /* UIKit.framework */,
@@ -240,6 +255,8 @@
 				EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */,
 				EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */,
 				EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */,
+				EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */,
+				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -302,6 +319,13 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Tony DiPasquale";
 				TargetAttributes = {
+					EABB0612180F0C96006E7D66 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					EABB0636180F0C96006E7D66 = {
 						TestTargetID = EABB0612180F0C96006E7D66;
 					};
@@ -380,6 +404,7 @@
 				EA17D7DC180F138A002763B8 /* TDAudioFileStream.m in Sources */,
 				EA17D7E9180F7A94002763B8 /* TDAudioPlayer.m in Sources */,
 				EABB0623180F0C96006E7D66 /* main.m in Sources */,
+				EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */,
 				EA17D7EC180FAD88002763B8 /* TDPlaylist.m in Sources */,
 				EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */,
 			);

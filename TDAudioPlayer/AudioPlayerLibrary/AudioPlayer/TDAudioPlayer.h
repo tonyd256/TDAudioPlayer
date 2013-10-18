@@ -14,13 +14,13 @@ extern NSString *const TDAudioPlayerDidChangeTracksNotification;
 
 @interface TDAudioPlayer : NSObject
 
+@property (strong, nonatomic, readonly) TDPlaylist *loadedPlaylist;
 @property (strong, nonatomic, readonly) TDTrack *currentTrack;
 @property (assign, nonatomic, readonly, getter = isPlaying) BOOL playing;
 @property (assign, nonatomic, readonly, getter = isPaused) BOOL paused;
 
 + (instancetype)sharedAudioPlayer;
 
-- (void)loadTrack:(TDTrack *)track;
 - (void)loadPlaylist:(TDPlaylist *)playlist;
 
 - (void)play;

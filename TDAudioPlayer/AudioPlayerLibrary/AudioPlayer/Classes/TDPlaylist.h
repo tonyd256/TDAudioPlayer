@@ -10,12 +10,16 @@
 
 @class TDTrack;
 
-@interface TDPlaylist : NSObject
+@interface TDPlaylist : NSObject <NSCoding>
 
 @property (strong, nonatomic, readonly) NSArray *trackList;
+@property (assign, nonatomic) NSUInteger currentTrackIndex;
 
 - (void)addTrack:(TDTrack *)track;
 - (void)addTracksFromArray:(NSArray *)tracks;
+
+- (TDTrack *)currentTrack;
 - (TDTrack *)nextTrack;
+- (TDTrack *)previousTrack;
 
 @end

@@ -27,7 +27,6 @@
     [super viewDidLoad];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidChangeTrack:) name:TDAudioPlayerDidChangeTracksNotification object:nil];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -35,14 +34,25 @@
     [super viewDidAppear:animated];
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
+
+    if (![TDAudioPlayer sharedAudioPlayer].loadedPlaylist) {
+        NSData *playlistData = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedPlaylist"];
+
+        if (playlistData) {
+            TDPlaylist *playlist = (TDPlaylist *)[NSKeyedUnarchiver unarchiveObjectWithData:playlistData];
+            [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
+            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+        }
+    }
 }
 
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
-//    [self resignFirstResponder];
-//}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:[TDAudioPlayer sharedAudioPlayer].loadedPlaylist] forKey:@"savedPlaylist"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (BOOL)canBecomeFirstResponder
 {
@@ -75,6 +85,10 @@
 
         case UIEventSubtypeRemoteControlNextTrack:
             [[TDAudioPlayer sharedAudioPlayer] playNextTrack];
+            break;
+
+        case UIEventSubtypeRemoteControlPreviousTrack:
+            [[TDAudioPlayer sharedAudioPlayer] playPreviousTrack];
             break;
 
         default:

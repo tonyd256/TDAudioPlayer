@@ -56,6 +56,11 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
 
 #pragma mark - Properties
 
+- (TDPlaylist *)loadedPlaylist
+{
+    return self.playlist;
+}
+
 - (TDTrack *)currentTrack
 {
     return _currentTrack;
@@ -83,12 +88,15 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
     [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = @{MPMediaItemPropertyTitle: track.title,
                                                               MPMediaItemPropertyArtist: track.artist,
                                                               MPMediaItemPropertyArtwork: artwork,
-                                                              MPNowPlayingInfoPropertyElapsedPlaybackTime: @0};
+                                                              MPNowPlayingInfoPropertyElapsedPlaybackTime: @0,
+                                                              MPNowPlayingInfoPropertyPlaybackQueueCount: @(self.playlist.trackList.count),
+                                                              MPNowPlayingInfoPropertyPlaybackQueueIndex: @(self.playlist.currentTrackIndex)};
 }
 
 - (void)loadPlaylist:(TDPlaylist *)playlist
 {
     self.playlist = playlist;
+    [self loadTrack:[self.playlist currentTrack]];
 }
 
 - (void)play
@@ -127,13 +135,33 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
 
 - (void)playNextTrack
 {
+    TDTrack *track = [self.playlist nextTrack];
+
+    if (!track) return;
+
     [self stop];
-    [self trackDidFinish];
+
+    _playing = NO;
+    self.streamer = nil;
+
+    [self loadTrack:track];
+    [self play];
 }
 
 - (void)playPreviousTrack
 {
-    
+    TDTrack *track = [self.playlist previousTrack];
+
+    if (!track) return;
+
+    [self stop];
+
+    _playing = NO;
+    self.streamer = nil;
+
+    [self loadTrack:track];
+    [self play];
+
 }
 
 #pragma mark - Notification Handlers
@@ -149,15 +177,7 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
 
 - (void)trackDidFinish
 {
-    _playing = NO;
-    self.streamer = nil;
-
-    TDTrack *track = [self.playlist nextTrack];
-
-    if (track) {
-        [self loadTrack:track];
-        [self play];
-    }
+    [self playNextTrack];
 }
 
 - (void)dealloc

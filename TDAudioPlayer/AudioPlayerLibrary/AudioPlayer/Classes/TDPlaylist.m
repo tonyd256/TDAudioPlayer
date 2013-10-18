@@ -44,11 +44,44 @@
     [self.playlist addObjectsFromArray:tracks];
 }
 
+- (TDTrack *)currentTrack
+{
+    return self.playlist[self.currentTrackIndex];
+}
+
 - (TDTrack *)nextTrack
 {
-    TDTrack *track = [self.playlist firstObject];
-    [self.playlist removeObject:track];
+    if (self.currentTrackIndex == self.playlist.count - 1) return nil;
+
+    TDTrack *track = self.playlist[++self.currentTrackIndex];
     return track;
+}
+
+- (TDTrack *)previousTrack
+{
+    if (self.currentTrackIndex == 0) return nil;
+
+    TDTrack *track = self.playlist[--self.currentTrackIndex];
+    return track;
+}
+
+#pragma mark - NSCoding Protocol
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (!self) return nil;
+
+    self.playlist = [aDecoder decodeObjectForKey:@"playlist"];
+    self.currentTrackIndex = [[aDecoder decodeObjectForKey:@"currentTrackIndex"] unsignedIntegerValue];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.playlist forKey:@"playlist"];
+    [aCoder encodeObject:@(self.currentTrackIndex) forKey:@"currentTrackIndex"];
 }
 
 @end

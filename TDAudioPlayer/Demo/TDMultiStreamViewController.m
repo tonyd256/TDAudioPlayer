@@ -62,20 +62,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TDTrack *track = [self.tracks objectAtIndex:indexPath.row];
-
     if ([TDAudioPlayer sharedAudioPlayer].isPlaying) {
         [[TDAudioPlayer sharedAudioPlayer] stop];
     }
 
-    [[TDAudioPlayer sharedAudioPlayer] loadTrack:track];
-    [[TDAudioPlayer sharedAudioPlayer] play];
+    TDPlaylist *playlist = [[TDPlaylist alloc] init];
+    [playlist addTracksFromArray:self.tracks];
+    playlist.currentTrackIndex = indexPath.row;
+    [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
 
-    if ((NSUInteger)indexPath.row < self.tracks.count - 1) {
-        TDPlaylist *playlist = [[TDPlaylist alloc] init];
-        [playlist addTracksFromArray:[self.tracks objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(indexPath.row + 1, self.tracks.count - indexPath.row - 1)]]];
-        [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
-    }
+    [[TDAudioPlayer sharedAudioPlayer] play];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

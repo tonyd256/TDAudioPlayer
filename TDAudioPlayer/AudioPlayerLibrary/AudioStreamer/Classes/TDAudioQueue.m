@@ -72,6 +72,8 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 
     _audioQueueBuffers = [audioqueuebuffers copy];
 
+    AudioQueueSetParameter(_audioQueue, kAudioQueueParam_Volume, 1.0);
+
     _state = TDAudioQueueStateBuffering;
 
     return self;

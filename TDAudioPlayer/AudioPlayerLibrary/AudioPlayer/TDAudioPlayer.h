@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const TDAudioPlayerDidChangeTracksNotification;
+
 @class TDTrack, TDPlaylist;
 
 @interface TDAudioPlayer : NSObject
@@ -24,5 +26,8 @@
 - (void)play;
 - (void)pause;
 - (void)stop;
+
+- (void)playNextTrack;
+- (void)playPreviousTrack;
 
 @end

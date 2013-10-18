@@ -6,10 +6,15 @@
 //  Copyright (c) 2013 Tony DiPasquale. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "TDAudioPlayer.h"
 #import "TDPlaylist.h"
 #import "TDTrack.h"
 #import "TDAudioInputStreamer.h"
+
+NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidChangeTracksNotification";
 
 @interface TDAudioPlayer ()
 
@@ -30,9 +35,23 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         player = [[TDAudioPlayer alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:player selector:@selector(trackDidFinish) name:TDAudioInputStreamerDidFinishNotification object:nil];
     });
     return player;
+}
+
+- (instancetype)init
+{
+    self = [super self];
+    if (!self) return nil;
+
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setInputGain:1.0 error:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidInterrupt:) name:AVAudioSessionInterruptionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidFinish) name:TDAudioInputStreamerDidFinishNotification object:nil];
+
+    return self;
 }
 
 #pragma mark - Properties
@@ -57,6 +76,14 @@
 - (void)loadTrack:(TDTrack *)track
 {
     self.currentTrack = track;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidChangeTracksNotification object:nil];
+
+    MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:track.albumArtLarge]]]];
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = @{MPMediaItemPropertyTitle: track.title,
+                                                              MPMediaItemPropertyArtist: track.artist,
+                                                              MPMediaItemPropertyArtwork: artwork,
+                                                              MPNowPlayingInfoPropertyElapsedPlaybackTime: @0};
 }
 
 - (void)loadPlaylist:(TDPlaylist *)playlist
@@ -98,7 +125,27 @@
     _paused = NO;
 }
 
+- (void)playNextTrack
+{
+    [self stop];
+    [self trackDidFinish];
+}
+
+- (void)playPreviousTrack
+{
+    
+}
+
 #pragma mark - Notification Handlers
+
+- (void)audioSessionDidInterrupt:(NSNotification *)notification
+{
+    NSUInteger type = [[notification.userInfo valueForKey:AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
+
+    if (type == AVAudioSessionInterruptionTypeBegan) {
+        [self pause];
+    }
+}
 
 - (void)trackDidFinish
 {

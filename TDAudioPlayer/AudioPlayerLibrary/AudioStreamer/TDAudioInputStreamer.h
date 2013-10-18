@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const TDAudioInputStreamerDidFinishNotification;
+
 @interface TDAudioInputStreamer : NSObject
 
 @property (assign, nonatomic) NSUInteger audioStreamReadMaxLength;
@@ -18,5 +20,9 @@
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;
 
 - (void)start;
+
+- (void)resume;
+- (void)pause;
+- (void)stop;
 
 @end

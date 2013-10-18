@@ -104,7 +104,15 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
     // signal that a buffer is now free
     [self.delegate audioQueue:self didFreeBuffer:inAudioQueueBufferRef];
 
-//    NSLog(@"Free Buffers: %d", self.freeBuffers.count);
+    if (self.state == TDAudioQueueStateWaitingToStop && self.freeBuffers.count == self.bufferCount) {
+        [self.delegate audioQueueDidFinish:self];
+    }
+
+#if DEBUG
+    if (self.freeBuffers.count > self.bufferCount >> 1) {
+        NSLog(@"Free Buffers: %d", self.freeBuffers.count);
+    }
+#endif
 }
 
 - (void)didChangeProperty:(AudioQueuePropertyID)inPropertyID
@@ -115,7 +123,11 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
         AudioQueueGetProperty(self.audioQueue, inPropertyID, &isRunnning, &size);
 
         if (isRunnning == 0) {
-            self.state = TDAudioQueueStateStopped;
+            if (self.state == TDAudioQueueStateWaitingToStop) {
+                self.state = TDAudioQueueStateStopped;
+            } else {
+                self.state = TDAudioQueueStatePaused;
+            }
         } else {
             self.state = TDAudioQueueStatePlaying;
         }

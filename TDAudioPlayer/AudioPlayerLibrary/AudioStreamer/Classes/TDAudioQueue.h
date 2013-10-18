@@ -23,6 +23,7 @@ typedef enum TDAudioQueueState {
 @protocol TDAudioQueueDelegate <NSObject>
 
 - (void)audioQueue:(TDAudioQueue *)audioQueue didFreeBuffer:(AudioQueueBufferRef)audioQueueBufferRef;
+- (void)audioQueueDidFinish:(TDAudioQueue *)audioQueue;
 
 @end
 
@@ -30,7 +31,7 @@ typedef enum TDAudioQueueState {
 
 @interface TDAudioQueue : NSObject
 
-@property (assign, nonatomic) TDAudioQueueState state;
+@property (assign, atomic) TDAudioQueueState state;
 @property (weak, nonatomic) id<TDAudioQueueDelegate> delegate;
 
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize;

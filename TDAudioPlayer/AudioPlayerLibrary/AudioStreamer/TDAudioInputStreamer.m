@@ -12,15 +12,15 @@
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
 
-const UInt32 kAudioStreamReadMaxLength = 512;
-const UInt32 kAudioQueueBufferSize = 4096;
-const UInt32 kAudioQueueBufferCount = 16;
+static UInt32 const kAudioStreamReadMaxLength = 512;
+static UInt32 const kAudioQueueBufferSize = 2048;
+static UInt32 const kAudioQueueBufferCount = 16;
+NSString *const TDAudioInputStreamerDidFinishNotification = @"TDAudioInputStreamerDidFinishNotification";
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
 @property (strong, nonatomic) NSThread *audioStreamerThread;
 @property (strong, nonatomic) NSCondition *waitForQueueCondition;
-@property (strong, nonatomic) NSObject *mutex;
 @property (assign, nonatomic) BOOL isPlaying;
 
 @property (strong, nonatomic) TDAudioStream *audioStream;
@@ -38,7 +38,6 @@ const UInt32 kAudioQueueBufferCount = 16;
 
     _audioStream = [[TDAudioStream alloc] initWithURL:url];
     _audioStream.delegate = self;
-    _mutex = [[NSObject alloc] init];
 
     return self;
 }
@@ -50,7 +49,6 @@ const UInt32 kAudioQueueBufferCount = 16;
 
     _audioStream = [[TDAudioStream alloc] initWithInputStream:inputStream];
     _audioStream.delegate = self;
-    _mutex = [[NSObject alloc] init];
 
     return self;
 }
@@ -76,8 +74,6 @@ const UInt32 kAudioQueueBufferCount = 16;
     [self.audioStream open];
 
     while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
-
-    NSLog(@"Done");
 }
 
 #pragma mark - Properties
@@ -110,17 +106,15 @@ const UInt32 kAudioQueueBufferCount = 16;
 
 - (void)audioStream:(TDAudioStream *)audioStream didRaiseEvent:(TDAudioStreamEvent)event
 {
-    @synchronized(self.mutex) {
-        if (event == TDAudioStreamEventHasData) {
-            uint8_t bytes[self.audioQueueBufferSize];
-            UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
+    if (event == TDAudioStreamEventHasData) {
+        uint8_t bytes[self.audioQueueBufferSize];
+        UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
 
-            [self.audioFileStream parseData:bytes length:length];
-        } else if (event == TDAudioStreamEventEnd) {
-            // clean up
-            self.isPlaying = NO;
-            [self.audioQueue stop];
-        }
+        [self.audioFileStream parseData:bytes length:length];
+    } else if (event == TDAudioStreamEventEnd) {
+        // clean up
+        self.isPlaying = NO;
+        [self.audioQueue finish];
     }
 }
 
@@ -128,61 +122,55 @@ const UInt32 kAudioQueueBufferCount = 16;
 
 - (void)audioFileStreamDidBecomeReady:(TDAudioFileStream *)audioFileStream
 {
-    @synchronized(self.mutex) {
-        NSUInteger bufferSize = audioFileStream.packetBufferSize;
-        if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
+    NSUInteger bufferSize = audioFileStream.packetBufferSize;
+    if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
 
-        if (audioFileStream.magicCookieData == NULL) {
-            _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize];
-        } else {
-            _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
-        }
-
-        _audioQueue.delegate = self;
+    if (audioFileStream.magicCookieData == NULL) {
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize];
+    } else {
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
     }
+
+    _audioQueue.delegate = self;
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length
 {
-    @synchronized(self.mutex) {
-        // give data to free audio queues
-        TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+    // give data to free audio queues
+    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
 
-        UInt32 offset = 0;
-        do {
-            NSInteger leftovers = [audioQueueBuffer fillWithData:data length:length offset:offset];
+    UInt32 offset = 0;
+    do {
+        NSInteger leftovers = [audioQueueBuffer fillWithData:data length:length offset:offset];
 
-            if (leftovers != 0) {
-                // enqueue
-                [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
-            }
+        if (leftovers != 0) {
+            // enqueue
+            [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
+        }
 
-            if (leftovers <= 0) {
-                break;
-            } else {
-                // hold onto bytes not filled
-                offset = length - leftovers;
-                audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
-            }
-        } while (YES);
-    }
+        if (leftovers <= 0) {
+            break;
+        } else {
+            // hold onto bytes not filled
+            offset = length - leftovers;
+            audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+        }
+    } while (YES);
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length description:(AudioStreamPacketDescription)description
 {
-    @synchronized(self.mutex) {
-        // give data to free audio queues
-        TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+    // give data to free audio queues
+    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
 
-        BOOL moreRoom = [audioQueueBuffer fillWithData:data length:length packetDescription:description];
+    BOOL moreRoom = [audioQueueBuffer fillWithData:data length:length packetDescription:description];
 
-        if (!moreRoom) {
-            // enqueue
-            [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
-            // get next buffer
-            audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
-            [audioQueueBuffer fillWithData:data length:length packetDescription:description];
-        }
+    if (!moreRoom) {
+        // enqueue
+        [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
+        // get next buffer
+        audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+        [audioQueueBuffer fillWithData:data length:length packetDescription:description];
     }
 }
 
@@ -194,6 +182,34 @@ const UInt32 kAudioQueueBufferCount = 16;
     [self.waitForQueueCondition signal];
     [self.waitForQueueCondition unlock];
 }
+
+- (void)audioQueueDidFinish:(TDAudioQueue *)audioQueue
+{
+    [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidFinish) withObject:nil waitUntilDone:NO];
+}
+
+- (void)notifyAudioInputStreamerDidFinish
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishNotification object:nil];
+}
+
+#pragma mark - Public Methods
+
+- (void)resume
+{
+    [self.audioQueue play];
+}
+
+- (void)pause
+{
+    [self.audioQueue pause];
+}
+
+- (void)stop
+{
+    [self.audioQueue stop];
+}
+
 
 #pragma mark - Cleanup
 

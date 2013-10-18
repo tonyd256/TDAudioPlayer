@@ -87,11 +87,6 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     return self;
 }
 
-- (void)dealloc
-{
-    CFRelease(_stream);
-}
-
 - (void)open
 {
     CFStreamClientContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
@@ -107,6 +102,11 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength
 {
     return CFReadStreamRead(self.stream, data, maxLength);
+}
+
+- (void)dealloc
+{
+    CFRelease(_stream);
 }
 
 @end

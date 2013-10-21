@@ -1,9 +1,9 @@
 //
 //  TDAudioInputStreamer.m
-//  Console.fm
+//  TDAudioPlayer
 //
 //  Created by Tony DiPasquale on 10/4/13.
-//  Copyright (c) 2013 Simple Casual. All rights reserved.
+//  Copyright (c) 2013 Tony DiPasquale. The MIT License (MIT).
 //
 
 #import "TDAudioInputStreamer.h"

@@ -3,7 +3,7 @@
 //  TDAudioPlayerTests
 //
 //  Created by Tony DiPasquale on 10/16/13.
-//  Copyright (c) 2013 Tony DiPasquale. All rights reserved.
+//  Copyright (c) 2013 Tony DiPasquale. The MIT License (MIT).
 //
 
 #import <XCTest/XCTest.h>

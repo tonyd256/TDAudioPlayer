@@ -22,6 +22,7 @@
     self.source = [aDecoder decodeObjectForKey:@"source"];
     self.albumArtLarge = [aDecoder decodeObjectForKey:@"albumArtLarge"];
     self.albumArtSmall = [aDecoder decodeObjectForKey:@"albumArtSmall"];
+    self.duration = [[aDecoder decodeObjectForKey:@"duration"] unsignedIntegerValue];
 
     return self;
 }
@@ -33,6 +34,7 @@
     [aCoder encodeObject:self.source forKey:@"source"];
     [aCoder encodeObject:self.albumArtLarge forKey:@"albumArtLarge"];
     [aCoder encodeObject:self.albumArtSmall forKey:@"albumArtSmall"];
+    [aCoder encodeObject:@(self.duration) forKey:@"duration"];
 }
 
 @end

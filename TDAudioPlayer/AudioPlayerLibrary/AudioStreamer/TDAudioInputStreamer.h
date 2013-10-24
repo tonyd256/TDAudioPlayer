@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const TDAudioInputStreamerDidFinishNotification;
+extern NSString *const TDAudioInputStreamerDidStartPlayingNotification;
 
 @interface TDAudioInputStreamer : NSObject
 

@@ -24,6 +24,7 @@ typedef enum TDAudioQueueState {
 
 - (void)audioQueue:(TDAudioQueue *)audioQueue didFreeBuffer:(AudioQueueBufferRef)audioQueueBufferRef;
 - (void)audioQueueDidFinish:(TDAudioQueue *)audioQueue;
+- (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue;
 
 @end
 

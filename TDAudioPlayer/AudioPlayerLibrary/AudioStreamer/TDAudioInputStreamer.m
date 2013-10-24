@@ -16,6 +16,7 @@ static UInt32 const kAudioStreamReadMaxLength = 512;
 static UInt32 const kAudioQueueBufferSize = 2048;
 static UInt32 const kAudioQueueBufferCount = 16;
 NSString *const TDAudioInputStreamerDidFinishNotification = @"TDAudioInputStreamerDidFinishNotification";
+NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInputStreamerDidStartPlayingNotification";
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
@@ -188,9 +189,19 @@ NSString *const TDAudioInputStreamerDidFinishNotification = @"TDAudioInputStream
     [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidFinish) withObject:nil waitUntilDone:NO];
 }
 
+- (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue
+{
+    [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidStartPlaying) withObject:nil waitUntilDone:NO];
+}
+
 - (void)notifyAudioInputStreamerDidFinish
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishNotification object:nil];
+}
+
+- (void)notifyAudioInputStreamerDidStartPlaying
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidStartPlayingNotification object:nil];
 }
 
 #pragma mark - Public Methods

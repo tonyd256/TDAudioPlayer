@@ -9,6 +9,8 @@
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
 
+static NSUInteger const TDAudioQueueStartMinimumBuffers = 8;
+
 @interface TDAudioQueue ()
 
 @property (assign, nonatomic) AudioQueueRef audioQueue;
@@ -64,7 +66,7 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 
     // allocate the audio queue buffers
     for (NSUInteger i = 0; i < _bufferCount; i++) {
-        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:_audioQueue size:_bufferSize];
+        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:_audioQueue size:(UInt32)_bufferSize];
 
         audioqueuebuffers[i] = buffer;
         [self.freeBuffers addObject:@(i)];
@@ -112,7 +114,7 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 
 #if DEBUG
     if (self.freeBuffers.count > self.bufferCount >> 1) {
-        NSLog(@"Free Buffers: %d", self.freeBuffers.count);
+        NSLog(@"Free Buffers: %lu", (unsigned long)self.freeBuffers.count);
     }
 #endif
 }
@@ -157,9 +159,10 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 
     [audioQueueBuffer enqueueWithAudioQueue:self.audioQueue];
 
-    if (self.freeBuffers.count == 0 && self.state == TDAudioQueueStateBuffering) {
+    if (self.freeBuffers.count <= (self.bufferCount - TDAudioQueueStartMinimumBuffers) && self.state == TDAudioQueueStateBuffering) {
         AudioQueuePrime(self.audioQueue, 0, NULL);
         [self play];
+        [self.delegate audioQueueDidStartPlaying:self];
     }
 }
 

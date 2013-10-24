@@ -15,6 +15,7 @@
 #import "TDAudioInputStreamer.h"
 
 NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidChangeTracksNotification";
+NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForcePauseNotification";
 
 @interface TDAudioPlayer ()
 
@@ -202,6 +203,7 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
 
     if (type == AVAudioSessionInterruptionTypeBegan) {
         [self pause];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidForcePauseNotification object:nil];
     }
 }
 
@@ -211,6 +213,7 @@ NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidCha
 
     if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
         [self pause];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidForcePauseNotification object:nil];
     }
 }
 

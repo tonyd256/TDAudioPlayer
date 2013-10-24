@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const TDAudioPlayerDidChangeTracksNotification;
+extern NSString *const TDAudioPlayerDidForcePauseNotification;
 
 @class TDTrack, TDPlaylist;
 

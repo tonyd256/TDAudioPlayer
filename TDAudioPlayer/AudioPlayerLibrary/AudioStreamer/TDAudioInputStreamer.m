@@ -109,7 +109,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 {
     if (event == TDAudioStreamEventHasData) {
         uint8_t bytes[self.audioQueueBufferSize];
-        UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
+        UInt32 length = [audioStream readData:bytes maxLength:(UInt32)self.audioStreamReadMaxLength];
 
         [self.audioFileStream parseData:bytes length:length];
     } else if (event == TDAudioStreamEventEnd) {
@@ -127,9 +127,9 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
 
     if (audioFileStream.magicCookieData == NULL) {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize];
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:bufferSize];
     } else {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
     }
 
     _audioQueue.delegate = self;
@@ -142,7 +142,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
     UInt32 offset = 0;
     do {
-        NSInteger leftovers = [audioQueueBuffer fillWithData:data length:length offset:offset];
+        UInt32 leftovers = (UInt32)[audioQueueBuffer fillWithData:data length:length offset:offset];
 
         if (leftovers != 0) {
             // enqueue

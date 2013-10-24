@@ -101,7 +101,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength
 {
-    return CFReadStreamRead(self.stream, data, maxLength);
+    return (UInt32)CFReadStreamRead(self.stream, data, maxLength);
 }
 
 - (void)dealloc

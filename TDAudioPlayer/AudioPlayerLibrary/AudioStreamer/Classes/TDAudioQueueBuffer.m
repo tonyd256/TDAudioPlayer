@@ -32,7 +32,7 @@ const NSUInteger TDMaxPacketDescriptions = 512;
     _packetDescriptions = malloc(sizeof(AudioStreamPacketDescription) * TDMaxPacketDescriptions);
     _numberOfPacketDescriptions = 0;
 
-    OSStatus err = AudioQueueAllocateBuffer(audioQueue, _size, &_audioQueueBuffer);
+    OSStatus err = AudioQueueAllocateBuffer(audioQueue, (UInt32)_size, &_audioQueueBuffer);
 
     if (err) {
         NSLog(@"Error allocating audio queue buffer");
@@ -79,8 +79,8 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 - (void)enqueueWithAudioQueue:(AudioQueueRef)audioQueue
 {
-    self.audioQueueBuffer->mAudioDataByteSize = self.fillPosition;
-    OSStatus err = AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, self.numberOfPacketDescriptions, self.packetDescriptions);
+    self.audioQueueBuffer->mAudioDataByteSize = (UInt32)self.fillPosition;
+    OSStatus err = AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, (UInt32)self.numberOfPacketDescriptions, self.packetDescriptions);
 
     if (err) {
         NSLog(@"Error enqueueing audio buffer");

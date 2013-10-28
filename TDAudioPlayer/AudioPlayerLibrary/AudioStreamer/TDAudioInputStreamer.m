@@ -127,9 +127,9 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
 
     if (audioFileStream.magicCookieData == NULL) {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:bufferSize];
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize];
     } else {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
+        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
     }
 
     _audioQueue.delegate = self;

@@ -50,33 +50,33 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
         return nil;
     }
 
-    err = AudioQueueAddPropertyListener(_audioQueue, kAudioQueueProperty_IsRunning, TDAudioQueuePropertyChangedCallback, (__bridge void *)self);
+    err = AudioQueueAddPropertyListener(self.audioQueue, kAudioQueueProperty_IsRunning, TDAudioQueuePropertyChangedCallback, (__bridge void *)self);
 
     if (err) {
         NSLog(@"Error creating audio queue is running listener");
         return nil;
     }
 
-    _bufferCount = bufferCount;
-    _bufferSize = bufferSize;
+    self.bufferCount = bufferCount;
+    self.bufferSize = bufferSize;
 
-    _freeBuffers = [NSMutableArray array];
+    self.freeBuffers = [NSMutableArray array];
 
-    NSMutableArray *audioqueuebuffers = [NSMutableArray arrayWithCapacity:_bufferCount];
+    NSMutableArray *audioqueuebuffers = [NSMutableArray arrayWithCapacity:self.bufferCount];
 
     // allocate the audio queue buffers
-    for (NSUInteger i = 0; i < _bufferCount; i++) {
-        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:_audioQueue size:(UInt32)_bufferSize];
+    for (NSUInteger i = 0; i < self.bufferCount; i++) {
+        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:self.audioQueue size:(UInt32)self.bufferSize];
 
         audioqueuebuffers[i] = buffer;
         [self.freeBuffers addObject:@(i)];
     }
 
-    _audioQueueBuffers = [audioqueuebuffers copy];
+    self.audioQueueBuffers = [audioqueuebuffers copy];
 
-    AudioQueueSetParameter(_audioQueue, kAudioQueueParam_Volume, 1.0);
+    AudioQueueSetParameter(self.audioQueue, kAudioQueueParam_Volume, 1.0);
 
-    _state = TDAudioQueueStateBuffering;
+    self.state = TDAudioQueueStateBuffering;
 
     return self;
 }
@@ -86,7 +86,7 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
     self = [self initWithBasicDescription:basicDescription bufferCount:bufferCount bufferSize:bufferSize];
     if (!self) return nil;
 
-    AudioQueueSetProperty(_audioQueue, kAudioQueueProperty_MagicCookie, magicCookieData, magicCookieSize);
+    AudioQueueSetProperty(self.audioQueue, kAudioQueueProperty_MagicCookie, magicCookieData, magicCookieSize);
     free(magicCookieData);
 
     return self;

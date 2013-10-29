@@ -60,28 +60,6 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     return self;
 }
 
-#pragma mark - Properties
-
-- (TDPlaylist *)loadedPlaylist
-{
-    return self.playlist;
-}
-
-- (TDTrack *)currentTrack
-{
-    return _currentTrack;
-}
-
-- (BOOL)isPlaying
-{
-    return _playing;
-}
-
-- (BOOL)isPaused
-{
-    return _paused;
-}
-
 #pragma mark - Public Methods
 
 - (void)loadTrack:(TDTrack *)track
@@ -104,44 +82,44 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 {
     if (!self.currentTrack || self.playing) return;
 
-    if (!_streamer) {
-        _streamer = [[TDAudioInputStreamer alloc] initWithURL:self.currentTrack.source];
-        [_streamer start];
+    if (!self.streamer) {
+        self.streamer = [[TDAudioInputStreamer alloc] initWithURL:self.currentTrack.source];
+        [self.streamer start];
     } else {
         [self.streamer resume];
         [self setNowPlayingTrackWithPlaybackRate:@1];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
     }
 
-    _playing = YES;
-    _paused = NO;
+    self.playing = YES;
+    self.paused = NO;
 }
 
 - (void)pause
 {
     if (!self.currentTrack || self.paused) return;
 
-    [self.streamer pause];
-    _playing = NO;
-    _paused = YES;
-
     [self setNowPlayingTrackWithPlaybackRate:@0.000001f];
     [self.timer invalidate];
     self.timer = nil;
+
+    [self.streamer pause];
+    self.playing = NO;
+    self.paused = YES;
 }
 
 - (void)stop
 {
-    if (!self.currentTrack || self.streamer == nil) return;
-
-    [self.streamer stop];
-    self.streamer = nil;
-    _playing = NO;
-    _paused = NO;
+    if (!self.currentTrack || !self.streamer) return;
 
     self.elapsedTime = 0;
     [self.timer invalidate];
     self.timer = nil;
+
+    [self.streamer stop];
+    self.streamer = nil;
+    self.playing = NO;
+    self.paused = NO;
 }
 
 - (void)playNextTrack
@@ -151,9 +129,6 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     if (!track) return;
 
     [self stop];
-
-    _playing = NO;
-    self.streamer = nil;
 
     [self loadTrack:track];
     [self play];
@@ -166,9 +141,6 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     if (!track) return;
 
     [self stop];
-
-    _playing = NO;
-    self.streamer = nil;
 
     [self loadTrack:track];
     [self play];

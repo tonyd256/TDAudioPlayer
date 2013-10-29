@@ -37,8 +37,8 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     self = [super init];
     if (!self) return nil;
 
-    _audioStream = [[TDAudioStream alloc] initWithURL:url];
-    _audioStream.delegate = self;
+    self.audioStream = [[TDAudioStream alloc] initWithURL:url];
+    self.audioStream.delegate = self;
 
     return self;
 }
@@ -48,8 +48,8 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     self = [super init];
     if (!self) return nil;
 
-    _audioStream = [[TDAudioStream alloc] initWithInputStream:inputStream];
-    _audioStream.delegate = self;
+    self.audioStream = [[TDAudioStream alloc] initWithInputStream:inputStream];
+    self.audioStream.delegate = self;
 
     return self;
 }
@@ -58,17 +58,17 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 {
     NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]], @"Must be on main thread to start audio streaming");
 
-    _audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(startAudioStreamer) object:nil];
-    [_audioStreamerThread setName:@"TDAudioStreamerThread"];
-    [_audioStreamerThread start];
+    self.audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(startAudioStreamer) object:nil];
+    [self.audioStreamerThread setName:@"TDAudioStreamerThread"];
+    [self.audioStreamerThread start];
 }
 
 - (void)startAudioStreamer
 {
-    _waitForQueueCondition = [[NSCondition alloc] init];
+    self.waitForQueueCondition = [[NSCondition alloc] init];
 
-    _audioFileStream = [[TDAudioFileStream alloc] init];
-    _audioFileStream.delegate = self;
+    self.audioFileStream = [[TDAudioFileStream alloc] init];
+    self.audioFileStream.delegate = self;
 
     self.isPlaying = YES;
 
@@ -127,12 +127,12 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
 
     if (audioFileStream.magicCookieData == NULL) {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize];
+        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize];
     } else {
-        _audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
+        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
     }
 
-    _audioQueue.delegate = self;
+    self.audioQueue.delegate = self;
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length
@@ -218,6 +218,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)stop
 {
+    self.isPlaying = NO;
     [self.audioQueue stop];
 }
 
@@ -226,9 +227,9 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)dealloc
 {
-    self.audioStream = nil;
-    self.audioFileStream = nil;
-    self.audioQueue = nil;
+    _audioStream = nil;
+    _audioFileStream = nil;
+    _audioQueue = nil;
 }
 
 @end

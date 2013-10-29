@@ -25,7 +25,7 @@ typedef enum TDAudioStreamEvent {
 
 @interface TDAudioStream : NSObject
 
-@property (weak, nonatomic) id<TDAudioStreamDelegate> delegate;
+@property (assign, nonatomic) id<TDAudioStreamDelegate> delegate;
 
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;
 - (instancetype)initWithURL:(NSURL *)url;

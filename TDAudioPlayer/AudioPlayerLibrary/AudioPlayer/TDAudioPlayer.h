@@ -15,7 +15,7 @@ extern NSString *const TDAudioPlayerDidForcePauseNotification;
 
 @interface TDAudioPlayer : NSObject
 
-@property (strong, nonatomic, readonly) TDPlaylist *loadedPlaylist;
+@property (strong, nonatomic, readonly, getter = loadedPlaylist) TDPlaylist *playlist;
 @property (strong, nonatomic, readonly) TDTrack *currentTrack;
 @property (assign, nonatomic, readonly, getter = isPlaying) BOOL playing;
 @property (assign, nonatomic, readonly, getter = isPaused) BOOL paused;

@@ -33,7 +33,7 @@ typedef enum TDAudioQueueState {
 @interface TDAudioQueue : NSObject
 
 @property (assign, atomic) TDAudioQueueState state;
-@property (weak, nonatomic) id<TDAudioQueueDelegate> delegate;
+@property (assign, nonatomic) id<TDAudioQueueDelegate> delegate;
 
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize;
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize;

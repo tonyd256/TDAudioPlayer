@@ -34,7 +34,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     self = [super init];
     if (!self) return nil;
 
-    _stream = (__bridge CFReadStreamRef)inputStream;
+    self.stream = (__bridge CFReadStreamRef)inputStream;
 
     return self;
 }
@@ -51,21 +51,21 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
         return nil;
     }
 
-    _stream = CFReadStreamCreateForHTTPRequest(NULL, message);
+    self.stream = CFReadStreamCreateForHTTPRequest(NULL, message);
     CFRelease(message);
 
-    if (!_stream) {
+    if (!self.stream) {
         NSLog(@"Error creating CFReadStreamRef");
         return nil;
     }
 
-    if (CFReadStreamSetProperty(_stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue) == false) {
+    if (CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue) == false) {
         NSLog(@"Error setting autoredirect property");
     }
 
     CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
 
-    if (!CFReadStreamSetProperty(_stream, kCFStreamPropertyHTTPProxy, proxySettings)) {
+    if (!CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPProxy, proxySettings)) {
         NSLog(@"Error setting proxy settings");
     }
 
@@ -79,7 +79,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
                                       (NSString *)kCFStreamSSLValidatesCertificateChain: @NO,
                                       (NSString *)kCFStreamSSLPeerName: [NSNull null]};
 
-        if (!CFReadStreamSetProperty(_stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings))) {
+        if (!CFReadStreamSetProperty(self.stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings))) {
             NSLog(@"Error setting ssl settings");
         }
     }

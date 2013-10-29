@@ -27,7 +27,7 @@
 @property (assign, nonatomic) void *magicCookieData;
 @property (assign, nonatomic) UInt32 magicCookieLength;
 @property (assign, nonatomic) BOOL discontinuous;
-@property (weak, nonatomic) id<TDAudioFileStreamDelegate> delegate;
+@property (assign, nonatomic) id<TDAudioFileStreamDelegate> delegate;
 
 - (instancetype)init;
 

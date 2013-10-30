@@ -21,7 +21,6 @@ extern NSString *const TDAudioInputStreamerDidStartPlayingNotification;
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;
 
 - (void)start;
-
 - (void)resume;
 - (void)pause;
 - (void)stop;

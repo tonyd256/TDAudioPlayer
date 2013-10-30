@@ -11,7 +11,7 @@
 #import "TDAudioQueueController.h"
 #import "TDAudioQueueBufferManager.h"
 
-static NSUInteger const TDAudioQueueStartMinimumBuffers = 8;
+static NSUInteger const kTDAudioQueueStartMinimumBuffers = 8;
 
 @interface TDAudioQueue ()
 
@@ -20,21 +20,21 @@ static NSUInteger const TDAudioQueueStartMinimumBuffers = 8;
 @property (strong, nonatomic) NSCondition *waitForFreeBufferCondition;
 @property (assign, nonatomic) NSUInteger buffersToFillBeforeStart;
 
-- (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)inAudioQueueBufferRef;
+- (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer;
 
 @end
 
-void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer)
+void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, AudioQueueBufferRef inAudioQueueBuffer)
 {
     TDAudioQueue *audioQueue = (__bridge TDAudioQueue *)inUserData;
-    [audioQueue didFreeAudioQueueBuffer:inBuffer];
+    [audioQueue didFreeAudioQueueBuffer:inAudioQueueBuffer];
 }
 
 @implementation TDAudioQueue
 
-- (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize
+- (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize
 {
-    self = [super init];
+    self = [self init];
     if (!self) return nil;
 
     OSStatus err = AudioQueueNewOutput(&basicDescription, TDAudioQueueOutputCallback, (__bridge void *)self, NULL, NULL, 0, &_audioQueue);
@@ -46,39 +46,30 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueue
 
     self.bufferManager = [[TDAudioQueueBufferManager alloc] initWithAudioQueue:self.audioQueue size:bufferSize count:bufferCount];
 
+    AudioQueueSetProperty(self.audioQueue, kAudioQueueProperty_MagicCookie, magicCookieData, magicCookieSize);
+    free(magicCookieData);
+
     AudioQueueSetParameter(self.audioQueue, kAudioQueueParam_Volume, 1.0);
 
     self.waitForFreeBufferCondition = [[NSCondition alloc] init];
     self.state = TDAudioQueueStateBuffering;
-    self.buffersToFillBeforeStart = TDAudioQueueStartMinimumBuffers;
-
-    return self;
-}
-
-- (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize
-{
-    self = [self initWithBasicDescription:basicDescription bufferCount:bufferCount bufferSize:bufferSize];
-    if (!self) return nil;
-
-    AudioQueueSetProperty(self.audioQueue, kAudioQueueProperty_MagicCookie, magicCookieData, magicCookieSize);
-    free(magicCookieData);
+    self.buffersToFillBeforeStart = kTDAudioQueueStartMinimumBuffers;
 
     return self;
 }
 
 #pragma mark - Audio Queue Events
 
-- (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)inAudioQueueBufferRef
+- (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer
 {
-    [self.bufferManager freeAudioQueueBuffer:inAudioQueueBufferRef];
+    [self.bufferManager freeAudioQueueBuffer:audioQueueBuffer];
 
-    // signal that a buffer is now free
     [self.waitForFreeBufferCondition lock];
     [self.waitForFreeBufferCondition signal];
     [self.waitForFreeBufferCondition unlock];
 
     if (self.state == TDAudioQueueStateStopped && ![self.bufferManager isProcessingAudioQueueBuffer]) {
-        [self.delegate audioQueueDidFinishPlaying];
+        [self.delegate audioQueueDidFinishPlaying:self];
     }
 }
 
@@ -86,17 +77,16 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueue
 
 - (TDAudioQueueBuffer *)nextFreeBuffer
 {
-    // wait for a free buffer
     if (![self.bufferManager hasAvailableAudioQueueBuffer]) {
         [self.waitForFreeBufferCondition lock];
         [self.waitForFreeBufferCondition wait];
         [self.waitForFreeBufferCondition unlock];
     }
 
-    TDAudioQueueBuffer *next = [self.bufferManager nextFreeBuffer];
+    TDAudioQueueBuffer *nextBuffer = [self.bufferManager nextFreeBuffer];
 
-    if (!next) return [self nextFreeBuffer];
-    return next;
+    if (!nextBuffer) return [self nextFreeBuffer];
+    return nextBuffer;
 }
 
 - (void)enqueue
@@ -106,7 +96,7 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueue
     if (self.state == TDAudioQueueStateBuffering && --self.buffersToFillBeforeStart == 0) {
         AudioQueuePrime(self.audioQueue, 0, NULL);
         [self play];
-        [self.delegate audioQueueDidStartPlaying];
+        [self.delegate audioQueueDidStartPlaying:self];
     }
 }
 

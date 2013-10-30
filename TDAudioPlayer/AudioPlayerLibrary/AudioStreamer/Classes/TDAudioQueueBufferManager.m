@@ -3,7 +3,7 @@
 //  TDAudioPlayer
 //
 //  Created by Tony DiPasquale on 10/29/13.
-//  Copyright (c) 2013 Tony DiPasquale. All rights reserved.
+//  Copyright (c) 2013 Tony DiPasquale. The MIT License (MIT).
 //
 
 #import "TDAudioQueueBufferManager.h"
@@ -33,7 +33,7 @@
 
     // allocate the audio queue buffers
     for (NSUInteger i = 0; i < self.bufferCount; i++) {
-        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:audioQueue size:(UInt32)self.bufferSize];
+        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:audioQueue size:self.bufferSize];
 
         audioqueuebuffers[i] = buffer;
         self.freeBuffers[i] = @(i);

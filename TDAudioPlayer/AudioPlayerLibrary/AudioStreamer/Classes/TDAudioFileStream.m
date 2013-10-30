@@ -13,7 +13,7 @@
 @property (assign, nonatomic) AudioFileStreamID audioFileStreamID;
 
 - (void)didChangeProperty:(AudioFileStreamPropertyID)propertyID flags:(UInt32 *)flags;
-- (void)didReceivePackets:(const void *)packets descriptions:(AudioStreamPacketDescription *)descriptions numberOfPackets:(UInt32)numberOfPackets numberOfBytes:(UInt32)numberOfBytes;
+- (void)didReceivePackets:(const void *)packets packetDescriptions:(AudioStreamPacketDescription *)packetDescriptions numberOfPackets:(UInt32)numberOfPackets numberOfBytes:(UInt32)numberOfBytes;
 
 @end
 
@@ -26,7 +26,7 @@ void TDAudioFileStreamPropertyListener(void *inClientData, AudioFileStreamID inA
 void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, UInt32 inNumberPackets, const void *inInputData, AudioStreamPacketDescription *inPacketDescriptions)
 {
     TDAudioFileStream *audioFileStream = (__bridge TDAudioFileStream *)inClientData;
-    [audioFileStream didReceivePackets:inInputData descriptions:inPacketDescriptions numberOfPackets:inNumberPackets numberOfBytes:inNumberBytes];
+    [audioFileStream didReceivePackets:inInputData packetDescriptions:inPacketDescriptions numberOfPackets:inNumberPackets numberOfBytes:inNumberBytes];
 }
 
 @implementation TDAudioFileStream
@@ -51,26 +51,22 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
 - (void)didChangeProperty:(AudioFileStreamPropertyID)propertyID flags:(UInt32 *)flags
 {
     if (propertyID == kAudioFileStreamProperty_ReadyToProducePackets) {
-        // all properties are ready and data is ready
-
-        // get the file basic description
         UInt32 basicDescriptionSize = sizeof(self.basicDescription);
         OSStatus err = AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_DataFormat, &basicDescriptionSize, &_basicDescription);
 
         if (err) {
-            // set fail status
             NSLog(@"Error getting basic description");
             return;
         }
 
         UInt32 byteCountSize;
-        AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_AudioDataByteCount, &byteCountSize, &_byteCount);
+        AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_AudioDataByteCount, &byteCountSize, &_totalByteCount);
 
-        UInt32 size = sizeof(UInt32);
-        err = AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_PacketSizeUpperBound, &size, &_packetBufferSize);
+        UInt32 sizeOfUInt32 = sizeof(UInt32);
+        err = AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_PacketSizeUpperBound, &sizeOfUInt32, &_packetBufferSize);
 
-        if (err || _packetBufferSize == 0) {
-            AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_MaximumPacketSize, &size, &_packetBufferSize);
+        if (err || !self.packetBufferSize) {
+            AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_MaximumPacketSize, &sizeOfUInt32, &_packetBufferSize);
         }
 
         // add magic cookie data id if exists
@@ -86,18 +82,16 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
     }
 }
 
-- (void)didReceivePackets:(const void *)packets descriptions:(AudioStreamPacketDescription *)descriptions numberOfPackets:(UInt32)numberOfPackets numberOfBytes:(UInt32)numberOfBytes
+- (void)didReceivePackets:(const void *)packets packetDescriptions:(AudioStreamPacketDescription *)packetDescriptions numberOfPackets:(UInt32)numberOfPackets numberOfBytes:(UInt32)numberOfBytes
 {
-    // packet descriptions mean the data is VBR (variable bit rate)
-    if (descriptions) {
+    if (packetDescriptions) {
         for (NSUInteger i = 0; i < numberOfPackets; i++) {
-            SInt64 packetOffset = descriptions[i].mStartOffset;
-            UInt32 packetSize = descriptions[i].mDataByteSize;
+            SInt64 packetOffset = packetDescriptions[i].mStartOffset;
+            UInt32 packetSize = packetDescriptions[i].mDataByteSize;
 
-            [self.delegate audioFileStream:self didReceiveData:(const void *)(packets + packetOffset) length:packetSize description:(AudioStreamPacketDescription)descriptions[i]];
+            [self.delegate audioFileStream:self didReceiveData:(const void *)(packets + packetOffset) length:packetSize packetDescription:(AudioStreamPacketDescription)packetDescriptions[i]];
         }
     } else {
-        // otherwise the data is CBR (constant bit rate)
         [self.delegate audioFileStream:self didReceiveData:(const void *)packets length:numberOfBytes];
     }
 }
@@ -120,6 +114,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
 
 - (void)dealloc
 {
+    AudioFileStreamClose(self.audioFileStreamID);
     free(_magicCookieData);
 }
 

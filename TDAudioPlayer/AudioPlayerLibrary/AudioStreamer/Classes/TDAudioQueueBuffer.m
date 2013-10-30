@@ -8,7 +8,7 @@
 
 #import "TDAudioQueueBuffer.h"
 
-const NSUInteger TDMaxPacketDescriptions = 512;
+const NSUInteger kTDMaxPacketDescriptions = 512;
 
 @interface TDAudioQueueBuffer ()
 
@@ -29,7 +29,7 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
     self.size = size;
     self.fillPosition = 0;
-    self.packetDescriptions = malloc(sizeof(AudioStreamPacketDescription) * TDMaxPacketDescriptions);
+    self.packetDescriptions = malloc(sizeof(AudioStreamPacketDescription) * kTDMaxPacketDescriptions);
     self.numberOfPacketDescriptions = 0;
 
     OSStatus err = AudioQueueAllocateBuffer(audioQueue, self.size, &_audioQueueBuffer);
@@ -44,11 +44,13 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 - (NSInteger)fillWithData:(const void *)data length:(UInt32)length offset:(UInt32)offset
 {
-    // fill to brim since no packets
-    if (self.fillPosition + length <= self.size) {
+    if (self.fillPosition + length <= self.size)
+    {
         memcpy((char *)(self.audioQueueBuffer->mAudioData + self.fillPosition), (const char *)(data + offset), length);
         self.fillPosition += length;
-    } else {
+    }
+    else
+    {
         NSUInteger availableSpace = self.size - self.fillPosition;
         memcpy((char *)(self.audioQueueBuffer->mAudioData + self.fillPosition), (const char *)data, availableSpace);
         self.fillPosition = self.size;
@@ -64,7 +66,7 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 - (BOOL)fillWithData:(const void *)data length:(UInt32)length packetDescription:(AudioStreamPacketDescription)packetDescription
 {
-    if (self.fillPosition + packetDescription.mDataByteSize > self.size || self.numberOfPacketDescriptions == TDMaxPacketDescriptions) return NO;
+    if (self.fillPosition + packetDescription.mDataByteSize > self.size || self.numberOfPacketDescriptions == kTDMaxPacketDescriptions) return NO;
 
     memcpy((char *)(self.audioQueueBuffer->mAudioData + self.fillPosition), (const char *)(data + packetDescription.mStartOffset), packetDescription.mDataByteSize);
 

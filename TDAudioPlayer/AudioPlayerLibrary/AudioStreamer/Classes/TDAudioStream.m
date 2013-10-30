@@ -90,7 +90,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 - (void)open
 {
     CFStreamClientContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
-    CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable | kCFStreamEventOpenCompleted | kCFStreamEventCanAcceptBytes, TDReadStreamCallback, &context);
+    CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable, TDReadStreamCallback, &context);
     CFReadStreamScheduleWithRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 
     CFRelease(&context);

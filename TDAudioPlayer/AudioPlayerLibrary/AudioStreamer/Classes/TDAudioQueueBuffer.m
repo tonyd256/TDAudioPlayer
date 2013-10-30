@@ -13,10 +13,10 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 @interface TDAudioQueueBuffer ()
 
 @property (assign, nonatomic) AudioQueueBufferRef audioQueueBuffer;
-@property (assign, nonatomic) NSUInteger size;
-@property (assign, nonatomic) NSUInteger fillPosition;
+@property (assign, nonatomic) UInt32 size;
+@property (assign, nonatomic) UInt32 fillPosition;
 @property (assign, nonatomic) AudioStreamPacketDescription *packetDescriptions;
-@property (assign, nonatomic) NSUInteger numberOfPacketDescriptions;
+@property (assign, nonatomic) UInt32 numberOfPacketDescriptions;
 
 @end
 
@@ -32,7 +32,7 @@ const NSUInteger TDMaxPacketDescriptions = 512;
     self.packetDescriptions = malloc(sizeof(AudioStreamPacketDescription) * TDMaxPacketDescriptions);
     self.numberOfPacketDescriptions = 0;
 
-    OSStatus err = AudioQueueAllocateBuffer(audioQueue, (UInt32)self.size, &_audioQueueBuffer);
+    OSStatus err = AudioQueueAllocateBuffer(audioQueue, self.size, &_audioQueueBuffer);
 
     if (err) {
         NSLog(@"Error allocating audio queue buffer");
@@ -79,8 +79,8 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 - (void)enqueueWithAudioQueue:(AudioQueueRef)audioQueue
 {
-    self.audioQueueBuffer->mAudioDataByteSize = (UInt32)self.fillPosition;
-    OSStatus err = AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, (UInt32)self.numberOfPacketDescriptions, self.packetDescriptions);
+    self.audioQueueBuffer->mAudioDataByteSize = self.fillPosition;
+    OSStatus err = AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, self.numberOfPacketDescriptions, self.packetDescriptions);
 
     if (err) {
         NSLog(@"Error enqueueing audio buffer");
@@ -100,7 +100,7 @@ const NSUInteger TDMaxPacketDescriptions = 512;
 
 - (void)freeFromAudioQueue:(AudioQueueRef)audioQueue
 {
-    AudioQueueFreeBuffer(audioQueue, _audioQueueBuffer);
+    AudioQueueFreeBuffer(audioQueue, self.audioQueueBuffer);
 }
 
 - (void)dealloc

@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const TDAudioInputStreamerDidFinishNotification;
+extern NSString *const TDAudioInputStreamerDidFinishPlayingNotification;
 extern NSString *const TDAudioInputStreamerDidStartPlayingNotification;
 
 @interface TDAudioInputStreamer : NSObject
 
-@property (assign, nonatomic) NSUInteger audioStreamReadMaxLength;
-@property (assign, nonatomic) NSUInteger audioQueueBufferSize;
-@property (assign, nonatomic) NSUInteger audioQueueBufferCount;
+@property (assign, nonatomic) UInt32 audioStreamReadMaxLength;
+@property (assign, nonatomic) UInt32 audioQueueBufferSize;
+@property (assign, nonatomic) UInt32 audioQueueBufferCount;
 
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;

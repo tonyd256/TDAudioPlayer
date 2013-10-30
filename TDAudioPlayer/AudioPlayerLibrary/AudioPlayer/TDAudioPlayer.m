@@ -54,7 +54,7 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidInterrupt:) name:AVAudioSessionInterruptionNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidChangeRoute:) name:AVAudioSessionRouteChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidFinish) name:TDAudioInputStreamerDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidFinishPlaying) name:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidStartPlaying) name:TDAudioInputStreamerDidStartPlayingNotification object:nil];
 
     return self;
@@ -189,7 +189,7 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     }
 }
 
-- (void)trackDidFinish
+- (void)trackDidFinishPlaying
 {
     [self playNextTrack];
 }

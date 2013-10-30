@@ -43,7 +43,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         return nil;
     }
 
-    _discontinuous = YES;
+    self.discontinuous = YES;
 
     return self;
 }
@@ -54,7 +54,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         // all properties are ready and data is ready
 
         // get the file basic description
-        UInt32 basicDescriptionSize = sizeof(_basicDescription);
+        UInt32 basicDescriptionSize = sizeof(self.basicDescription);
         OSStatus err = AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_DataFormat, &basicDescriptionSize, &_basicDescription);
 
         if (err) {
@@ -78,8 +78,8 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         err = AudioFileStreamGetPropertyInfo(self.audioFileStreamID, kAudioFileStreamProperty_MagicCookieData, &_magicCookieLength, &writeable);
 
         if (!err) {
-            _magicCookieData = calloc(1, _magicCookieLength);
-            AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_MagicCookieData, &_magicCookieLength, _magicCookieData);
+            self.magicCookieData = calloc(1, self.magicCookieLength);
+            AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_MagicCookieData, &_magicCookieLength, self.magicCookieData);
         }
 
         [self.delegate audioFileStreamDidBecomeReady:self];

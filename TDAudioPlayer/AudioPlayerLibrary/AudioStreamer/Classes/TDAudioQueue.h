@@ -11,10 +11,8 @@
 
 typedef enum TDAudioQueueState {
     TDAudioQueueStateBuffering,
-    TDAudioQueueStateWaitingToStop,
     TDAudioQueueStateStopped,
     TDAudioQueueStatePaused,
-    TDAudioQueueStateWaitingToPlay,
     TDAudioQueueStatePlaying
 } TDAudioQueueState;
 
@@ -22,9 +20,8 @@ typedef enum TDAudioQueueState {
 
 @protocol TDAudioQueueDelegate <NSObject>
 
-- (void)audioQueue:(TDAudioQueue *)audioQueue didFreeBuffer:(AudioQueueBufferRef)audioQueueBufferRef;
-- (void)audioQueueDidFinish:(TDAudioQueue *)audioQueue;
-- (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue;
+- (void)audioQueueDidFinishPlaying;
+- (void)audioQueueDidStartPlaying;
 
 @end
 
@@ -38,8 +35,8 @@ typedef enum TDAudioQueueState {
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize;
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize;
 
-- (TDAudioQueueBuffer *)nextFreeBufferWithWaitCondition:(NSCondition *)waitCondition;
-- (void)enqueueAudioQueueBuffer:(TDAudioQueueBuffer *)audioQueueBuffer;
+- (TDAudioQueueBuffer *)nextFreeBuffer;
+- (void)enqueue;
 
 - (void)play;
 - (void)pause;

@@ -93,6 +93,8 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable | kCFStreamEventOpenCompleted | kCFStreamEventCanAcceptBytes, TDReadStreamCallback, &context);
     CFReadStreamScheduleWithRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 
+    CFRelease(&context);
+
     if (!CFReadStreamOpen(self.stream)) {
         NSLog(@"Error opening stream");
         return;
@@ -106,6 +108,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 
 - (void)dealloc
 {
+    CFReadStreamClose(self.stream);
     CFRelease(_stream);
 }
 

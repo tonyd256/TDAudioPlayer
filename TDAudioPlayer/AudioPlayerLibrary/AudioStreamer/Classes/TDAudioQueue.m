@@ -8,19 +8,19 @@
 
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
+#import "TDAudioQueueController.h"
+#import "TDAudioQueueBufferManager.h"
 
 static NSUInteger const TDAudioQueueStartMinimumBuffers = 8;
 
 @interface TDAudioQueue ()
 
 @property (assign, nonatomic) AudioQueueRef audioQueue;
-@property (assign, nonatomic) NSUInteger bufferCount;
-@property (assign, nonatomic) NSUInteger bufferSize;
-@property (strong, nonatomic) NSArray *audioQueueBuffers;
-@property (strong, nonatomic) NSMutableArray *freeBuffers;
+@property (strong, nonatomic) TDAudioQueueBufferManager *bufferManager;
+@property (strong, nonatomic) NSCondition *waitForFreeBufferCondition;
+@property (assign, nonatomic) NSUInteger buffersToFillBeforeStart;
 
 - (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)inAudioQueueBufferRef;
-- (void)didChangeProperty:(AudioQueuePropertyID)inPropertyID;
 
 @end
 
@@ -28,12 +28,6 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueue
 {
     TDAudioQueue *audioQueue = (__bridge TDAudioQueue *)inUserData;
     [audioQueue didFreeAudioQueueBuffer:inBuffer];
-}
-
-void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudioQueueRef, AudioQueuePropertyID inPropertyID)
-{
-    TDAudioQueue *audioQueue = (__bridge TDAudioQueue *)inUserData;
-    [audioQueue didChangeProperty:inPropertyID];
 }
 
 @implementation TDAudioQueue
@@ -50,33 +44,13 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
         return nil;
     }
 
-    err = AudioQueueAddPropertyListener(self.audioQueue, kAudioQueueProperty_IsRunning, TDAudioQueuePropertyChangedCallback, (__bridge void *)self);
-
-    if (err) {
-        NSLog(@"Error creating audio queue is running listener");
-        return nil;
-    }
-
-    self.bufferCount = bufferCount;
-    self.bufferSize = bufferSize;
-
-    self.freeBuffers = [NSMutableArray array];
-
-    NSMutableArray *audioqueuebuffers = [NSMutableArray arrayWithCapacity:self.bufferCount];
-
-    // allocate the audio queue buffers
-    for (NSUInteger i = 0; i < self.bufferCount; i++) {
-        TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:self.audioQueue size:(UInt32)self.bufferSize];
-
-        audioqueuebuffers[i] = buffer;
-        [self.freeBuffers addObject:@(i)];
-    }
-
-    self.audioQueueBuffers = [audioqueuebuffers copy];
+    self.bufferManager = [[TDAudioQueueBufferManager alloc] initWithAudioQueue:self.audioQueue size:bufferSize count:bufferCount];
 
     AudioQueueSetParameter(self.audioQueue, kAudioQueueParam_Volume, 1.0);
 
+    self.waitForFreeBufferCondition = [[NSCondition alloc] init];
     self.state = TDAudioQueueStateBuffering;
+    self.buffersToFillBeforeStart = TDAudioQueueStartMinimumBuffers;
 
     return self;
 }
@@ -96,73 +70,43 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 
 - (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)inAudioQueueBufferRef
 {
-    // figure out which buffer was freed
-    for (NSUInteger i = 0; i < self.bufferCount; i++) {
-        if ([(TDAudioQueueBuffer *)self.audioQueueBuffers[i] isEqual:inAudioQueueBufferRef]) {
-            [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] reset];
-            [self.freeBuffers addObject:@(i)];
-            break;
-        }
-    }
+    [self.bufferManager freeAudioQueueBuffer:inAudioQueueBufferRef];
 
     // signal that a buffer is now free
-    [self.delegate audioQueue:self didFreeBuffer:inAudioQueueBufferRef];
+    [self.waitForFreeBufferCondition lock];
+    [self.waitForFreeBufferCondition signal];
+    [self.waitForFreeBufferCondition unlock];
 
-    if (self.state == TDAudioQueueStateWaitingToStop && self.freeBuffers.count == self.bufferCount) {
-        [self.delegate audioQueueDidFinish:self];
-    }
-
-#if DEBUG
-    if (self.freeBuffers.count > self.bufferCount >> 1) {
-        NSLog(@"Free Buffers: %lu", (unsigned long)self.freeBuffers.count);
-    }
-#endif
-}
-
-- (void)didChangeProperty:(AudioQueuePropertyID)inPropertyID
-{
-    if (inPropertyID == kAudioQueueProperty_IsRunning) {
-        UInt32 isRunnning = 0;
-        UInt32 size = sizeof(UInt32);
-        AudioQueueGetProperty(self.audioQueue, inPropertyID, &isRunnning, &size);
-
-        if (isRunnning == 0) {
-            if (self.state == TDAudioQueueStateWaitingToStop) {
-                self.state = TDAudioQueueStateStopped;
-            } else {
-                self.state = TDAudioQueueStatePaused;
-            }
-        } else {
-            self.state = TDAudioQueueStatePlaying;
-        }
+    if (self.state == TDAudioQueueStateStopped && ![self.bufferManager isProcessingAudioQueueBuffer]) {
+        [self.delegate audioQueueDidFinishPlaying];
     }
 }
 
 #pragma mark - Public Methods
 
-- (TDAudioQueueBuffer *)nextFreeBufferWithWaitCondition:(NSCondition *)waitCondition
+- (TDAudioQueueBuffer *)nextFreeBuffer
 {
-    if (self.freeBuffers.count == 0) {
-        [waitCondition lock];
-        [waitCondition wait];
-        [waitCondition unlock];
+    // wait for a free buffer
+    if (![self.bufferManager hasAvailableAudioQueueBuffer]) {
+        [self.waitForFreeBufferCondition lock];
+        [self.waitForFreeBufferCondition wait];
+        [self.waitForFreeBufferCondition unlock];
     }
 
-    NSNumber *index = [self.freeBuffers firstObject];
+    TDAudioQueueBuffer *next = [self.bufferManager nextFreeBuffer];
 
-    return self.audioQueueBuffers[[index integerValue]];
+    if (!next) return [self nextFreeBuffer];
+    return next;
 }
 
-- (void)enqueueAudioQueueBuffer:(TDAudioQueueBuffer *)audioQueueBuffer
+- (void)enqueue
 {
-    [self.freeBuffers removeObjectAtIndex:0];
+    [self.bufferManager enqueueNextBufferOnAudioQueue:self.audioQueue];
 
-    [audioQueueBuffer enqueueWithAudioQueue:self.audioQueue];
-
-    if (self.freeBuffers.count <= (self.bufferCount - TDAudioQueueStartMinimumBuffers) && self.state == TDAudioQueueStateBuffering) {
+    if (self.state == TDAudioQueueStateBuffering && --self.buffersToFillBeforeStart == 0) {
         AudioQueuePrime(self.audioQueue, 0, NULL);
         [self play];
-        [self.delegate audioQueueDidStartPlaying:self];
+        [self.delegate audioQueueDidStartPlaying];
     }
 }
 
@@ -172,63 +116,40 @@ void TDAudioQueuePropertyChangedCallback(void *inUserData, AudioQueueRef inAudio
 {
     if (self.state == TDAudioQueueStatePlaying) return;
 
-    // change NULL to adjust for start time
-    OSStatus err = AudioQueueStart(self.audioQueue, NULL);
-
-    if (err) {
-        NSLog(@"Error starting audio queue");
-        return;
-    }
-
-    self.state = TDAudioQueueStateWaitingToPlay;
+    [TDAudioQueueController playAudioQueue:self.audioQueue];
+    self.state = TDAudioQueueStatePlaying;
 }
 
 - (void)pause
 {
     if (self.state == TDAudioQueueStatePaused) return;
 
-    OSStatus err = AudioQueuePause(self.audioQueue);
-
-    if (err) {
-        NSLog(@"Error pausing audio queue");
-        return;
-    }
-
+    [TDAudioQueueController pauseAudioQueue:self.audioQueue];
     self.state = TDAudioQueueStatePaused;
 }
 
 - (void)stop
 {
-    [self stopImmediately:YES];
+    if (self.state == TDAudioQueueStateStopped) return;
+
+    [TDAudioQueueController stopAudioQueue:self.audioQueue];
+    self.state = TDAudioQueueStateStopped;
 }
 
 - (void)finish
 {
-    [self stopImmediately:NO];
-}
-
-- (void)stopImmediately:(BOOL)immediately
-{
     if (self.state == TDAudioQueueStateStopped) return;
 
-    OSStatus err = AudioQueueStop(self.audioQueue, immediately);
-
-    if (err) {
-        NSLog(@"Error stopping audio queue");
-        return;
-    }
-
-    self.state = TDAudioQueueStateWaitingToStop;
+    [TDAudioQueueController finishAudioQueue:self.audioQueue];
+    self.state = TDAudioQueueStateStopped;
 }
+
+#pragma mark - Cleanup
 
 - (void)dealloc
 {
-    for (NSUInteger i = 0; i < self.audioQueueBuffers.count; i++) {
-        [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] freeFromAudioQueue:self.audioQueue];
-    }
-
-    AudioQueueRemovePropertyListener(self.audioQueue, kAudioQueueProperty_IsRunning, TDAudioQueuePropertyChangedCallback, (__bridge void *)self);
-    AudioQueueDispose(self.audioQueue, NO);
+    [self.bufferManager freeBufferMemoryFromAudioQueue:self.audioQueue];
+    AudioQueueDispose(self.audioQueue, YES);
 }
 
 @end

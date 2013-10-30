@@ -15,13 +15,12 @@
 static UInt32 const kAudioStreamReadMaxLength = 512;
 static UInt32 const kAudioQueueBufferSize = 2048;
 static UInt32 const kAudioQueueBufferCount = 16;
-NSString *const TDAudioInputStreamerDidFinishNotification = @"TDAudioInputStreamerDidFinishNotification";
+NSString *const TDAudioInputStreamerDidFinishPlayingNotification = @"TDAudioInputStreamerDidFinishPlayingNotification";
 NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInputStreamerDidStartPlayingNotification";
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
 @property (strong, nonatomic) NSThread *audioStreamerThread;
-@property (strong, nonatomic) NSCondition *waitForQueueCondition;
 @property (assign, nonatomic) BOOL isPlaying;
 
 @property (strong, nonatomic) TDAudioStream *audioStream;
@@ -65,8 +64,6 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)startAudioStreamer
 {
-    self.waitForQueueCondition = [[NSCondition alloc] init];
-
     self.audioFileStream = [[TDAudioFileStream alloc] init];
     self.audioFileStream.delegate = self;
 
@@ -79,7 +76,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 #pragma mark - Properties
 
-- (NSUInteger)audioStreamReadMaxLength
+- (UInt32)audioStreamReadMaxLength
 {
     if (!_audioStreamReadMaxLength)
         _audioStreamReadMaxLength = kAudioStreamReadMaxLength;
@@ -87,7 +84,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     return _audioStreamReadMaxLength;
 }
 
-- (NSUInteger)audioQueueBufferSize
+- (UInt32)audioQueueBufferSize
 {
     if (!_audioQueueBufferSize)
         _audioQueueBufferSize = kAudioQueueBufferSize;
@@ -95,7 +92,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     return _audioQueueBufferSize;
 }
 
-- (NSUInteger)audioQueueBufferCount
+- (UInt32)audioQueueBufferCount
 {
     if (!_audioQueueBufferCount)
         _audioQueueBufferCount = kAudioQueueBufferCount;
@@ -109,7 +106,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 {
     if (event == TDAudioStreamEventHasData) {
         uint8_t bytes[self.audioQueueBufferSize];
-        UInt32 length = [audioStream readData:bytes maxLength:(UInt32)self.audioStreamReadMaxLength];
+        UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
 
         [self.audioFileStream parseData:bytes length:length];
     } else if (event == TDAudioStreamEventEnd) {
@@ -123,13 +120,13 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)audioFileStreamDidBecomeReady:(TDAudioFileStream *)audioFileStream
 {
-    NSUInteger bufferSize = audioFileStream.packetBufferSize;
+    UInt32 bufferSize = audioFileStream.packetBufferSize;
     if (bufferSize == 0) bufferSize = self.audioQueueBufferSize;
 
     if (audioFileStream.magicCookieData == NULL) {
-        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize];
+        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize];
     } else {
-        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:(UInt32)self.audioQueueBufferCount bufferSize:(UInt32)bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
+        self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
     }
 
     self.audioQueue.delegate = self;
@@ -138,23 +135,23 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length
 {
     // give data to free audio queues
-    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBuffer];
 
     UInt32 offset = 0;
     do {
-        UInt32 leftovers = (UInt32)[audioQueueBuffer fillWithData:data length:length offset:offset];
+        NSInteger leftovers = [audioQueueBuffer fillWithData:data length:length offset:offset];
 
         if (leftovers != 0) {
             // enqueue
-            [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
+            [self.audioQueue enqueue];
         }
 
         if (leftovers <= 0) {
             break;
         } else {
             // hold onto bytes not filled
-            offset = length - leftovers;
-            audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+            offset = length - (UInt32)leftovers;
+            audioQueueBuffer = [self.audioQueue nextFreeBuffer];
         }
     } while (YES);
 }
@@ -162,41 +159,34 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length description:(AudioStreamPacketDescription)description
 {
     // give data to free audio queues
-    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBuffer];
 
     BOOL moreRoom = [audioQueueBuffer fillWithData:data length:length packetDescription:description];
 
     if (!moreRoom) {
         // enqueue
-        [self.audioQueue enqueueAudioQueueBuffer:audioQueueBuffer];
+        [self.audioQueue enqueue];
         // get next buffer
-        audioQueueBuffer = [self.audioQueue nextFreeBufferWithWaitCondition:self.waitForQueueCondition];
+        audioQueueBuffer = [self.audioQueue nextFreeBuffer];
         [audioQueueBuffer fillWithData:data length:length packetDescription:description];
     }
 }
 
 #pragma mark - TDAudioQueueDelegate
 
-- (void)audioQueue:(TDAudioQueue *)audioQueue didFreeBuffer:(AudioQueueBufferRef)audioQueueBufferRef
+- (void)audioQueueDidFinishPlaying
 {
-    [self.waitForQueueCondition lock];
-    [self.waitForQueueCondition signal];
-    [self.waitForQueueCondition unlock];
+    [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidFinishPlaying) withObject:nil waitUntilDone:NO];
 }
 
-- (void)audioQueueDidFinish:(TDAudioQueue *)audioQueue
-{
-    [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidFinish) withObject:nil waitUntilDone:NO];
-}
-
-- (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue
+- (void)audioQueueDidStartPlaying
 {
     [self performSelectorOnMainThread:@selector(notifyAudioInputStreamerDidStartPlaying) withObject:nil waitUntilDone:NO];
 }
 
-- (void)notifyAudioInputStreamerDidFinish
+- (void)notifyAudioInputStreamerDidFinishPlaying
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
 }
 
 - (void)notifyAudioInputStreamerDidStartPlaying

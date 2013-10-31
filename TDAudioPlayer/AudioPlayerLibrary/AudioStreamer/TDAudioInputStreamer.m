@@ -11,6 +11,7 @@
 #import "TDAudioStream.h"
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
+#import "TDAudioQueueFiller.h"
 
 static UInt32 const kTDAudioStreamReadMaxLength = 512;
 static UInt32 const kTDAudioQueueBufferSize = 2048;
@@ -139,40 +140,12 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length
 {
-    // give data to free audio queues
-    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBuffer];
-
-    UInt32 offset = 0;
-    do {
-        NSInteger leftovers = [audioQueueBuffer fillWithData:data length:length offset:offset];
-
-        if (leftovers != 0) {
-            [self.audioQueue enqueue];
-        }
-
-        if (leftovers <= 0) {
-            break;
-        } else {
-            // hold onto bytes not filled
-            offset = length - (UInt32)leftovers;
-            audioQueueBuffer = [self.audioQueue nextFreeBuffer];
-        }
-    } while (YES);
+    [TDAudioQueueFiller fillAudioQueue:self.audioQueue withData:data length:length offset:0];
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length packetDescription:(AudioStreamPacketDescription)packetDescription
 {
-    // give data to free audio queues
-    TDAudioQueueBuffer *audioQueueBuffer = [self.audioQueue nextFreeBuffer];
-
-    BOOL hasMoreRoomForPackets = [audioQueueBuffer fillWithData:data length:length packetDescription:packetDescription];
-
-    if (!hasMoreRoomForPackets) {
-        [self.audioQueue enqueue];
-        // get next buffer
-        audioQueueBuffer = [self.audioQueue nextFreeBuffer];
-        [audioQueueBuffer fillWithData:data length:length packetDescription:packetDescription];
-    }
+    [TDAudioQueueFiller fillAudioQueue:self.audioQueue withData:data length:length packetDescription:packetDescription];
 }
 
 #pragma mark - TDAudioQueueDelegate

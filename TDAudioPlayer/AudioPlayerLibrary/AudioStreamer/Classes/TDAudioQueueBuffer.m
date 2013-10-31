@@ -34,10 +34,7 @@ const NSUInteger kTDMaxPacketDescriptions = 512;
 
     OSStatus err = AudioQueueAllocateBuffer(audioQueue, self.size, &_audioQueueBuffer);
 
-    if (err) {
-        NSLog(@"Error allocating audio queue buffer");
-        return nil;
-    }
+    if (err) return nil;
 
     return self;
 }
@@ -82,11 +79,7 @@ const NSUInteger kTDMaxPacketDescriptions = 512;
 - (void)enqueueWithAudioQueue:(AudioQueueRef)audioQueue
 {
     self.audioQueueBuffer->mAudioDataByteSize = self.fillPosition;
-    OSStatus err = AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, self.numberOfPacketDescriptions, self.packetDescriptions);
-
-    if (err) {
-        NSLog(@"Error enqueueing audio buffer");
-    }
+    AudioQueueEnqueueBuffer(audioQueue, self.audioQueueBuffer, self.numberOfPacketDescriptions, self.packetDescriptions);
 }
 
 - (void)reset

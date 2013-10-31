@@ -46,28 +46,18 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 
     CFHTTPMessageRef message = CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (__bridge CFURLRef)(url), kCFHTTPVersion1_1);
 
-    if (!message) {
-        NSLog(@"Error creating CFHTTPMessageRef");
-        return nil;
-    }
+    if (!message) return nil;
 
     self.stream = CFReadStreamCreateForHTTPRequest(NULL, message);
     CFRelease(message);
 
-    if (!self.stream) {
-        NSLog(@"Error creating CFReadStreamRef");
-        return nil;
-    }
+    if (!self.stream) return nil;
 
-    if (CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue) == false) {
-        NSLog(@"Error setting autoredirect property");
-    }
+    CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
 
     CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
 
-    if (!CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPProxy, proxySettings)) {
-        NSLog(@"Error setting proxy settings");
-    }
+    CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPProxy, proxySettings);
 
     CFRelease(proxySettings);
 
@@ -79,15 +69,13 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
                                       (NSString *)kCFStreamSSLValidatesCertificateChain: @NO,
                                       (NSString *)kCFStreamSSLPeerName: [NSNull null]};
 
-        if (!CFReadStreamSetProperty(self.stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings))) {
-            NSLog(@"Error setting ssl settings");
-        }
+        CFReadStreamSetProperty(self.stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings));
     }
 
     return self;
 }
 
-- (void)open
+- (BOOL)open
 {
     CFStreamClientContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
     CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable, TDReadStreamCallback, &context);
@@ -95,10 +83,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 
     CFRelease(&context);
 
-    if (!CFReadStreamOpen(self.stream)) {
-        NSLog(@"Error opening stream");
-        return;
-    }
+    return CFReadStreamOpen(self.stream);
 }
 
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength

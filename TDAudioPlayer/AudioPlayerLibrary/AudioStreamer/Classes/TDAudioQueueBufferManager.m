@@ -31,9 +31,13 @@
     self.freeBuffers = [NSMutableArray arrayWithCapacity:self.bufferCount];
     NSMutableArray *audioqueuebuffers = [NSMutableArray arrayWithCapacity:self.bufferCount];
 
-    // allocate the audio queue buffers
     for (NSUInteger i = 0; i < self.bufferCount; i++) {
         TDAudioQueueBuffer *buffer = [[TDAudioQueueBuffer alloc] initWithAudioQueue:audioQueue size:self.bufferSize];
+
+        if (!buffer) {
+            i--;
+            continue;
+        }
 
         audioqueuebuffers[i] = buffer;
         self.freeBuffers[i] = @(i);
@@ -48,7 +52,6 @@
 
 - (void)freeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer
 {
-    // figure out which buffer was freed
     for (NSUInteger i = 0; i < self.bufferCount; i++) {
         if ([(TDAudioQueueBuffer *)self.audioQueueBuffers[i] isEqual:audioQueueBuffer]) {
             [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] reset];

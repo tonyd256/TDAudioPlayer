@@ -39,6 +39,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     if (!self) return nil;
 
     self.audioStream = [[TDAudioStream alloc] initWithURL:url];
+    if (!self.audioStream) return nil;
 
     return self;
 }
@@ -49,6 +50,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     if (!self) return nil;
 
     self.audioStream = [[TDAudioStream alloc] initWithInputStream:inputStream];
+    if (!self.audioStream) return nil;
 
     return self;
 }
@@ -65,6 +67,10 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 - (void)startAudioStreamer
 {
     self.audioFileStream = [[TDAudioFileStream alloc] init];
+
+    if (!self.audioFileStream)
+        return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
+
     self.audioFileStream.delegate = self;
 
     self.audioStream.delegate = self;
@@ -119,7 +125,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
             break;
 
         case TDAudioStreamEventError:
-            NSLog(@"TDAudioStream encountered an error.");
+            [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
             break;
 
         default:
@@ -136,6 +142,11 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
     self.audioQueue = [[TDAudioQueue alloc] initWithBasicDescription:audioFileStream.basicDescription bufferCount:self.audioQueueBufferCount bufferSize:bufferSize magicCookieData:audioFileStream.magicCookieData magicCookieSize:audioFileStream.magicCookieLength];
 
     self.audioQueue.delegate = self;
+}
+
+- (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveError:(OSStatus)error
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length

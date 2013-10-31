@@ -30,7 +30,7 @@ typedef enum TDAudioStreamEvent {
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;
 - (instancetype)initWithURL:(NSURL *)url;
 
-- (void)open;
+- (BOOL)open;
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength;
 
 @end

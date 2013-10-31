@@ -38,10 +38,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
 
     OSStatus err = AudioFileStreamOpen((__bridge void *)self, TDAudioFileStreamPropertyListener, TDAudioFileStreamPacketsListener, 0, &_audioFileStreamID);
 
-    if (err) {
-        NSLog(@"Error opening audio file stream");
-        return nil;
-    }
+    if (err) return nil;
 
     self.discontinuous = YES;
 
@@ -54,10 +51,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         UInt32 basicDescriptionSize = sizeof(self.basicDescription);
         OSStatus err = AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_DataFormat, &basicDescriptionSize, &_basicDescription);
 
-        if (err) {
-            NSLog(@"Error getting basic description");
-            return;
-        }
+        if (err) return [self.delegate audioFileStream:self didReceiveError:err];
 
         UInt32 byteCountSize;
         AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_AudioDataByteCount, &byteCountSize, &_totalByteCount);
@@ -69,7 +63,6 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
             AudioFileStreamGetProperty(self.audioFileStreamID, kAudioFileStreamProperty_MaximumPacketSize, &sizeOfUInt32, &_packetBufferSize);
         }
 
-        // add magic cookie data id if exists
         Boolean writeable;
         err = AudioFileStreamGetPropertyInfo(self.audioFileStreamID, kAudioFileStreamProperty_MagicCookieData, &_magicCookieLength, &writeable);
 
@@ -107,9 +100,7 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         err = AudioFileStreamParseBytes(self.audioFileStreamID, length, data, 0);
     }
 
-    if (err) {
-        NSLog(@"Error parsing data into file stream");
-    }
+    if (err) [self.delegate audioFileStream:self didReceiveError:err];
 }
 
 - (void)dealloc

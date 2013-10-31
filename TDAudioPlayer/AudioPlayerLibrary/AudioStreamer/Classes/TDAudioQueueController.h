@@ -11,9 +11,9 @@
 
 @interface TDAudioQueueController : NSObject
 
-+ (void)playAudioQueue:(AudioQueueRef)audioQueue;
-+ (void)pauseAudioQueue:(AudioQueueRef)audioQueue;
-+ (void)stopAudioQueue:(AudioQueueRef)audioQueue;
-+ (void)finishAudioQueue:(AudioQueueRef)audioQueue;
++ (OSStatus)playAudioQueue:(AudioQueueRef)audioQueue;
++ (OSStatus)pauseAudioQueue:(AudioQueueRef)audioQueue;
++ (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue;
++ (OSStatus)finishAudioQueue:(AudioQueueRef)audioQueue;
 
 @end

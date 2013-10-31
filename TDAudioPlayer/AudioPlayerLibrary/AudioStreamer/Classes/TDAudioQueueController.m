@@ -10,45 +10,29 @@
 
 @implementation TDAudioQueueController
 
-+ (void)playAudioQueue:(AudioQueueRef)audioQueue
++ (OSStatus)playAudioQueue:(AudioQueueRef)audioQueue
 {
-    // change NULL to adjust for start time
-    OSStatus err = AudioQueueStart(audioQueue, NULL);
-
-    if (err) {
-        NSLog(@"Error starting audio queue");
-        return;
-    }
+    return AudioQueueStart(audioQueue, NULL);
 }
 
-+ (void)pauseAudioQueue:(AudioQueueRef)audioQueue
++ (OSStatus)pauseAudioQueue:(AudioQueueRef)audioQueue
 {
-    OSStatus err = AudioQueuePause(audioQueue);
-
-    if (err) {
-        NSLog(@"Error pausing audio queue");
-        return;
-    }
+    return AudioQueuePause(audioQueue);
 }
 
-+ (void)stopAudioQueue:(AudioQueueRef)audioQueue
++ (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue
 {
-    [self stopAudioQueue:audioQueue immediately:YES];
+    return [self stopAudioQueue:audioQueue immediately:YES];
 }
 
-+ (void)finishAudioQueue:(AudioQueueRef)audioQueue
++ (OSStatus)finishAudioQueue:(AudioQueueRef)audioQueue
 {
-    [self stopAudioQueue:audioQueue immediately:NO];
+    return [self stopAudioQueue:audioQueue immediately:NO];
 }
 
-+ (void)stopAudioQueue:(AudioQueueRef)audioQueue immediately:(BOOL)immediately
++ (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue immediately:(BOOL)immediately
 {
-    OSStatus err = AudioQueueStop(audioQueue, immediately);
-
-    if (err) {
-        NSLog(@"Error stopping audio queue");
-        return;
-    }
+    return AudioQueueStop(audioQueue, immediately);
 }
 
 @end

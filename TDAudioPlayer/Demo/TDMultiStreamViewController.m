@@ -7,7 +7,6 @@
 //
 
 #import "TDMultiStreamViewController.h"
-#import "TDPlaylist.h"
 #import "TDDemoTrack.h"
 
 @interface TDMultiStreamViewController ()

@@ -8,7 +8,7 @@
 
 #import "TDMultiStreamViewController.h"
 #import "TDPlaylist.h"
-#import "TDTrack.h"
+#import "TDDemoTrack.h"
 
 @interface TDMultiStreamViewController ()
 
@@ -35,7 +35,7 @@
 
     NSMutableArray *tracks = [NSMutableArray array];
     for (NSDictionary *trackJSON in tracksJSON) {
-        TDTrack *track = [[TDTrack alloc] init];
+        TDDemoTrack *track = [[TDDemoTrack alloc] init];
         track.title = trackJSON[@"title"];
         track.artist = trackJSON[@"artist"];
         track.albumArtLarge = trackJSON[@"albumArtLarge"];
@@ -59,7 +59,7 @@
 {
     static NSString *CellIdentifier = @"TrackCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    TDTrack *track = [self.tracks objectAtIndex:indexPath.row];
+    TDDemoTrack *track = [self.tracks objectAtIndex:indexPath.row];
 
     cell.textLabel.text = track.title;
     cell.detailTextLabel.text = track.artist;
@@ -76,10 +76,8 @@
         [[TDAudioPlayer sharedAudioPlayer] stop];
     }
 
-    TDPlaylist *playlist = [[TDPlaylist alloc] init];
-    [playlist addTracksFromArray:self.tracks];
-    playlist.currentTrackIndex = indexPath.row;
-    [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
+    NSArray *playlist = [self.tracks copy];
+    [[TDAudioPlayer sharedAudioPlayer] loadTrackIndex:indexPath.row fromPlaylist:playlist];
 
     [[TDAudioPlayer sharedAudioPlayer] play];
 

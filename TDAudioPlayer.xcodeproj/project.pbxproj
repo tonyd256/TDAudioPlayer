@@ -14,8 +14,6 @@
 		EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */; };
 		EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */; };
 		EA17D7E9180F7A94002763B8 /* TDAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7E8180F7A94002763B8 /* TDAudioPlayer.m */; };
-		EA17D7EC180FAD88002763B8 /* TDPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7EB180FAD88002763B8 /* TDPlaylist.m */; };
-		EA17D7F0180FB963002763B8 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7EF180FB963002763B8 /* TDTrack.m */; };
 		EA17D7F318105C1D002763B8 /* TDMultiStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */; };
 		EA17D7F51811C2D8002763B8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F41811C2D8002763B8 /* AVFoundation.framework */; };
 		EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */; };
@@ -24,6 +22,7 @@
 		EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E56182048E30007A936 /* TDAudioQueueController.m */; };
 		EA7B2E5A182048FF0007A936 /* TDAudioQueueBufferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E59182048FF0007A936 /* TDAudioQueueBufferManager.m */; };
 		EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */; };
+		EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8302A718242854000C4FDC /* TDDemoTrack.m */; };
 		EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
 		EABB0619180F0C96006E7D66 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0618180F0C96006E7D66 /* CoreGraphics.framework */; };
 		EABB061B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
@@ -65,10 +64,7 @@
 		EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingleStreamViewController.m; sourceTree = "<group>"; };
 		EA17D7E7180F7A94002763B8 /* TDAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioPlayer.h; sourceTree = "<group>"; };
 		EA17D7E8180F7A94002763B8 /* TDAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioPlayer.m; sourceTree = "<group>"; };
-		EA17D7EA180FAD88002763B8 /* TDPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDPlaylist.h; sourceTree = "<group>"; };
-		EA17D7EB180FAD88002763B8 /* TDPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDPlaylist.m; sourceTree = "<group>"; };
 		EA17D7EE180FB963002763B8 /* TDTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrack.h; sourceTree = "<group>"; };
-		EA17D7EF180FB963002763B8 /* TDTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrack.m; sourceTree = "<group>"; };
 		EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiStreamViewController.h; sourceTree = "<group>"; };
 		EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiStreamViewController.m; sourceTree = "<group>"; };
 		EA17D7F41811C2D8002763B8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -82,6 +78,8 @@
 		EA7B2E59182048FF0007A936 /* TDAudioQueueBufferManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueBufferManager.m; sourceTree = "<group>"; };
 		EA7B2E5B1822A0D00007A936 /* TDAudioQueueFiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueFiller.h; sourceTree = "<group>"; };
 		EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueFiller.m; sourceTree = "<group>"; };
+		EA8302A618242854000C4FDC /* TDDemoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDemoTrack.h; sourceTree = "<group>"; };
+		EA8302A718242854000C4FDC /* TDDemoTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDemoTrack.m; sourceTree = "<group>"; };
 		EABB0613180F0C96006E7D66 /* TDAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TDAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EABB0616180F0C96006E7D66 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EABB0618180F0C96006E7D66 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -174,10 +172,7 @@
 		EA17D7ED180FB90E002763B8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EA17D7EA180FAD88002763B8 /* TDPlaylist.h */,
-				EA17D7EB180FAD88002763B8 /* TDPlaylist.m */,
 				EA17D7EE180FB963002763B8 /* TDTrack.h */,
-				EA17D7EF180FB963002763B8 /* TDTrack.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -272,6 +267,8 @@
 				EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */,
 				EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */,
 				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
+				EA8302A618242854000C4FDC /* TDDemoTrack.h */,
+				EA8302A718242854000C4FDC /* TDDemoTrack.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -335,6 +332,7 @@
 				ORGANIZATIONNAME = "Tony DiPasquale";
 				TargetAttributes = {
 					EABB0612180F0C96006E7D66 = {
+						DevelopmentTeam = 7X7CX2JX3F;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -410,9 +408,9 @@
 			files = (
 				EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */,
 				EA17D7F318105C1D002763B8 /* TDMultiStreamViewController.m in Sources */,
-				EA17D7F0180FB963002763B8 /* TDTrack.m in Sources */,
 				EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */,
 				EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */,
+				EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */,
 				EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */,
 				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
 				EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */,
@@ -422,7 +420,6 @@
 				EABB0623180F0C96006E7D66 /* main.m in Sources */,
 				EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */,
 				EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */,
-				EA17D7EC180FAD88002763B8 /* TDPlaylist.m in Sources */,
 				EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */,
 				EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */,
 			);
@@ -461,7 +458,7 @@
 				EABB0629180F0C96006E7D66 /* Base */,
 			);
 			name = Main.storyboard;
-			path = "/Users/tony/dev/audioplayer-ios/TDAudioPlayer/TDAudioPlayer/Demo";
+			path = /Users/tony/dev/TDAudioPlayer/TDAudioPlayer/Demo;
 			sourceTree = "<absolute>";
 		};
 		EABB0641180F0C96006E7D66 /* InfoPlist.strings */ = {
@@ -578,10 +575,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
 				INFOPLIST_FILE = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -591,10 +591,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
 				INFOPLIST_FILE = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

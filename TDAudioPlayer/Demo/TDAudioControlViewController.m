@@ -7,7 +7,7 @@
 //
 
 #import "TDAudioControlViewController.h"
-#import "TDTrack.h"
+#import "TDDemoTrack.h"
 
 @interface TDAudioControlViewController ()
 
@@ -35,15 +35,15 @@
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
 
-    if (![TDAudioPlayer sharedAudioPlayer].loadedPlaylist) {
-        NSData *playlistData = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedPlaylist"];
+//    if (![TDAudioPlayer sharedAudioPlayer].loadedPlaylist) {
+//        NSData *playlistData = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedPlaylist"];
 
-        if (playlistData) {
-            TDPlaylist *playlist = (TDPlaylist *)[NSKeyedUnarchiver unarchiveObjectWithData:playlistData];
-            [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
-            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
-        }
-    }
+//        if (playlistData) {
+//            TDPlaylist *playlist = (TDPlaylist *)[NSKeyedUnarchiver unarchiveObjectWithData:playlistData];
+//            [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
+//            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+//        }
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -98,7 +98,7 @@
 
 - (void)audioPlayerDidChangeTrack:(NSNotification *)notification
 {
-    TDTrack *track = [TDAudioPlayer sharedAudioPlayer].currentTrack;
+    TDDemoTrack *track = (TDDemoTrack *)[TDAudioPlayer sharedAudioPlayer].currentTrack;
 
     self.titleLabel.text = track.title;
     self.artistLabel.text = track.artist;

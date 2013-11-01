@@ -23,7 +23,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
 @property (strong, nonatomic) NSThread *audioStreamerThread;
-@property (assign, nonatomic) BOOL isPlaying;
+@property (assign, atomic) BOOL isPlaying;
 
 @property (strong, nonatomic) TDAudioStream *audioStream;
 @property (strong, nonatomic) TDAudioFileStream *audioFileStream;

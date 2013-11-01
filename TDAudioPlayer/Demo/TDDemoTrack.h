@@ -1,16 +1,16 @@
 //
-//  TDTrack.h
+//  TDDemoTrack.h
 //  TDAudioPlayer
 //
-//  Created by Tony DiPasquale on 10/16/13.
-//  Copyright (c) 2013 Tony DiPasquale. The MIT License (MIT).
+//  Created by Tony DiPasquale on 11/1/13.
+//  Copyright (c) 2013 Tony DiPasquale. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import "TDTrack.h"
 
-@protocol TDTrack <NSObject>
+@interface TDDemoTrack : NSObject <TDTrack>
 
-@required
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *artist;
 @property (strong, nonatomic) NSURL *source;

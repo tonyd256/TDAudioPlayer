@@ -10,7 +10,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "TDAudioPlayer.h"
-#import "TDPlaylist.h"
 #import "TDTrack.h"
 #import "TDAudioInputStreamer.h"
 
@@ -19,8 +18,9 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
 @interface TDAudioPlayer ()
 
-@property (strong, nonatomic) TDTrack *currentTrack;
-@property (strong, nonatomic) TDPlaylist *playlist;
+@property (strong, nonatomic) id <TDTrack> currentTrack;
+@property (assign, nonatomic) NSUInteger currentTrackIndex;
+@property (strong, nonatomic) NSArray *playlist;
 @property (strong, nonatomic) TDAudioInputStreamer *streamer;
 
 @property (assign, nonatomic) BOOL playing;
@@ -62,7 +62,7 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
 #pragma mark - Public Methods
 
-- (void)loadTrack:(TDTrack *)track
+- (void)loadTrack:(id <TDTrack>)track
 {
     self.currentTrack = track;
 
@@ -72,10 +72,17 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     [self setNowPlayingTrackWithPlaybackRate:@0];
 }
 
-- (void)loadPlaylist:(TDPlaylist *)playlist
+- (void)loadPlaylist:(NSArray *)playlist
 {
+    [self loadTrackIndex:0 fromPlaylist:playlist];
+}
+
+- (void)loadTrackIndex:(NSUInteger)index fromPlaylist:(NSArray *)playlist
+{
+    if (index >= playlist.count) return;
     self.playlist = playlist;
-    [self loadTrack:[self.playlist currentTrack]];
+    self.currentTrackIndex = index;
+    [self loadTrack:self.playlist[index]];
 }
 
 - (void)play
@@ -124,9 +131,8 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
 - (void)playNextTrack
 {
-    TDTrack *track = [self.playlist nextTrack];
-
-    if (!track) return;
+    if (self.currentTrackIndex >= self.playlist.count - 1) return;
+    id <TDTrack> track = self.playlist[++self.currentTrackIndex];
 
     [self stop];
 
@@ -136,9 +142,8 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
 - (void)playPreviousTrack
 {
-    TDTrack *track = [self.playlist previousTrack];
-
-    if (!track) return;
+    if (self.currentTrackIndex == 0) return;
+    id <TDTrack> track = self.playlist[--self.currentTrackIndex];
 
     [self stop];
 
@@ -163,8 +168,8 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
                                                               MPMediaItemPropertyPlaybackDuration: @(self.currentTrack.duration),
                                                               MPNowPlayingInfoPropertyElapsedPlaybackTime: @(self.elapsedTime),
                                                               MPNowPlayingInfoPropertyPlaybackRate: rate,
-                                                              MPNowPlayingInfoPropertyPlaybackQueueCount: @(self.playlist.trackList.count),
-                                                              MPNowPlayingInfoPropertyPlaybackQueueIndex: @(self.playlist.currentTrackIndex)};
+                                                              MPNowPlayingInfoPropertyPlaybackQueueCount: @(self.playlist.count),
+                                                              MPNowPlayingInfoPropertyPlaybackQueueIndex: @(self.currentTrackIndex)};
 }
 
 #pragma mark - Notification Handlers

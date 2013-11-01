@@ -7,22 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TDTrack.h"
 
 extern NSString *const TDAudioPlayerDidChangeTracksNotification;
 extern NSString *const TDAudioPlayerDidForcePauseNotification;
 
-@class TDTrack, TDPlaylist;
-
 @interface TDAudioPlayer : NSObject
 
-@property (strong, nonatomic, readonly, getter = loadedPlaylist) TDPlaylist *playlist;
-@property (strong, nonatomic, readonly) TDTrack *currentTrack;
+@property (strong, nonatomic, readonly, getter = loadedPlaylist) NSArray *playlist;
+@property (strong, nonatomic, readonly) id <TDTrack> currentTrack;
 @property (assign, nonatomic, readonly, getter = isPlaying) BOOL playing;
 @property (assign, nonatomic, readonly, getter = isPaused) BOOL paused;
 
 + (instancetype)sharedAudioPlayer;
 
-- (void)loadPlaylist:(TDPlaylist *)playlist;
+- (void)loadTrack:(id <TDTrack>)track;
+- (void)loadPlaylist:(NSArray *)playlist;
+- (void)loadTrackIndex:(NSUInteger)index fromPlaylist:(NSArray *)playlist;
 
 - (void)play;
 - (void)pause;

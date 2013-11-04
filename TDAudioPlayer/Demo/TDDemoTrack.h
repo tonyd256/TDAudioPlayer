@@ -16,6 +16,6 @@
 @property (strong, nonatomic) NSURL *source;
 @property (strong, nonatomic) NSString *albumArtSmall;
 @property (strong, nonatomic) NSString *albumArtLarge;
-@property (assign, nonatomic) NSUInteger duration;
+@property (strong, nonatomic) NSNumber *duration;
 
 @end

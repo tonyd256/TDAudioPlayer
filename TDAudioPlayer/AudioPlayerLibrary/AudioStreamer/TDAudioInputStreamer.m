@@ -66,19 +66,21 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)startAudioStreamer
 {
-    self.audioFileStream = [[TDAudioFileStream alloc] init];
+    @autoreleasepool {
+        self.audioFileStream = [[TDAudioFileStream alloc] init];
 
-    if (!self.audioFileStream)
-        return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
+        if (!self.audioFileStream)
+            return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
 
-    self.audioFileStream.delegate = self;
+        self.audioFileStream.delegate = self;
 
-    self.audioStream.delegate = self;
-    [self.audioStream open];
+        self.audioStream.delegate = self;
+        [self.audioStream open];
 
-    self.isPlaying = YES;
+        self.isPlaying = YES;
 
-    while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
+        while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
+    }
 }
 
 #pragma mark - Properties

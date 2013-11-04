@@ -39,7 +39,7 @@
         track.artist = trackJSON[@"artist"];
         track.albumArtLarge = trackJSON[@"albumArtLarge"];
         track.source = [NSURL URLWithString:trackJSON[@"source"]];
-        track.duration = [trackJSON[@"duration"] unsignedIntegerValue];
+        track.duration = trackJSON[@"duration"];
 
         [tracks addObject:track];
     }

@@ -161,15 +161,28 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
 - (void)setNowPlayingTrackWithPlaybackRate:(NSNumber *)rate
 {
-    MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentTrack.albumArtLarge]]]];
-    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = @{MPMediaItemPropertyTitle: self.currentTrack.title,
-                                                              MPMediaItemPropertyArtist: self.currentTrack.artist,
-                                                              MPMediaItemPropertyArtwork: artwork,
-                                                              MPMediaItemPropertyPlaybackDuration: @(self.currentTrack.duration),
-                                                              MPNowPlayingInfoPropertyElapsedPlaybackTime: @(self.elapsedTime),
-                                                              MPNowPlayingInfoPropertyPlaybackRate: rate,
-                                                              MPNowPlayingInfoPropertyPlaybackQueueCount: @(self.playlist.count),
-                                                              MPNowPlayingInfoPropertyPlaybackQueueIndex: @(self.currentTrackIndex)};
+    NSMutableDictionary *nowPlaying = [NSMutableDictionary dictionary];
+
+    if (self.currentTrack.title) [nowPlaying setObject:self.currentTrack.title forKey:MPMediaItemPropertyTitle];
+    if (self.currentTrack.artist) [nowPlaying setObject:self.currentTrack.artist forKey:MPMediaItemPropertyArtist];
+
+    if (self.currentTrack.albumArtLarge) {
+        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentTrack.albumArtLarge]]]];
+        if (artwork) [nowPlaying setObject:artwork forKey:MPMediaItemPropertyArtwork];
+    }
+
+    if (self.currentTrack.duration) {
+        [nowPlaying setObject:self.currentTrack.duration forKey:MPMediaItemPropertyPlaybackDuration];
+        [nowPlaying setObject:@(self.elapsedTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [nowPlaying setObject:rate forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    }
+
+    if (self.playlist && self.playlist.count) {
+        [nowPlaying setObject:@(self.playlist.count) forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
+        [nowPlaying setObject:@(self.currentTrackIndex) forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
+    }
+
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = nowPlaying;
 }
 
 #pragma mark - Notification Handlers

@@ -7,7 +7,7 @@
 //
 
 #import "TDSingleStreamViewController.h"
-#import "TDAudioInputStreamer.h"
+#import "TDAudioPlayer.h"
 
 @interface TDSingleStreamViewController ()
 
@@ -34,7 +34,7 @@
 {
     NSURL *url = [NSURL URLWithString:@"http://freedownloads.last.fm/download/513685968/Warrior%2BConcerto.mp3"];
 
-    self.streamer = [[TDAudioInputStreamer alloc] initWithURL:url];
-    [self.streamer start];
+    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromURL:url];
+    [[TDAudioPlayer sharedAudioPlayer] play];
 }
 @end

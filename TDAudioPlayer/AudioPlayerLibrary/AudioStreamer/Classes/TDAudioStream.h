@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum TDAudioStreamEvent {
-    TDAudioStreamEventHasData = 0,
+typedef NS_ENUM(NSUInteger, TDAudioStreamEvent) {
+    TDAudioStreamEventHasData,
     TDAudioStreamEventEnd,
     TDAudioStreamEventError
-} TDAudioStreamEvent;
+};
 
 @class TDAudioStream;
 

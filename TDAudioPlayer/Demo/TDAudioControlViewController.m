@@ -26,7 +26,7 @@
 {
     [super viewDidLoad];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidChangeTrack:) name:TDAudioPlayerDidChangeTracksNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidChangeTrack:) name:TDAudioPlayerDidChangeAudioNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -34,24 +34,6 @@
     [super viewDidAppear:animated];
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
-
-//    if (![TDAudioPlayer sharedAudioPlayer].loadedPlaylist) {
-//        NSData *playlistData = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedPlaylist"];
-
-//        if (playlistData) {
-//            TDPlaylist *playlist = (TDPlaylist *)[NSKeyedUnarchiver unarchiveObjectWithData:playlistData];
-//            [[TDAudioPlayer sharedAudioPlayer] loadPlaylist:playlist];
-//            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
-//        }
-//    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:[TDAudioPlayer sharedAudioPlayer].loadedPlaylist] forKey:@"savedPlaylist"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -84,11 +66,11 @@
             break;
 
         case UIEventSubtypeRemoteControlNextTrack:
-            [[TDAudioPlayer sharedAudioPlayer] playNextTrack];
+//            [[TDAudioPlayer sharedAudioPlayer] playNextTrack];
             break;
 
         case UIEventSubtypeRemoteControlPreviousTrack:
-            [[TDAudioPlayer sharedAudioPlayer] playPreviousTrack];
+//            [[TDAudioPlayer sharedAudioPlayer] playPreviousTrack];
             break;
 
         default:
@@ -98,17 +80,20 @@
 
 - (void)audioPlayerDidChangeTrack:(NSNotification *)notification
 {
-    TDDemoTrack *track = (TDDemoTrack *)[TDAudioPlayer sharedAudioPlayer].currentTrack;
+    if (notification.userInfo[@"meta"]) {
+        TDAudioMetaInfo *meta = notification.userInfo[@"meta"];
 
-    self.titleLabel.text = track.title;
-    self.artistLabel.text = track.artist;
-    self.albumArtImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:track.albumArtLarge]]];
+        self.titleLabel.text = meta.title;
+        self.artistLabel.text = meta.artist;
+        self.albumArtImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:meta.albumArtLarge]]];
+    }
+
     [self.togglePlayPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
 }
 
 - (IBAction)togglePlayPause:(id)sender
 {
-    if ([TDAudioPlayer sharedAudioPlayer].isPlaying) {
+    if ([TDAudioPlayer sharedAudioPlayer].state == TDAudioPlayerStatePlaying) {
         [[TDAudioPlayer sharedAudioPlayer] pause];
         [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
 

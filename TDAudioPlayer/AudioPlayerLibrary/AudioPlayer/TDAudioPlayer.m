@@ -10,21 +10,12 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "TDAudioPlayer.h"
-#import "TDTrack.h"
-#import "TDAudioInputStreamer.h"
-
-NSString *const TDAudioPlayerDidChangeTracksNotification = @"TDAudioPlayerDidChangeTracksNotification";
-NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForcePauseNotification";
 
 @interface TDAudioPlayer ()
 
-@property (strong, nonatomic) id <TDTrack> currentTrack;
-@property (assign, nonatomic) NSUInteger currentTrackIndex;
-@property (strong, nonatomic) NSArray *playlist;
 @property (strong, nonatomic) TDAudioInputStreamer *streamer;
-
-@property (assign, nonatomic) BOOL playing;
-@property (assign, nonatomic) BOOL paused;
+@property (strong, nonatomic) NSMutableDictionary *nowPlayingMetaInfo;
+@property (assign, nonatomic) TDAudioPlayerState state;
 
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) NSUInteger elapsedTime;
@@ -53,135 +44,139 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidInterrupt:) name:AVAudioSessionInterruptionNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidChangeRoute:) name:AVAudioSessionRouteChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidFinishPlaying) name:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackDidStartPlaying) name:TDAudioInputStreamerDidStartPlayingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioDidStartPlaying) name:TDAudioStreamDidStartPlayingNotification object:nil];
 
     return self;
 }
 
-#pragma mark - Public Methods
+#pragma mark - Audio Loading
 
-- (void)loadTrack:(id <TDTrack>)track
+- (void)loadAudioFromURL:(NSURL *)url
 {
-    self.currentTrack = track;
+    [self loadAudioFromURL:url withMetaData:nil];
+}
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidChangeTracksNotification object:nil];
+- (void)loadAudioFromURL:(NSURL *)url withMetaData:(TDAudioMetaInfo *)meta
+{
+    [self reset];
+    self.streamer = [[TDAudioInputStreamer alloc] initWithURL:url];
+    [self changeAudioMetaInfo:meta];
+}
 
+- (void)loadAudioFromStream:(NSInputStream *)stream
+{
+    [self loadAudioFromStream:stream withMetaData:nil];
+}
+
+- (void)loadAudioFromStream:(NSInputStream *)stream withMetaData:(TDAudioMetaInfo *)meta
+{
+    [self reset];
+    self.streamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
+    [self changeAudioMetaInfo:meta];
+}
+
+- (void)reset
+{
+    [self.streamer stop];
+    self.streamer = nil;
+
+    self.state = TDAudioPlayerStateStopped;
     self.elapsedTime = 0;
-    [self setNowPlayingTrackWithPlaybackRate:@0];
+    [self clearTimer];
 }
 
-- (void)loadPlaylist:(NSArray *)playlist
-{
-    [self loadTrackIndex:0 fromPlaylist:playlist];
-}
-
-- (void)loadTrackIndex:(NSUInteger)index fromPlaylist:(NSArray *)playlist
-{
-    if (index >= playlist.count) return;
-    self.playlist = playlist;
-    self.currentTrackIndex = index;
-    [self loadTrack:self.playlist[index]];
-}
+#pragma mark - Audio Controls
 
 - (void)play
 {
-    if (!self.currentTrack || self.playing) return;
+    if (!self.streamer || self.state == TDAudioPlayerStatePlaying) return;
+    if (self.state == TDAudioPlayerStateStopped) return [self start];
 
-    if (!self.streamer) {
-        self.streamer = [[TDAudioInputStreamer alloc] initWithURL:self.currentTrack.source];
-        [self.streamer start];
-    } else {
-        [self.streamer resume];
-        [self setNowPlayingTrackWithPlaybackRate:@1];
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
-    }
+    [self.streamer resume];
+    [self setNowPlayingInfoWithPlaybackRate:@1];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
+    self.state = TDAudioPlayerStatePlaying;
+}
 
-    self.playing = YES;
-    self.paused = NO;
+- (void)start
+{
+    if (self.state == TDAudioPlayerStateStarting) return;
+    [self.streamer start];
+    self.state = TDAudioPlayerStateStarting;
 }
 
 - (void)pause
 {
-    if (!self.currentTrack || self.paused) return;
+    if (!self.streamer || self.state == TDAudioPlayerStatePaused) return;
 
-    [self setNowPlayingTrackWithPlaybackRate:@0.000001f];
-    [self.timer invalidate];
-    self.timer = nil;
+    [self setNowPlayingInfoWithPlaybackRate:@0.000001f];
+    [self clearTimer];
 
     [self.streamer pause];
-    self.playing = NO;
-    self.paused = YES;
+    self.state = TDAudioPlayerStatePaused;
 }
 
 - (void)stop
 {
-    if (!self.currentTrack || !self.streamer) return;
-
-    self.elapsedTime = 0;
-    [self.timer invalidate];
-    self.timer = nil;
-
-    [self.streamer stop];
-    self.streamer = nil;
-    self.playing = NO;
-    self.paused = NO;
+    if (!self.streamer || self.state == TDAudioPlayerStateStopped) return;
+    [self reset];
 }
 
-- (void)playNextTrack
-{
-    if (self.currentTrackIndex >= self.playlist.count - 1) return;
-    id <TDTrack> track = self.playlist[++self.currentTrackIndex];
-
-    [self stop];
-
-    [self loadTrack:track];
-    [self play];
-}
-
-- (void)playPreviousTrack
-{
-    if (self.currentTrackIndex == 0) return;
-    id <TDTrack> track = self.playlist[--self.currentTrackIndex];
-
-    [self stop];
-
-    [self loadTrack:track];
-    [self play];
-
-}
-
-#pragma mark - Private helpers
+#pragma mark - Timer Helpers
 
 - (void)elapseTime
 {
     self.elapsedTime++;
 }
 
-- (void)setNowPlayingTrackWithPlaybackRate:(NSNumber *)rate
+- (void)clearTimer
 {
-    NSMutableDictionary *nowPlaying = [NSMutableDictionary dictionary];
+    [self.timer invalidate];
+    self.timer = nil;
+}
 
-    if (self.currentTrack.title) [nowPlaying setObject:self.currentTrack.title forKey:MPMediaItemPropertyTitle];
-    if (self.currentTrack.artist) [nowPlaying setObject:self.currentTrack.artist forKey:MPMediaItemPropertyArtist];
+#pragma mark - Now Playing Info Helpers
 
-    if (self.currentTrack.albumArtLarge) {
-        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentTrack.albumArtLarge]]]];
-        if (artwork) [nowPlaying setObject:artwork forKey:MPMediaItemPropertyArtwork];
+- (void)changeAudioMetaInfo:(TDAudioMetaInfo *)meta
+{
+    [self setNowPlayingInfoWithMetaInfo:meta];
+
+    if (!meta)
+        return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidChangeAudioNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidChangeAudioNotification object:nil userInfo:@{@"meta": meta}];
+}
+
+- (void)setNowPlayingInfoWithMetaInfo:(TDAudioMetaInfo *)info
+{
+    if (!info) return;
+
+    if (!self.nowPlayingMetaInfo)
+        self.nowPlayingMetaInfo = [NSMutableDictionary dictionary];
+
+    if (info.title) self.nowPlayingMetaInfo[MPMediaItemPropertyTitle] = info.title;
+    if (info.artist) self.nowPlayingMetaInfo[MPMediaItemPropertyArtist] = info.artist;
+
+    if (info.albumArtLarge) {
+        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:info.albumArtLarge]]]];
+        if (artwork) self.nowPlayingMetaInfo[MPMediaItemPropertyArtwork] = artwork;
     }
 
-    if (self.currentTrack.duration) {
-        [nowPlaying setObject:self.currentTrack.duration forKey:MPMediaItemPropertyPlaybackDuration];
-        [nowPlaying setObject:@(self.elapsedTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-        [nowPlaying setObject:rate forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    if (info.duration) self.nowPlayingMetaInfo[MPMediaItemPropertyPlaybackDuration] = info.duration;
+
+    [self setNowPlayingInfoWithPlaybackRate:@0];
+}
+
+- (void)setNowPlayingInfoWithPlaybackRate:(NSNumber *)rate
+{
+    if (!self.nowPlayingMetaInfo) return;
+
+    if (!self.nowPlayingMetaInfo[MPMediaItemPropertyPlaybackDuration]) {
+        self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate;
+        self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = @(self.elapsedTime);
     }
 
-    if (self.playlist && self.playlist.count) {
-        [nowPlaying setObject:@(self.playlist.count) forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
-        [nowPlaying setObject:@(self.currentTrackIndex) forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
-    }
-
-    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = nowPlaying;
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = self.nowPlayingMetaInfo;
 }
 
 #pragma mark - Notification Handlers
@@ -206,16 +201,14 @@ NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForce
     }
 }
 
-- (void)trackDidFinishPlaying
+- (void)audioDidStartPlaying
 {
-    [self playNextTrack];
+    [self setNowPlayingInfoWithPlaybackRate:@1];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
+    self.state = TDAudioPlayerStatePlaying;
 }
 
-- (void)trackDidStartPlaying
-{
-    [self setNowPlayingTrackWithPlaybackRate:@1];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
-}
+#pragma mark - Cleanup
 
 - (void)dealloc
 {

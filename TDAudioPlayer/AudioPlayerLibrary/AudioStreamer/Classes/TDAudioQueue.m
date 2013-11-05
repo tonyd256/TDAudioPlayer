@@ -10,8 +10,7 @@
 #import "TDAudioQueueBuffer.h"
 #import "TDAudioQueueController.h"
 #import "TDAudioQueueBufferManager.h"
-
-static NSUInteger const kTDAudioQueueStartMinimumBuffers = 8;
+#import "TDAudioPlayerConstants.h"
 
 @interface TDAudioQueue ()
 

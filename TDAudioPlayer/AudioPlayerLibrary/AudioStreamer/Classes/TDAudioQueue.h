@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-typedef enum TDAudioQueueState {
+typedef NS_ENUM(NSUInteger, TDAudioQueueState) {
     TDAudioQueueStateBuffering,
     TDAudioQueueStateStopped,
     TDAudioQueueStatePaused,
     TDAudioQueueStatePlaying
-} TDAudioQueueState;
+};
 
 @class TDAudioQueue;
 

@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const TDAudioInputStreamerDidFinishPlayingNotification;
-extern NSString *const TDAudioInputStreamerDidStartPlayingNotification;
-
 @interface TDAudioInputStreamer : NSObject
 
 @property (assign, nonatomic) UInt32 audioStreamReadMaxLength;

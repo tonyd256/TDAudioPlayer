@@ -12,13 +12,7 @@
 #import "TDAudioQueue.h"
 #import "TDAudioQueueBuffer.h"
 #import "TDAudioQueueFiller.h"
-
-static UInt32 const kTDAudioStreamReadMaxLength = 512;
-static UInt32 const kTDAudioQueueBufferSize = 2048;
-static UInt32 const kTDAudioQueueBufferCount = 16;
-
-NSString *const TDAudioInputStreamerDidFinishPlayingNotification = @"TDAudioInputStreamerDidFinishPlayingNotification";
-NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInputStreamerDidStartPlayingNotification";
+#import "TDAudioPlayerConstants.h"
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
@@ -70,7 +64,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
         self.audioFileStream = [[TDAudioFileStream alloc] init];
 
         if (!self.audioFileStream)
-            return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
+            return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioStreamDidFinishPlayingNotification object:nil];
 
         self.audioFileStream.delegate = self;
 
@@ -127,7 +121,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
             break;
 
         case TDAudioStreamEventError:
-            [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioStreamDidFinishPlayingNotification object:nil];
             break;
 
         default:
@@ -148,7 +142,7 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveError:(OSStatus)error
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioInputStreamerDidFinishPlayingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioStreamDidFinishPlayingNotification object:nil];
 }
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveData:(const void *)data length:(UInt32)length
@@ -165,12 +159,12 @@ NSString *const TDAudioInputStreamerDidStartPlayingNotification = @"TDAudioInput
 
 - (void)audioQueueDidFinishPlaying:(TDAudioQueue *)audioQueue
 {
-    [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioInputStreamerDidFinishPlayingNotification waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamDidFinishPlayingNotification waitUntilDone:NO];
 }
 
 - (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue
 {
-    [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioInputStreamerDidStartPlayingNotification waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamDidStartPlayingNotification waitUntilDone:NO];
 }
 
 - (void)notifyMainThread:(NSString *)notificationName

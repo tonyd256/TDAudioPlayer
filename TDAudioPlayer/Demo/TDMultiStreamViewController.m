@@ -35,11 +35,11 @@
     NSMutableArray *tracks = [NSMutableArray array];
     for (NSDictionary *trackJSON in tracksJSON) {
         TDDemoTrack *track = [[TDDemoTrack alloc] init];
-        track.title = trackJSON[@"title"];
-        track.artist = trackJSON[@"artist"];
-        track.albumArtLarge = trackJSON[@"albumArtLarge"];
+        track.meta.title = trackJSON[@"title"];
+        track.meta.artist = trackJSON[@"artist"];
+        track.meta.albumArtLarge = trackJSON[@"albumArtLarge"];
         track.source = [NSURL URLWithString:trackJSON[@"source"]];
-        track.duration = trackJSON[@"duration"];
+        track.meta.duration = trackJSON[@"duration"];
 
         [tracks addObject:track];
     }
@@ -60,9 +60,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     TDDemoTrack *track = [self.tracks objectAtIndex:indexPath.row];
 
-    cell.textLabel.text = track.title;
-    cell.detailTextLabel.text = track.artist;
-    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:track.albumArtLarge]]];
+    cell.textLabel.text = track.meta.title;
+    cell.detailTextLabel.text = track.meta.artist;
+    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:track.meta.albumArtLarge]]];
 
     return cell;
 }
@@ -71,13 +71,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([TDAudioPlayer sharedAudioPlayer].isPlaying) {
+    if ([TDAudioPlayer sharedAudioPlayer].state == TDAudioPlayerStatePlaying) {
         [[TDAudioPlayer sharedAudioPlayer] stop];
     }
 
-    NSArray *playlist = [self.tracks copy];
-    [[TDAudioPlayer sharedAudioPlayer] loadTrackIndex:indexPath.row fromPlaylist:playlist];
-
+    TDDemoTrack *track = [self.tracks objectAtIndex:indexPath.row];
+    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromURL:track.source withMetaData:track.meta];
     [[TDAudioPlayer sharedAudioPlayer] play];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

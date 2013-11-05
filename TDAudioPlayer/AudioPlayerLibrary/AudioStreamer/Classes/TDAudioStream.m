@@ -35,6 +35,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     if (!self) return nil;
 
     self.stream = (__bridge CFReadStreamRef)inputStream;
+    CFRetain(self.stream);
 
     return self;
 }
@@ -92,6 +93,7 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
 - (void)dealloc
 {
     CFReadStreamClose(self.stream);
+    CFReadStreamUnscheduleFromRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     CFRelease(_stream);
 }
 

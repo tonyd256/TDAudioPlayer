@@ -10,10 +10,11 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "TDAudioPlayer.h"
+#import "TDStream.h"
 
 @interface TDAudioPlayer ()
 
-@property (strong, nonatomic) TDAudioInputStreamer *streamer;
+@property (strong, nonatomic) id<TDStream> currentStream;
 @property (strong, nonatomic) NSMutableDictionary *nowPlayingMetaInfo;
 @property (assign, nonatomic) TDAudioPlayerState state;
 
@@ -51,34 +52,22 @@
 
 #pragma mark - Audio Loading
 
-- (void)loadAudioFromURL:(NSURL *)url
-{
-    [self loadAudioFromURL:url withMetaData:nil];
-}
-
-- (void)loadAudioFromURL:(NSURL *)url withMetaData:(TDAudioMetaInfo *)meta
-{
-    [self reset];
-    self.streamer = [[TDAudioInputStreamer alloc] initWithURL:url];
-    [self changeAudioMetaInfo:meta];
-}
-
-- (void)loadAudioFromStream:(NSInputStream *)stream
+- (void)loadAudioFromStream:(id<TDStream>)stream
 {
     [self loadAudioFromStream:stream withMetaData:nil];
 }
 
-- (void)loadAudioFromStream:(NSInputStream *)stream withMetaData:(TDAudioMetaInfo *)meta
+- (void)loadAudioFromStream:(id<TDStream>)stream withMetaData:(TDAudioMetaInfo *)meta
 {
     [self reset];
-    self.streamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
+    self.currentStream = stream;
     [self changeAudioMetaInfo:meta];
 }
 
 - (void)reset
 {
-    [self.streamer stop];
-    self.streamer = nil;
+    [self.currentStream stop];
+    self.currentStream = nil;
 
     self.state = TDAudioPlayerStateStopped;
     self.elapsedTime = 0;
@@ -89,10 +78,10 @@
 
 - (void)play
 {
-    if (!self.streamer || self.state == TDAudioPlayerStatePlaying) return;
+    if (!self.currentStream || self.state == TDAudioPlayerStatePlaying) return;
     if (self.state == TDAudioPlayerStateStopped) return [self start];
 
-    [self.streamer resume];
+    [self.currentStream resume];
     [self setNowPlayingInfoWithPlaybackRate:@1];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
     self.state = TDAudioPlayerStatePlaying;
@@ -101,24 +90,24 @@
 - (void)start
 {
     if (self.state == TDAudioPlayerStateStarting) return;
-    [self.streamer start];
+    [self.currentStream start];
     self.state = TDAudioPlayerStateStarting;
 }
 
 - (void)pause
 {
-    if (!self.streamer || self.state == TDAudioPlayerStatePaused) return;
+    if (!self.currentStream || self.state == TDAudioPlayerStatePaused) return;
 
     [self setNowPlayingInfoWithPlaybackRate:@0.000001f];
     [self clearTimer];
 
-    [self.streamer pause];
+    [self.currentStream pause];
     self.state = TDAudioPlayerStatePaused;
 }
 
 - (void)stop
 {
-    if (!self.streamer || self.state == TDAudioPlayerStateStopped) return;
+    if (!self.currentStream || self.state == TDAudioPlayerStateStopped) return;
     [self reset];
 }
 

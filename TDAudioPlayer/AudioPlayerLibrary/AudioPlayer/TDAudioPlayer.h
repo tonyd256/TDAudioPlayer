@@ -11,6 +11,9 @@
 #import "TDAudioMetaInfo.h"
 #import "TDAudioInputStreamer.h"
 #import "TDAudioPlayerConstants.h"
+#import "TDStream.h"
+#import "TDURLStream.h"
+#import "TDInputStream.h"
 
 typedef NS_ENUM(NSInteger, TDAudioPlayerState) {
     TDAudioPlayerStateStopped,
@@ -25,11 +28,8 @@ typedef NS_ENUM(NSInteger, TDAudioPlayerState) {
 
 + (instancetype)sharedAudioPlayer;
 
-- (void)loadAudioFromURL:(NSURL *)url;
-- (void)loadAudioFromURL:(NSURL *)url withMetaData:(TDAudioMetaInfo *)meta;
-
-- (void)loadAudioFromStream:(NSInputStream *)stream;
-- (void)loadAudioFromStream:(NSInputStream *)stream withMetaData:(TDAudioMetaInfo *)meta;
+- (void)loadAudioFromStream:(id<TDStream>)stream;
+- (void)loadAudioFromStream:(id<TDStream>)stream withMetaData:(TDAudioMetaInfo *)meta;
 
 - (void)play;
 - (void)pause;

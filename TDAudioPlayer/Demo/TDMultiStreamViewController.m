@@ -76,7 +76,7 @@
     }
 
     TDDemoTrack *track = [self.tracks objectAtIndex:indexPath.row];
-    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromURL:track.source withMetaData:track.meta];
+    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromStream:[TDURLStream streamWithURL:track.source] withMetaData:track.meta];
     [[TDAudioPlayer sharedAudioPlayer] play];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

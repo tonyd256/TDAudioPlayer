@@ -34,7 +34,7 @@
 {
     NSURL *url = [NSURL URLWithString:@"http://freedownloads.last.fm/download/513685968/Warrior%2BConcerto.mp3"];
 
-    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromURL:url];
+    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromStream:[TDURLStream streamWithURL:url]];
     [[TDAudioPlayer sharedAudioPlayer] play];
 }
 @end

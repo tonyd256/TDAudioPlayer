@@ -107,6 +107,17 @@ To start playing audio, call `start`.  Then use the following methods to control
 [streamer stop];
 ```
 
+### Notifications
+When using the `TDAudioPlayer` singleton class, it will post notifications at certain points of audio playback.
+
+* `TDAudioPlayerDidChangeAudioNotification` Posts when a new audio stream is loaded into the player.
+* `TDAudioPlayerDidForcePauseNotification` Posts when the audio is forced to pause from an interruption event or headphones unplugged.
+* `TDAudioPlayerDidForcePlayNotification` Posts when the audio is forced to play again from the end of an interruption event.
+* `TDAudioStreamDidStartPlayingNotification` Posts when the audio starts playing.
+* `TDAudioStreamDidFinishPlayingNotification` Posts when the audio has finished playing.
+
+If you are using the lower level class `TDAudioInputStreamer`, only the last 2 notifications will ever be posted. (`TDAudioStreamDidStartPlayingNotification` and `TDAudioStreamDidFinishPlayingNotification`)
+
 Credits
 -------
 

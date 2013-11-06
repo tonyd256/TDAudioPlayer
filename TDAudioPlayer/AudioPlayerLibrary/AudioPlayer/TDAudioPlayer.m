@@ -36,7 +36,7 @@
 
 - (instancetype)init
 {
-    self = [super self];
+    self = [super init];
     if (!self) return nil;
 
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
@@ -96,6 +96,7 @@
     [self setNowPlayingInfoWithPlaybackRate:@1];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(elapseTime) userInfo:nil repeats:YES];
     self.state = TDAudioPlayerStatePlaying;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidPlayNotification object:nil];
 }
 
 - (void)start
@@ -103,6 +104,7 @@
     if (self.state == TDAudioPlayerStateStarting) return;
     [self.streamer start];
     self.state = TDAudioPlayerStateStarting;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidPlayNotification object:nil];
 }
 
 - (void)pause
@@ -114,12 +116,46 @@
 
     [self.streamer pause];
     self.state = TDAudioPlayerStatePaused;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidPauseNotification object:nil];
 }
 
 - (void)stop
 {
     if (!self.streamer || self.state == TDAudioPlayerStateStopped) return;
     [self reset];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidStopNotification object:nil];
+}
+
+#pragma mark - Remote Events
+
+- (void)handleRemoteControlEvent:(UIEvent *)event
+{
+    if (event.type != UIEventTypeRemoteControl) return;
+
+    switch (event.subtype) {
+        case UIEventSubtypeRemoteControlPause:
+            [self pause];
+            break;
+
+        case UIEventSubtypeRemoteControlPlay:
+            [self play];
+            break;
+
+        case UIEventSubtypeRemoteControlStop:
+            [self stop];
+            break;
+
+        case UIEventSubtypeRemoteControlTogglePlayPause:
+            if (self.state == TDAudioPlayerStatePlaying) {
+                [self pause];
+            } else {
+                [self play];
+            }
+            break;
+
+        default:
+            break;
+    }
 }
 
 #pragma mark - Timer Helpers
@@ -185,20 +221,16 @@
 {
     NSUInteger type = [notification.userInfo[AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
 
-    if (type == AVAudioSessionInterruptionTypeBegan) {
+    if (type == AVAudioSessionInterruptionTypeBegan)
         [self pause];
-        [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidForcePauseNotification object:nil];
-    }
 }
 
 - (void)audioSessionDidChangeRoute:(NSNotification *)notification
 {
     NSUInteger reason = [notification.userInfo[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
 
-    if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
+    if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable)
         [self pause];
-        [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerDidForcePauseNotification object:nil];
-    }
 }
 
 - (void)audioDidStartPlaying

@@ -111,12 +111,47 @@ To start playing audio, call `start`.  Then use the following methods to control
 When using the `TDAudioPlayer` singleton class, it will post notifications at certain points of audio playback.
 
 * `TDAudioPlayerDidChangeAudioNotification` Posts when a new audio stream is loaded into the player.
-* `TDAudioPlayerDidForcePauseNotification` Posts when the audio is forced to pause from an interruption event or headphones unplugged.
-* `TDAudioPlayerDidForcePlayNotification` Posts when the audio is forced to play again from the end of an interruption event.
+* `TDAudioPlayerDidPauseNotification` Posts when the audio player pause action is executed.
+* `TDAudioPlayerDidPlayNotification` Posts when the audio player play action is executed.
+* `TDAudioPlayerDidStopNotification` Posts when the audio player stop action is executed.
 * `TDAudioStreamDidStartPlayingNotification` Posts when the audio starts playing.
 * `TDAudioStreamDidFinishPlayingNotification` Posts when the audio has finished playing.
 
 If you are using the lower level class `TDAudioInputStreamer`, only the last 2 notifications will ever be posted. (`TDAudioStreamDidStartPlayingNotification` and `TDAudioStreamDidFinishPlayingNotification`)
+
+### Lock Screen and Remote Audio Controls
+
+To receive audio control events from the lock screen or from an iRemote, you have to turn on the event listening and then pass the events to the `TDAudioPlayer` singleton event handler. You can see an example of this in the demo's [App Delegate](https://github.com/tonyd256/TDAudioPlayer/blob/master/TDAudioPlayer/Demo/TDAppDelegate.m).
+
+Add this method call to your App Delegate's `application:didFinishLaunchingWithOptions:` method to start receiving remote control events.
+
+```Objective-C
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // your custom startup code
+
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    return YES;
+}
+```
+
+Then add the converse method call to your App Delegate's `applicationWillTerminate:` method to stop receiving events.
+
+```Objective-C
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+}
+```
+
+Finally, capture the remote control events and pass them along to `[TDAudioPlayer sharedAudioPlayer]` or write your own logic.
+
+```Objective-C
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+    [[TDAudioPlayer sharedAudioPlayer] handleRemoteControlEvent:event];
+}
+```
 
 Credits
 -------

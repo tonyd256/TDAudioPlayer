@@ -29,55 +29,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidChangeTrack:) name:TDAudioPlayerDidChangeAudioNotification object:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-    [self becomeFirstResponder];
-}
-
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
-- (void)remoteControlReceivedWithEvent:(UIEvent *)event
-{
-    if (event.type != UIEventTypeRemoteControl) return;
-
-    switch (event.subtype) {
-        case UIEventSubtypeRemoteControlPause:
-            [[TDAudioPlayer sharedAudioPlayer] pause];
-            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
-            break;
-
-        case UIEventSubtypeRemoteControlPlay:
-            [[TDAudioPlayer sharedAudioPlayer] play];
-            [self.togglePlayPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
-            break;
-
-        case UIEventSubtypeRemoteControlStop:
-            [[TDAudioPlayer sharedAudioPlayer] stop];
-            [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
-            break;
-
-        case UIEventSubtypeRemoteControlTogglePlayPause:
-            [self togglePlayPause:nil];
-            break;
-
-        case UIEventSubtypeRemoteControlNextTrack:
-//            [[TDAudioPlayer sharedAudioPlayer] playNextTrack];
-            break;
-
-        case UIEventSubtypeRemoteControlPreviousTrack:
-//            [[TDAudioPlayer sharedAudioPlayer] playPreviousTrack];
-            break;
-
-        default:
-            break;
-    }
-}
-
 - (void)audioPlayerDidChangeTrack:(NSNotification *)notification
 {
     if (notification.userInfo[@"meta"]) {

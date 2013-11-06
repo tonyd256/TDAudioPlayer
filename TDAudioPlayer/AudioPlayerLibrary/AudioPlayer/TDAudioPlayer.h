@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "TDAudioMetaInfo.h"
 #import "TDAudioInputStreamer.h"
@@ -34,5 +35,7 @@ typedef NS_ENUM(NSInteger, TDAudioPlayerState) {
 - (void)play;
 - (void)pause;
 - (void)stop;
+
+- (void)handleRemoteControlEvent:(UIEvent *)event;
 
 @end

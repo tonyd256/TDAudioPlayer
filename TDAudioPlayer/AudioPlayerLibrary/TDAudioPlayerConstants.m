@@ -9,8 +9,9 @@
 #import "TDAudioPlayerConstants.h"
 
 NSString *const TDAudioPlayerDidChangeAudioNotification = @"TDAudioPlayerDidChangeAudioNotification";
-NSString *const TDAudioPlayerDidForcePauseNotification = @"TDAudioPlayerDidForcePauseNotification";
-NSString *const TDAudioPlayerDidForcePlayNotification = @"TDAudioPlayerDidForcePlayNotification";
+NSString *const TDAudioPlayerDidPauseNotification = @"TDAudioPlayerDidPauseNotification";
+NSString *const TDAudioPlayerDidPlayNotification = @"TDAudioPlayerDidPlayNotification";
+NSString *const TDAudioPlayerDidStopNotification = @"TDAudioPlayerDidStopNotification";
 
 NSString *const TDAudioStreamDidFinishPlayingNotification = @"TDAudioStreamDidFinishPlayingNotification";
 NSString *const TDAudioStreamDidStartPlayingNotification = @"TDAudioStreamDidStartPlayingNotification";

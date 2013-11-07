@@ -8,6 +8,7 @@
 
 #import "TDMultiStreamViewController.h"
 #import "TDDemoTrack.h"
+#import "TDDemoPlaylist.h"
 
 @interface TDMultiStreamViewController ()
 
@@ -35,7 +36,6 @@
     NSMutableArray *tracks = [NSMutableArray array];
     for (NSDictionary *trackJSON in tracksJSON) {
         TDDemoTrack *track = [[TDDemoTrack alloc] init];
-        track.meta = [[TDAudioMetaInfo alloc] init];
         track.meta.title = trackJSON[@"title"];
         track.meta.artist = trackJSON[@"artist"];
         track.meta.albumArtLarge = trackJSON[@"albumArtLarge"];
@@ -76,9 +76,9 @@
         [[TDAudioPlayer sharedAudioPlayer] stop];
     }
 
-    TDDemoTrack *track = [self.tracks objectAtIndex:indexPath.row];
-    [[TDAudioPlayer sharedAudioPlayer] loadAudioFromURL:track.source withMetaData:track.meta];
-    [[TDAudioPlayer sharedAudioPlayer] play];
+    [[TDDemoPlaylist sharedPlaylist] removeAllTracks];
+    [[TDDemoPlaylist sharedPlaylist] addTracksFromArray:self.tracks];
+    [[TDDemoPlaylist sharedPlaylist] playTrackAtIndex:indexPath.row];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

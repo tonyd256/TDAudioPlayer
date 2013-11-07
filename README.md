@@ -160,6 +160,13 @@ Finally, capture the remote control events and pass them along to `[TDAudioPlaye
 }
 ```
 
+Demos
+-----
+
+There are a few demos you can look at to get started. There is an example on how to quickly play a single file and use the lower level class in the [TDSingleStreamViewController](https://github.com/tonyd256/TDAudioPlayer/blob/master/TDAudioPlayer/Demo/Views/TDSingleStreamViewController.m). Look at [TDMultiStreamViewController](https://github.com/tonyd256/TDAudioPlayer/blob/master/TDAudioPlayer/Demo/Views/TDMultiStreamViewController.m) and its associated classes for an example of implementing a playlist.
+
+This library is used in [Console.fm](https://github.com/simplecasual/consolefm-ios). Check out this project for another great example.
+
 Credits
 -------
 

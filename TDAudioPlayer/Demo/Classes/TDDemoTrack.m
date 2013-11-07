@@ -7,7 +7,18 @@
 //
 
 #import "TDDemoTrack.h"
+#import "TDAudioMetaInfo.h"
 
 @implementation TDDemoTrack
+
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) return nil;
+
+    self.meta = [[TDAudioMetaInfo alloc] init];
+
+    return self;
+}
 
 @end

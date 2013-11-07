@@ -27,6 +27,8 @@
     [super viewDidLoad];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidChangeTrack:) name:TDAudioPlayerDidChangeAudioNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidPause:) name:TDAudioPlayerDidPauseNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidPlay:) name:TDAudioPlayerDidPlayNotification object:nil];
 }
 
 - (void)audioPlayerDidChangeTrack:(NSNotification *)notification
@@ -39,6 +41,16 @@
         self.albumArtImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:meta.albumArtLarge]]];
     }
 
+    [self.togglePlayPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+}
+
+- (void)audioPlayerDidPause:(NSNotification *)notification
+{
+    [self.togglePlayPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+}
+
+- (void)audioPlayerDidPlay:(NSNotification *)notification
+{
     [self.togglePlayPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
 }
 

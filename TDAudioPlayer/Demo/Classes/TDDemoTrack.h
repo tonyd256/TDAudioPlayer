@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TDAudioMetaInfo.h"
+
+@class TDAudioMetaInfo;
 
 @interface TDDemoTrack : NSObject
 

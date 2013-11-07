@@ -19,6 +19,7 @@
 		EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */; };
 		EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */; };
 		EA17D7FC1811D9CD002763B8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */; };
+		EA3E8921182C185900BF7DA3 /* TDDemoPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = EA3E8920182C185900BF7DA3 /* TDDemoPlaylist.m */; };
 		EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E56182048E30007A936 /* TDAudioQueueController.m */; };
 		EA7B2E5A182048FF0007A936 /* TDAudioQueueBufferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E59182048FF0007A936 /* TDAudioQueueBufferManager.m */; };
 		EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */; };
@@ -74,6 +75,8 @@
 		EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioControlViewController.h; sourceTree = "<group>"; };
 		EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioControlViewController.m; sourceTree = "<group>"; };
 		EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		EA3E891F182C185900BF7DA3 /* TDDemoPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDemoPlaylist.h; sourceTree = "<group>"; };
+		EA3E8920182C185900BF7DA3 /* TDDemoPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDemoPlaylist.m; sourceTree = "<group>"; };
 		EA7B2E55182048E30007A936 /* TDAudioQueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueController.h; sourceTree = "<group>"; };
 		EA7B2E56182048E30007A936 /* TDAudioQueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueController.m; sourceTree = "<group>"; };
 		EA7B2E58182048FF0007A936 /* TDAudioQueueBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueBufferManager.h; sourceTree = "<group>"; };
@@ -183,6 +186,32 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		EA3E891D182C175A00BF7DA3 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				EA8302A618242854000C4FDC /* TDDemoTrack.h */,
+				EA8302A718242854000C4FDC /* TDDemoTrack.m */,
+				EA3E891F182C185900BF7DA3 /* TDDemoPlaylist.h */,
+				EA3E8920182C185900BF7DA3 /* TDDemoPlaylist.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		EA3E891E182C176100BF7DA3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EABB062B180F0C96006E7D66 /* TDMasterViewController.h */,
+				EABB062C180F0C96006E7D66 /* TDMasterViewController.m */,
+				EA17D7E4180F1A89002763B8 /* TDSingleStreamViewController.h */,
+				EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */,
+				EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */,
+				EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */,
+				EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */,
+				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		EABB060A180F0C96006E7D66 = {
 			isa = PBXGroup;
 			children = (
@@ -260,21 +289,13 @@
 		EABB064E180F0CE2006E7D66 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				EA3E891E182C176100BF7DA3 /* Views */,
+				EA3E891D182C175A00BF7DA3 /* Classes */,
 				EABB0625180F0C96006E7D66 /* TDAppDelegate.h */,
 				EABB0626180F0C96006E7D66 /* TDAppDelegate.m */,
 				EABB0628180F0C96006E7D66 /* Main.storyboard */,
-				EABB062B180F0C96006E7D66 /* TDMasterViewController.h */,
-				EABB062C180F0C96006E7D66 /* TDMasterViewController.m */,
 				EABB0631180F0C96006E7D66 /* Images.xcassets */,
 				EABB061D180F0C96006E7D66 /* Supporting Files */,
-				EA17D7E4180F1A89002763B8 /* TDSingleStreamViewController.h */,
-				EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */,
-				EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */,
-				EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */,
-				EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */,
-				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
-				EA8302A618242854000C4FDC /* TDDemoTrack.h */,
-				EA8302A718242854000C4FDC /* TDDemoTrack.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -421,6 +442,7 @@
 				EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */,
 				EAB9C6251829A1B3005A0C11 /* TDAudioMetaInfo.m in Sources */,
 				EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */,
+				EA3E8921182C185900BF7DA3 /* TDDemoPlaylist.m in Sources */,
 				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
 				EA17D7DE180F138A002763B8 /* TDAudioQueueBuffer.m in Sources */,
 				EA17D7DC180F138A002763B8 /* TDAudioFileStream.m in Sources */,

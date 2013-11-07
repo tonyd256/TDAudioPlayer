@@ -13,6 +13,9 @@ NSString *const TDAudioPlayerDidPauseNotification = @"TDAudioPlayerDidPauseNotif
 NSString *const TDAudioPlayerDidPlayNotification = @"TDAudioPlayerDidPlayNotification";
 NSString *const TDAudioPlayerDidStopNotification = @"TDAudioPlayerDidStopNotification";
 
+NSString *const TDAudioPlayerNextTrackRequestNotification = @"TDAudioPlayerNextTrackRequestNotification";
+NSString *const TDAudioPlayerPreviousTrackRequestNotification = @"TDAudioPlayerPreviousTrackRequestNotification";
+
 NSString *const TDAudioStreamDidFinishPlayingNotification = @"TDAudioStreamDidFinishPlayingNotification";
 NSString *const TDAudioStreamDidStartPlayingNotification = @"TDAudioStreamDidStartPlayingNotification";
 

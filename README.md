@@ -119,9 +119,16 @@ When using the `TDAudioPlayer` singleton class, it will post notifications at ce
 
 If you are using the lower level class `TDAudioInputStreamer`, only the last 2 notifications will ever be posted. (`TDAudioStreamDidStartPlayingNotification` and `TDAudioStreamDidFinishPlayingNotification`)
 
+There are two more notifications that are useful for implementing a playlist in you application. These notifications become available if you implement the Lock Screen and Remote Audio Controls in the next section.
+
+* `TDAudioPlayerNextTrackRequestNotification` Posts when the user touches next on the lock screen or remote device.
+* `TDAudioPlayerPreviousTrackRequestNotification` Posts when the user touches previous on the lock screen or remote device.
+
+Listen for these notifications in your playlist class and load the next or previous audio stream into the `TDAudioPlayer`.
+
 ### Lock Screen and Remote Audio Controls
 
-To receive audio control events from the lock screen or from an iRemote, you have to turn on the event listening and then pass the events to the `TDAudioPlayer` singleton event handler. You can see an example of this in the demo's [App Delegate](https://github.com/tonyd256/TDAudioPlayer/blob/master/TDAudioPlayer/Demo/TDAppDelegate.m).
+To receive audio control events from the lock screen or from a remote device, you have to turn on the event listening and then pass the events to the `TDAudioPlayer` singleton event handler. You can see an example of this in the demo's [App Delegate](https://github.com/tonyd256/TDAudioPlayer/blob/master/TDAudioPlayer/Demo/TDAppDelegate.m).
 
 Add this method call to your App Delegate's `application:didFinishLaunchingWithOptions:` method to start receiving remote control events.
 

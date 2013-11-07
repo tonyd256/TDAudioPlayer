@@ -153,6 +153,14 @@
             }
             break;
 
+        case UIEventSubtypeRemoteControlNextTrack:
+            [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerNextTrackRequestNotification object:nil];
+            break;
+
+        case UIEventSubtypeRemoteControlPreviousTrack:
+            [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioPlayerPreviousTrackRequestNotification object:nil];
+            break;
+
         default:
             break;
     }
@@ -185,10 +193,15 @@
 
 - (void)setNowPlayingInfoWithMetaInfo:(TDAudioMetaInfo *)info
 {
-    if (!info) return;
+    if (!info) {
+        [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = @{};
+        return;
+    }
 
     if (!self.nowPlayingMetaInfo)
         self.nowPlayingMetaInfo = [NSMutableDictionary dictionary];
+    else
+        [self.nowPlayingMetaInfo removeAllObjects];
 
     if (info.title) self.nowPlayingMetaInfo[MPMediaItemPropertyTitle] = info.title;
     if (info.artist) self.nowPlayingMetaInfo[MPMediaItemPropertyArtist] = info.artist;
@@ -207,10 +220,8 @@
 {
     if (!self.nowPlayingMetaInfo) return;
 
-    if (!self.nowPlayingMetaInfo[MPMediaItemPropertyPlaybackDuration]) {
-        self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate;
-        self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = @(self.elapsedTime);
-    }
+    self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate;
+    self.nowPlayingMetaInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = @(self.elapsedTime);
 
     [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = self.nowPlayingMetaInfo;
 }

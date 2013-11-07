@@ -11,6 +11,9 @@ extern NSString *const TDAudioPlayerDidPauseNotification;
 extern NSString *const TDAudioPlayerDidPlayNotification;
 extern NSString *const TDAudioPlayerDidStopNotification;
 
+extern NSString *const TDAudioPlayerNextTrackRequestNotification;
+extern NSString *const TDAudioPlayerPreviousTrackRequestNotification;
+
 extern NSString *const TDAudioStreamDidFinishPlayingNotification;
 extern NSString *const TDAudioStreamDidStartPlayingNotification;
 

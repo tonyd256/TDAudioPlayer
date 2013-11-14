@@ -10,22 +10,9 @@
 
 @interface TDAudioStream () <NSStreamDelegate>
 
-@property (assign, nonatomic) CFReadStreamRef stream;
+@property (strong, nonatomic) NSInputStream *stream;
 
 @end
-
-void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType, void *inClientInfo)
-{
-    TDAudioStream *stream = (__bridge TDAudioStream *)inClientInfo;
-
-    if (eventType == kCFStreamEventHasBytesAvailable) {
-        [stream.delegate audioStream:stream didRaiseEvent:TDAudioStreamEventHasData];
-    } else if (eventType == kCFStreamEventEndEncountered) {
-        [stream.delegate audioStream:stream didRaiseEvent:TDAudioStreamEventEnd];
-    } else if (eventType == kCFStreamEventErrorOccurred) {
-        [stream.delegate audioStream:stream didRaiseEvent:TDAudioStreamEventError];
-    }
-}
 
 @implementation TDAudioStream
 
@@ -34,67 +21,39 @@ void TDReadStreamCallback(CFReadStreamRef inStream, CFStreamEventType eventType,
     self = [super init];
     if (!self) return nil;
 
-    self.stream = (__bridge CFReadStreamRef)inputStream;
-    CFRetain(self.stream);
+    self.stream = inputStream;
 
     return self;
 }
 
-- (instancetype)initWithURL:(NSURL *)url
+- (void)open
 {
-    self = [super init];
-    if (!self) return nil;
+    self.stream.delegate = self;
+    [self.stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    return [self.stream open];
+}
 
-    CFHTTPMessageRef message = CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (__bridge CFURLRef)(url), kCFHTTPVersion1_1);
-
-    if (!message) return nil;
-
-    self.stream = CFReadStreamCreateForHTTPRequest(NULL, message);
-    CFRelease(message);
-
-    if (!self.stream) return nil;
-
-    CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
-
-    CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
-
-    CFReadStreamSetProperty(self.stream, kCFStreamPropertyHTTPProxy, proxySettings);
-
-    CFRelease(proxySettings);
-
-    if ([url.absoluteString rangeOfString:@"https"].location != NSNotFound) {
-        NSDictionary *sslSettings = @{(NSString *)kCFStreamSSLLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
-                                      (NSString *)kCFStreamSSLAllowsExpiredCertificates: @YES,
-                                      (NSString *)kCFStreamSSLAllowsExpiredRoots: @YES,
-                                      (NSString *)kCFStreamSSLAllowsAnyRoot: @YES,
-                                      (NSString *)kCFStreamSSLValidatesCertificateChain: @NO,
-                                      (NSString *)kCFStreamSSLPeerName: [NSNull null]};
-
-        CFReadStreamSetProperty(self.stream, kCFStreamPropertySSLSettings, (__bridge CFTypeRef)(sslSettings));
+- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
+{
+    if (eventCode == NSStreamEventHasBytesAvailable) {
+        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventHasData];
+    } else if (eventCode == NSStreamEventEndEncountered) {
+        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventEnd];
+    } else if (eventCode == NSStreamEventErrorOccurred) {
+        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventError];
     }
-
-    return self;
-}
-
-- (BOOL)open
-{
-    CFStreamClientContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
-    CFReadStreamSetClient(self.stream, kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred | kCFStreamEventHasBytesAvailable, TDReadStreamCallback, &context);
-    CFReadStreamScheduleWithRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-
-    return CFReadStreamOpen(self.stream);
 }
 
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength
 {
-    return (UInt32)CFReadStreamRead(self.stream, data, maxLength);
+    return (UInt32)[self.stream read:data maxLength:maxLength];
 }
 
 - (void)dealloc
 {
-    CFReadStreamClose(self.stream);
-    CFReadStreamUnscheduleFromRunLoop(self.stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    CFRelease(_stream);
+    [self.stream close];
+    self.stream.delegate = nil;
+    [self.stream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 @end

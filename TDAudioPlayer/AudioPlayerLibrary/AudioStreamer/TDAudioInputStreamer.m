@@ -13,6 +13,7 @@
 #import "TDAudioQueueBuffer.h"
 #import "TDAudioQueueFiller.h"
 #import "TDAudioPlayerConstants.h"
+#import "NSInputStream+URLInitialization.h"
 
 @interface TDAudioInputStreamer () <TDAudioStreamDelegate, TDAudioFileStreamDelegate, TDAudioQueueDelegate>
 
@@ -32,7 +33,8 @@
     self = [super init];
     if (!self) return nil;
 
-    self.audioStream = [[TDAudioStream alloc] initWithURL:url];
+    NSInputStream *stream = [NSInputStream inputStreamWithExternalURL:url];
+    self.audioStream = [[TDAudioStream alloc] initWithInputStream:stream];
     if (!self.audioStream) return nil;
 
     return self;
@@ -109,7 +111,7 @@
 {
     switch (event) {
         case TDAudioStreamEventHasData: {
-            uint8_t bytes[self.audioQueueBufferSize];
+            uint8_t bytes[self.audioStreamReadMaxLength];
             UInt32 length = [audioStream readData:bytes maxLength:self.audioStreamReadMaxLength];
             [self.audioFileStream parseData:bytes length:length];
             break;

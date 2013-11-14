@@ -8,13 +8,14 @@
 
 #import "TDAudioQueueBufferManager.h"
 #import "TDAudioQueueBuffer.h"
+#import "NSMutableArray+QueueMethods.h"
 
 @interface TDAudioQueueBufferManager ()
 
 @property (assign, nonatomic) UInt32 bufferCount;
 @property (assign, nonatomic) UInt32 bufferSize;
 @property (strong, nonatomic) NSArray *audioQueueBuffers;
-@property (strong, nonatomic) NSMutableArray *freeBuffers;
+@property (strong, atomic) NSMutableArray *freeBuffers;
 
 @end
 
@@ -40,7 +41,7 @@
         }
 
         audioqueuebuffers[i] = buffer;
-        self.freeBuffers[i] = @(i);
+        [self.freeBuffers pushObject:@(i)];
     }
 
     self.audioQueueBuffers = [audioqueuebuffers copy];
@@ -55,7 +56,10 @@
     for (NSUInteger i = 0; i < self.bufferCount; i++) {
         if ([(TDAudioQueueBuffer *)self.audioQueueBuffers[i] isEqual:audioQueueBuffer]) {
             [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] reset];
-            [self.freeBuffers addObject:@(i)];
+
+            @synchronized(self) {
+                [self.freeBuffers pushObject:@(i)];
+            }
             break;
         }
     }
@@ -70,26 +74,32 @@
 - (TDAudioQueueBuffer *)nextFreeBuffer
 {
     if (![self hasAvailableAudioQueueBuffer]) return nil;
-    return self.audioQueueBuffers[[[self.freeBuffers firstObject] integerValue]];
+    @synchronized(self) {
+        return self.audioQueueBuffers[[[self.freeBuffers topObject] integerValue]];
+    }
 }
 
 - (void)enqueueNextBufferOnAudioQueue:(AudioQueueRef)audioQueue
 {
-    NSInteger nextBufferIndex = [[self.freeBuffers firstObject] integerValue];
-    [self.freeBuffers removeObjectAtIndex:0];
-
-    TDAudioQueueBuffer *nextBuffer = self.audioQueueBuffers[nextBufferIndex];
-    [nextBuffer enqueueWithAudioQueue:audioQueue];
+    @synchronized(self) {
+        NSInteger nextBufferIndex = [[self.freeBuffers popObject] integerValue];
+        TDAudioQueueBuffer *nextBuffer = self.audioQueueBuffers[nextBufferIndex];
+        [nextBuffer enqueueWithAudioQueue:audioQueue];
+    }
 }
 
 - (BOOL)hasAvailableAudioQueueBuffer
 {
-    return self.freeBuffers.count > 0;
+    @synchronized(self) {
+        return self.freeBuffers.count > 0;
+    }
 }
 
 - (BOOL)isProcessingAudioQueueBuffer
 {
-    return self.freeBuffers.count != self.bufferCount;
+    @synchronized(self) {
+        return self.freeBuffers.count != self.bufferCount;
+    }
 }
 
 #pragma mark - Cleanup

@@ -24,6 +24,8 @@
 		EA7B2E5A182048FF0007A936 /* TDAudioQueueBufferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E59182048FF0007A936 /* TDAudioQueueBufferManager.m */; };
 		EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */; };
 		EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8302A718242854000C4FDC /* TDDemoTrack.m */; };
+		EAA66EB61832A579004FB32A /* NSMutableArray+QueueMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA66EB51832A578004FB32A /* NSMutableArray+QueueMethods.m */; };
+		EAB2C12C18316EB0008B3F41 /* NSInputStream+URLInitialization.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB2C12B18316EB0008B3F41 /* NSInputStream+URLInitialization.m */; };
 		EAB9C62318299903005A0C11 /* TDAudioPlayerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB9C62218299903005A0C11 /* TDAudioPlayerConstants.m */; };
 		EAB9C6251829A1B3005A0C11 /* TDAudioMetaInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB9C6241829A1B3005A0C11 /* TDAudioMetaInfo.m */; };
 		EABB0617180F0C96006E7D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0616180F0C96006E7D66 /* Foundation.framework */; };
@@ -85,6 +87,10 @@
 		EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueFiller.m; sourceTree = "<group>"; };
 		EA8302A618242854000C4FDC /* TDDemoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDemoTrack.h; sourceTree = "<group>"; };
 		EA8302A718242854000C4FDC /* TDDemoTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDemoTrack.m; sourceTree = "<group>"; };
+		EAA66EB41832A578004FB32A /* NSMutableArray+QueueMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueMethods.h"; sourceTree = "<group>"; };
+		EAA66EB51832A578004FB32A /* NSMutableArray+QueueMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueMethods.m"; sourceTree = "<group>"; };
+		EAB2C12A18316EB0008B3F41 /* NSInputStream+URLInitialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInputStream+URLInitialization.h"; sourceTree = "<group>"; };
+		EAB2C12B18316EB0008B3F41 /* NSInputStream+URLInitialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+URLInitialization.m"; sourceTree = "<group>"; };
 		EAB9C62118299903005A0C11 /* TDAudioPlayerConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioPlayerConstants.h; sourceTree = "<group>"; };
 		EAB9C62218299903005A0C11 /* TDAudioPlayerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioPlayerConstants.m; sourceTree = "<group>"; };
 		EAB9C6241829A1B3005A0C11 /* TDAudioMetaInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioMetaInfo.m; sourceTree = "<group>"; };
@@ -139,9 +145,10 @@
 		EA17D7D1180F1329002763B8 /* AudioStreamer */ = {
 			isa = PBXGroup;
 			children = (
+				EAB2C12918316E5D008B3F41 /* Categories */,
+				EA17D7D3180F1360002763B8 /* Classes */,
 				EA17D7E0180F1393002763B8 /* TDAudioInputStreamer.h */,
 				EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */,
-				EA17D7D3180F1360002763B8 /* Classes */,
 			);
 			path = AudioStreamer;
 			sourceTree = "<group>";
@@ -210,6 +217,17 @@
 				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		EAB2C12918316E5D008B3F41 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				EAB2C12A18316EB0008B3F41 /* NSInputStream+URLInitialization.h */,
+				EAB2C12B18316EB0008B3F41 /* NSInputStream+URLInitialization.m */,
+				EAA66EB41832A578004FB32A /* NSMutableArray+QueueMethods.h */,
+				EAA66EB51832A578004FB32A /* NSMutableArray+QueueMethods.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		EABB060A180F0C96006E7D66 = {
@@ -441,6 +459,7 @@
 				EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */,
 				EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */,
 				EAB9C6251829A1B3005A0C11 /* TDAudioMetaInfo.m in Sources */,
+				EAA66EB61832A579004FB32A /* NSMutableArray+QueueMethods.m in Sources */,
 				EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */,
 				EA3E8921182C185900BF7DA3 /* TDDemoPlaylist.m in Sources */,
 				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
@@ -452,6 +471,7 @@
 				EABB0623180F0C96006E7D66 /* main.m in Sources */,
 				EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */,
 				EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */,
+				EAB2C12C18316EB0008B3F41 /* NSInputStream+URLInitialization.m in Sources */,
 				EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */,
 				EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */,
 			);

@@ -38,6 +38,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playNextTrack:) name:TDAudioPlayerNextTrackRequestNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playPreviousTrack:) name:TDAudioPlayerPreviousTrackRequestNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidFinish:) name:TDAudioStreamDidFinishPlayingNotification object:nil];
 
     return self;
 }
@@ -80,6 +81,11 @@
     if (self.currentTrackIndex == 0) return;
 
     [self playTrackAtIndex:(self.currentTrackIndex - 1)];
+}
+
+- (void)audioPlayerDidFinish:(NSNotification *)notification
+{
+    [self playNextTrack:nil];
 }
 
 - (void)removeAllTracks

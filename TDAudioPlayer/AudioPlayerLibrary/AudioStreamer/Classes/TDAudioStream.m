@@ -10,7 +10,7 @@
 
 @interface TDAudioStream () <NSStreamDelegate>
 
-@property (strong, nonatomic) NSInputStream *stream;
+@property (strong, nonatomic) NSStream *stream;
 
 @end
 
@@ -26,6 +26,16 @@
     return self;
 }
 
+- (instancetype)initWithOutputStream:(NSOutputStream *)outputStream
+{
+    self = [super init];
+    if (!self) return nil;
+
+    self.stream = outputStream;
+
+    return self;
+}
+
 - (void)open
 {
     self.stream.delegate = self;
@@ -35,18 +45,36 @@
 
 - (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
 {
-    if (eventCode == NSStreamEventHasBytesAvailable) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventHasData];
-    } else if (eventCode == NSStreamEventEndEncountered) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventEnd];
-    } else if (eventCode == NSStreamEventErrorOccurred) {
-        [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventError];
+    switch (eventCode) {
+        case NSStreamEventHasBytesAvailable:
+            [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventHasData];
+            break;
+
+        case NSStreamEventHasSpaceAvailable:
+            [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventWantsData];
+            break;
+
+        case NSStreamEventEndEncountered:
+            [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventEnd];
+            break;
+
+        case NSStreamEventErrorOccurred:
+            [self.delegate audioStream:self didRaiseEvent:TDAudioStreamEventError];
+            break;
+
+        default:
+            break;
     }
 }
 
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength
 {
-    return (UInt32)[self.stream read:data maxLength:maxLength];
+    return (UInt32)[(NSInputStream *)self.stream read:data maxLength:maxLength];
+}
+
+- (UInt32)writeData:(uint8_t *)data maxLength:(UInt32)maxLength
+{
+    return (UInt32)[(NSOutputStream *)self.stream write:data maxLength:maxLength];
 }
 
 - (void)dealloc

@@ -28,49 +28,60 @@
 
 @implementation TDAudioInputStreamer
 
-- (instancetype)initWithURL:(NSURL *)url
+- (instancetype)init
 {
     self = [super init];
+    if (!self) return nil;
+
+    self.audioFileStream = [[TDAudioFileStream alloc] init];
+    if (!self.audioFileStream) return nil;
+
+    self.audioFileStream.delegate = self;
+
+    return self;
+}
+
+- (instancetype)initWithURL:(NSURL *)url
+{
+    self = [self init];
     if (!self) return nil;
 
     NSInputStream *stream = [NSInputStream inputStreamWithExternalURL:url];
     self.audioStream = [[TDAudioStream alloc] initWithInputStream:stream];
     if (!self.audioStream) return nil;
 
+    self.audioStream.delegate = self;
+
     return self;
 }
 
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream
 {
-    self = [super init];
+    self = [self init];
     if (!self) return nil;
 
     self.audioStream = [[TDAudioStream alloc] initWithInputStream:inputStream];
     if (!self.audioStream) return nil;
+
+    self.audioStream.delegate = self;
 
     return self;
 }
 
 - (void)start
 {
-    NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]], @"Must be on main thread to start audio streaming");
+    if (![[NSThread currentThread] isEqual:[NSThread mainThread]]) {
+        return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
+    }
 
-    self.audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(startAudioStreamer) object:nil];
-    [self.audioStreamerThread setName:@"TDAudioStreamerThread"];
+    self.audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(run) object:nil];
+    [self.audioStreamerThread setName:@"TDAudioInputStreamerThread"];
     [self.audioStreamerThread start];
 }
 
-- (void)startAudioStreamer
+- (void)run
 {
     @autoreleasepool {
-        self.audioFileStream = [[TDAudioFileStream alloc] init];
-
-        if (!self.audioFileStream)
-            return [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioStreamDidFinishPlayingNotification object:nil];
-
-        self.audioFileStream.delegate = self;
-
-        self.audioStream.delegate = self;
         [self.audioStream open];
 
         self.isPlaying = YES;

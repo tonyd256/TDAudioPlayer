@@ -10,6 +10,7 @@
 
 typedef NS_ENUM(NSUInteger, TDAudioStreamEvent) {
     TDAudioStreamEventHasData,
+    TDAudioStreamEventWantsData,
     TDAudioStreamEventEnd,
     TDAudioStreamEventError
 };
@@ -28,8 +29,10 @@ typedef NS_ENUM(NSUInteger, TDAudioStreamEvent) {
 @property (assign, nonatomic) id<TDAudioStreamDelegate> delegate;
 
 - (instancetype)initWithInputStream:(NSInputStream *)inputStream;
+- (instancetype)initWithOutputStream:(NSOutputStream *)outputStream;
 
 - (void)open;
 - (UInt32)readData:(uint8_t *)data maxLength:(UInt32)maxLength;
+- (UInt32)writeData:(uint8_t *)data maxLength:(UInt32)maxLength;
 
 @end

@@ -17,10 +17,13 @@
 		EA17D7F318105C1D002763B8 /* TDMultiStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */; };
 		EA17D7F51811C2D8002763B8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F41811C2D8002763B8 /* AVFoundation.framework */; };
 		EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */; };
-		EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */; };
 		EA17D7FC1811D9CD002763B8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */; };
 		EA3E8921182C185900BF7DA3 /* TDDemoPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = EA3E8920182C185900BF7DA3 /* TDDemoPlaylist.m */; };
 		EA64D3061835711700842F02 /* TDAudioOutputStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA64D3051835711700842F02 /* TDAudioOutputStreamer.m */; };
+		EA64D3091836A5D300842F02 /* TDMultipeerHostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA64D3081836A5D300842F02 /* TDMultipeerHostViewController.m */; };
+		EA64D30C1836A65100842F02 /* TDMultipeerGuestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA64D30B1836A65100842F02 /* TDMultipeerGuestViewController.m */; };
+		EA64D3141836AB4C00842F02 /* TDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = EA64D3131836AB4C00842F02 /* TDSession.m */; };
+		EA64D316183A6C2800842F02 /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA64D315183A6C2800842F02 /* MultipeerConnectivity.framework */; };
 		EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E56182048E30007A936 /* TDAudioQueueController.m */; };
 		EA7B2E5A182048FF0007A936 /* TDAudioQueueBufferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E59182048FF0007A936 /* TDAudioQueueBufferManager.m */; };
 		EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7B2E5C1822A0D00007A936 /* TDAudioQueueFiller.m */; };
@@ -75,13 +78,18 @@
 		EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiStreamViewController.m; sourceTree = "<group>"; };
 		EA17D7F41811C2D8002763B8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioControlViewController.h; sourceTree = "<group>"; };
-		EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioControlViewController.m; sourceTree = "<group>"; };
 		EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		EA3E891F182C185900BF7DA3 /* TDDemoPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDemoPlaylist.h; sourceTree = "<group>"; };
 		EA3E8920182C185900BF7DA3 /* TDDemoPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDemoPlaylist.m; sourceTree = "<group>"; };
 		EA64D3041835711700842F02 /* TDAudioOutputStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioOutputStreamer.h; sourceTree = "<group>"; };
 		EA64D3051835711700842F02 /* TDAudioOutputStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioOutputStreamer.m; sourceTree = "<group>"; };
+		EA64D3071836A5D300842F02 /* TDMultipeerHostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultipeerHostViewController.h; sourceTree = "<group>"; };
+		EA64D3081836A5D300842F02 /* TDMultipeerHostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultipeerHostViewController.m; sourceTree = "<group>"; };
+		EA64D30A1836A65100842F02 /* TDMultipeerGuestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultipeerGuestViewController.h; sourceTree = "<group>"; };
+		EA64D30B1836A65100842F02 /* TDMultipeerGuestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultipeerGuestViewController.m; sourceTree = "<group>"; };
+		EA64D3121836AB4C00842F02 /* TDSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSession.h; sourceTree = "<group>"; };
+		EA64D3131836AB4C00842F02 /* TDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSession.m; sourceTree = "<group>"; };
+		EA64D315183A6C2800842F02 /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = SDKROOT; };
 		EA7B2E55182048E30007A936 /* TDAudioQueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueController.h; sourceTree = "<group>"; };
 		EA7B2E56182048E30007A936 /* TDAudioQueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAudioQueueController.m; sourceTree = "<group>"; };
 		EA7B2E58182048FF0007A936 /* TDAudioQueueBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioQueueBufferManager.h; sourceTree = "<group>"; };
@@ -123,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA64D316183A6C2800842F02 /* MultipeerConnectivity.framework in Frameworks */,
 				EA17D7FC1811D9CD002763B8 /* MediaPlayer.framework in Frameworks */,
 				EA17D7F71811C2E1002763B8 /* AudioToolbox.framework in Frameworks */,
 				EA17D7F51811C2D8002763B8 /* AVFoundation.framework in Frameworks */,
@@ -148,7 +157,6 @@
 		EA17D7D1180F1329002763B8 /* AudioStreamer */ = {
 			isa = PBXGroup;
 			children = (
-				EAB2C12918316E5D008B3F41 /* Categories */,
 				EA17D7D3180F1360002763B8 /* Classes */,
 				EA17D7E0180F1393002763B8 /* TDAudioInputStreamer.h */,
 				EA17D7E1180F1393002763B8 /* TDAudioInputStreamer.m */,
@@ -161,6 +169,7 @@
 		EA17D7D2180F1333002763B8 /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				EAB2C12918316E5D008B3F41 /* Categories */,
 				EA17D7ED180FB90E002763B8 /* Classes */,
 				EA17D7E7180F7A94002763B8 /* TDAudioPlayer.h */,
 				EA17D7E8180F7A94002763B8 /* TDAudioPlayer.m */,
@@ -201,6 +210,8 @@
 		EA3E891D182C175A00BF7DA3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				EA64D3121836AB4C00842F02 /* TDSession.h */,
+				EA64D3131836AB4C00842F02 /* TDSession.m */,
 				EA8302A618242854000C4FDC /* TDDemoTrack.h */,
 				EA8302A718242854000C4FDC /* TDDemoTrack.m */,
 				EA3E891F182C185900BF7DA3 /* TDDemoPlaylist.h */,
@@ -218,8 +229,10 @@
 				EA17D7E5180F1A89002763B8 /* TDSingleStreamViewController.m */,
 				EA17D7F118105C1D002763B8 /* TDMultiStreamViewController.h */,
 				EA17D7F218105C1D002763B8 /* TDMultiStreamViewController.m */,
-				EA17D7F81811D68E002763B8 /* TDAudioControlViewController.h */,
-				EA17D7F91811D68E002763B8 /* TDAudioControlViewController.m */,
+				EA64D3071836A5D300842F02 /* TDMultipeerHostViewController.h */,
+				EA64D3081836A5D300842F02 /* TDMultipeerHostViewController.m */,
+				EA64D30A1836A65100842F02 /* TDMultipeerGuestViewController.h */,
+				EA64D30B1836A65100842F02 /* TDMultipeerGuestViewController.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -260,6 +273,7 @@
 		EABB0615180F0C96006E7D66 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA64D315183A6C2800842F02 /* MultipeerConnectivity.framework */,
 				EA17D7FB1811D9CD002763B8 /* MediaPlayer.framework */,
 				EA17D7F61811C2E1002763B8 /* AudioToolbox.framework */,
 				EA17D7F41811C2D8002763B8 /* AVFoundation.framework */,
@@ -460,12 +474,15 @@
 			files = (
 				EA17D7DF180F138A002763B8 /* TDAudioStream.m in Sources */,
 				EA17D7F318105C1D002763B8 /* TDMultiStreamViewController.m in Sources */,
+				EA64D30C1836A65100842F02 /* TDMultipeerGuestViewController.m in Sources */,
 				EA17D7E2180F1393002763B8 /* TDAudioInputStreamer.m in Sources */,
 				EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */,
 				EA8302A818242854000C4FDC /* TDDemoTrack.m in Sources */,
 				EAB9C6251829A1B3005A0C11 /* TDAudioMetaInfo.m in Sources */,
+				EA64D3141836AB4C00842F02 /* TDSession.m in Sources */,
 				EAA66EB61832A579004FB32A /* NSMutableArray+QueueMethods.m in Sources */,
 				EA17D7E6180F1A89002763B8 /* TDSingleStreamViewController.m in Sources */,
+				EA64D3091836A5D300842F02 /* TDMultipeerHostViewController.m in Sources */,
 				EA64D3061835711700842F02 /* TDAudioOutputStreamer.m in Sources */,
 				EA3E8921182C185900BF7DA3 /* TDDemoPlaylist.m in Sources */,
 				EA17D7DD180F138A002763B8 /* TDAudioQueue.m in Sources */,
@@ -475,7 +492,6 @@
 				EAB9C62318299903005A0C11 /* TDAudioPlayerConstants.m in Sources */,
 				EA7B2E5A182048FF0007A936 /* TDAudioQueueBufferManager.m in Sources */,
 				EABB0623180F0C96006E7D66 /* main.m in Sources */,
-				EA17D7FA1811D68E002763B8 /* TDAudioControlViewController.m in Sources */,
 				EA7B2E5D1822A0D00007A936 /* TDAudioQueueFiller.m in Sources */,
 				EAB2C12C18316EB0008B3F41 /* NSInputStream+URLInitialization.m in Sources */,
 				EA7B2E57182048E30007A936 /* TDAudioQueueController.m in Sources */,

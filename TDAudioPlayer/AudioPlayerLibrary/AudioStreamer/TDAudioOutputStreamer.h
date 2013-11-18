@@ -15,5 +15,6 @@
 - (instancetype)initWithOutputStream:(NSOutputStream *)stream;
 
 - (void)streamAudioFromURL:(NSURL *)url;
+- (void)start;
 
 @end

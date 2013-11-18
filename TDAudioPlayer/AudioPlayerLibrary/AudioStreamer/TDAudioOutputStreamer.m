@@ -68,6 +68,9 @@
 
         [self.assetReader addOutput:self.assetOutput];
         [self.assetReader startReading];
+
+        if (self.isStreaming)
+            [self sendDataChunk];
     }
 }
 

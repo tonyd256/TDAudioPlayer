@@ -38,7 +38,6 @@
 		EABB0621180F0C96006E7D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EABB061F180F0C96006E7D66 /* InfoPlist.strings */; };
 		EABB0623180F0C96006E7D66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0622180F0C96006E7D66 /* main.m */; };
 		EABB0627180F0C96006E7D66 /* TDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0626180F0C96006E7D66 /* TDAppDelegate.m */; };
-		EABB062A180F0C96006E7D66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EABB0628180F0C96006E7D66 /* Main.storyboard */; };
 		EABB062D180F0C96006E7D66 /* TDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB062C180F0C96006E7D66 /* TDMasterViewController.m */; };
 		EABB0632180F0C96006E7D66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EABB0631180F0C96006E7D66 /* Images.xcassets */; };
 		EABB0639180F0C96006E7D66 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB0638180F0C96006E7D66 /* XCTest.framework */; };
@@ -46,6 +45,7 @@
 		EABB063B180F0C96006E7D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB061A180F0C96006E7D66 /* UIKit.framework */; };
 		EABB0643180F0C96006E7D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EABB0641180F0C96006E7D66 /* InfoPlist.strings */; };
 		EABB0645180F0C96006E7D66 /* TDAudioPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EABB0644180F0C96006E7D66 /* TDAudioPlayerTests.m */; };
+		F6422B9019A280E7003A69C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EABB0628180F0C96006E7D66 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -436,7 +436,7 @@
 			files = (
 				EABB0632180F0C96006E7D66 /* Images.xcassets in Resources */,
 				EABB0621180F0C96006E7D66 /* InfoPlist.strings in Resources */,
-				EABB062A180F0C96006E7D66 /* Main.storyboard in Resources */,
+				F6422B9019A280E7003A69C0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,8 +532,8 @@
 				EABB0629180F0C96006E7D66 /* Base */,
 			);
 			name = Main.storyboard;
-			path = "/Users/tony/dev/audioplayer-ios/TDAudioPlayer/TDAudioPlayer/Demo";
-			sourceTree = "<absolute>";
+			path = TDAudioPlayer/Demo;
+			sourceTree = SOURCE_ROOT;
 		};
 		EABB0641180F0C96006E7D66 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -687,7 +687,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -710,7 +710,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TDAudioPlayer/TDAudioPlayer-Prefix.pch";
+				GCC_PREFIX_HEADER = "TDAudioPlayer/Demo/Supporting Files/TDAudioPlayer-Prefix.pch";
 				INFOPLIST_FILE = "TDAudioPlayerTests/TDAudioPlayerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

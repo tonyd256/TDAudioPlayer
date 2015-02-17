@@ -86,7 +86,7 @@
 
         self.isPlaying = YES;
 
-        while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
+        while (self.isPlaying && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]]) ;
     }
 }
 
@@ -129,7 +129,6 @@
         }
 
         case TDAudioStreamEventEnd:
-            self.isPlaying = NO;
             [self.audioQueue finish];
             break;
 
@@ -155,6 +154,7 @@
 
 - (void)audioFileStream:(TDAudioFileStream *)audioFileStream didReceiveError:(OSStatus)error
 {
+    self.isPlaying = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:TDAudioStreamDidFinishPlayingNotification object:nil];
 }
 
@@ -172,6 +172,7 @@
 
 - (void)audioQueueDidFinishPlaying:(TDAudioQueue *)audioQueue
 {
+    self.isPlaying = NO;
     [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamDidFinishPlayingNotification waitUntilDone:NO];
 }
 
@@ -182,7 +183,7 @@
 
 - (void)notifyMainThread:(NSString *)notificationName
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
 }
 
 #pragma mark - Public Methods

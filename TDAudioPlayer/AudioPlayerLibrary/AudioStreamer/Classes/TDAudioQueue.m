@@ -43,7 +43,6 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     self.bufferManager = [[TDAudioQueueBufferManager alloc] initWithAudioQueue:self.audioQueue size:bufferSize count:bufferCount];
 
     AudioQueueSetProperty(self.audioQueue, kAudioQueueProperty_MagicCookie, magicCookieData, magicCookieSize);
-    free(magicCookieData);
 
     AudioQueueSetParameter(self.audioQueue, kAudioQueueParam_Volume, 1.0);
 

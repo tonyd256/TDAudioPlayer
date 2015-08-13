@@ -28,6 +28,12 @@
 
 + (void)fillAudioQueue:(TDAudioQueue *)audioQueue withData:(const void *)data length:(UInt32)length packetDescription:(AudioStreamPacketDescription)packetDescription
 {
+    if (length == 0 ||
+        audioQueue.state == TDAudioQueueStateStopped ||
+        audioQueue.state == TDAudioQueueStatePaused) {
+        return;
+    }
+
     TDAudioQueueBuffer *audioQueueBuffer = [audioQueue nextFreeBuffer];
 
     BOOL hasMoreRoomForPackets = [audioQueueBuffer fillWithData:data length:length packetDescription:packetDescription];

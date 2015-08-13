@@ -134,7 +134,7 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
 - (void)dealloc
 {
     [self.bufferManager freeBufferMemoryFromAudioQueue:self.audioQueue];
-    AudioQueueDispose(self.audioQueue, YES);
+    AudioQueueDispose(self.audioQueue, NO);
 }
 
 @end

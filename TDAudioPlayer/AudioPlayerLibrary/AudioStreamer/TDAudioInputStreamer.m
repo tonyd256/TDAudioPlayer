@@ -181,6 +181,11 @@
     [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamDidStartPlayingNotification waitUntilDone:NO];
 }
 
+- (void)audioQueueBuffering:(TDAudioQueue *)audioQueue
+{
+    [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamBufferingNotification waitUntilDone:NO];
+}
+
 - (void)notifyMainThread:(NSString *)notificationName
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];

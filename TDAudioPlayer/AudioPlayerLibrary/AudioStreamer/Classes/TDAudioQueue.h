@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, TDAudioQueueState) {
 
 - (void)audioQueueDidFinishPlaying:(TDAudioQueue *)audioQueue;
 - (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue;
+- (void)audioQueueBuffering:(TDAudioQueue *)audioQueue;
 
 @end
 

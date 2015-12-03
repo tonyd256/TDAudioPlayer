@@ -66,6 +66,13 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     if (self.state == TDAudioQueueStateStopped && ![self.bufferManager isProcessingAudioQueueBuffer]) {
         [self.delegate audioQueueDidFinishPlaying:self];
     }
+    else if (self.state == TDAudioQueueStatePlaying) {
+        if (![self.bufferManager isProcessingAudioQueueBuffer]) {
+            self.state = TDAudioQueueStateBuffering;
+            self.buffersToFillBeforeStart = kTDAudioQueueStartMinimumBuffers;
+            [self.delegate audioQueueBuffering:self];
+        }
+    }
 }
 
 #pragma mark - Public Methods
@@ -88,10 +95,18 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
 {
     [self.bufferManager enqueueNextBufferOnAudioQueue:self.audioQueue];
 
-    if (self.state == TDAudioQueueStateBuffering && --self.buffersToFillBeforeStart == 0) {
-        AudioQueuePrime(self.audioQueue, 0, NULL);
-        [self play];
-        [self.delegate audioQueueDidStartPlaying:self];
+    if (self.state == TDAudioQueueStateBuffering) {
+        if (self.buffersToFillBeforeStart > 0) {
+            if (--self.buffersToFillBeforeStart == 0) {
+                AudioQueuePrime(self.audioQueue, 0, NULL);
+                [self play];
+                [self.delegate audioQueueDidStartPlaying:self];
+            }
+        }
+        else {
+            [self play];
+            [self.delegate audioQueueDidStartPlaying:self];
+        }
     }
 }
 

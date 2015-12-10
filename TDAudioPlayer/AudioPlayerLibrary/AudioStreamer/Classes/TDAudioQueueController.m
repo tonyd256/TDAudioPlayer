@@ -32,8 +32,10 @@
 
 + (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue immediately:(BOOL)immediately
 {
+    OSStatus status = AudioQueueStop(audioQueue, immediately);
     AudioQueueReset(audioQueue);
-    return AudioQueueStop(audioQueue, immediately);
+
+    return status;
 }
 
 @end

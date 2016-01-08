@@ -18,6 +18,7 @@
 @property (strong, nonatomic) TDAudioQueueBufferManager *bufferManager;
 @property (strong, nonatomic) NSCondition *waitForFreeBufferCondition;
 @property (assign, nonatomic) NSUInteger buffersToFillBeforeStart;
+@property (assign, nonatomic) NSUInteger bufferCount;
 
 - (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer;
 
@@ -48,7 +49,8 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
 
     self.waitForFreeBufferCondition = [[NSCondition alloc] init];
     self.state = TDAudioQueueStateBuffering;
-    self.buffersToFillBeforeStart = kTDAudioQueueStartMinimumBuffers;
+    self.bufferCount = bufferCount;
+    self.buffersToFillBeforeStart = 3 * bufferCount / 4;
 
     return self;
 }
@@ -69,7 +71,7 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     else if (self.state == TDAudioQueueStatePlaying) {
         if (![self.bufferManager isProcessingAudioQueueBuffer]) {
             self.state = TDAudioQueueStateBuffering;
-            self.buffersToFillBeforeStart = kTDAudioQueueStartMinimumBuffers;
+            self.buffersToFillBeforeStart = 3 * self.bufferCount / 4;
             [self.delegate audioQueueBuffering:self];
         }
     }

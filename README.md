@@ -19,7 +19,7 @@ pod install
 Supported Versions
 ------------------
 
-TDAudioPlayer is written and tested in XCode 5 using iOS 7; however, I believe it would work in iOS 6 just fine.  I will change the podspec once it has been tested in iOS 6.
+TDAudioPlayer is written and tested in Xcode 5 using iOS 7; however, I believe it would work in iOS 6 just fine.  I will change the podspec once it has been tested in iOS 6.
 
 How To Use
 ----------

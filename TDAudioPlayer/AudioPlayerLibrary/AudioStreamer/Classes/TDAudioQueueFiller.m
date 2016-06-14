@@ -35,6 +35,10 @@
     }
 
     TDAudioQueueBuffer *audioQueueBuffer = [audioQueue nextFreeBuffer];
+    
+    if (!audioQueueBuffer) {
+        return;
+    }
 
     BOOL hasMoreRoomForPackets = [audioQueueBuffer fillWithData:data length:length packetDescription:packetDescription];
 

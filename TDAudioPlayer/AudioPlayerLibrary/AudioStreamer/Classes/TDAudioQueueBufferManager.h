@@ -22,6 +22,8 @@
 - (BOOL)hasAvailableAudioQueueBuffer;
 - (BOOL)isProcessingAudioQueueBuffer;
 
+- (NSUInteger)freeBuffersCount;
+
 - (void)freeBufferMemoryFromAudioQueue:(AudioQueueRef)audioQueue;
 
 @end

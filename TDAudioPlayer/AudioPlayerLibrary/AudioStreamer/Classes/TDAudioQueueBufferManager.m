@@ -102,6 +102,12 @@
     }
 }
 
+- (NSUInteger)freeBuffersCount {
+    @synchronized (self) {
+        return self.freeBuffers.count;
+    }
+}
+
 #pragma mark - Cleanup
 
 - (void)freeBufferMemoryFromAudioQueue:(AudioQueueRef)audioQueue

@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSCondition *waitForFreeBufferCondition;
 @property (assign, nonatomic) NSUInteger buffersToFillBeforeStart;
 @property (assign, nonatomic) NSUInteger bufferCount;
+@property (assign, nonatomic) BOOL isFirstStart;
 
 - (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer;
 
@@ -51,6 +52,7 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     self.state = TDAudioQueueStateBuffering;
     self.bufferCount = bufferCount;
     self.buffersToFillBeforeStart = 3 * bufferCount / 4;
+    self.isFirstStart = YES;
 
     return self;
 }
@@ -69,9 +71,10 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
         [self.delegate audioQueueDidFinishPlaying:self];
     }
     else if (self.state == TDAudioQueueStatePlaying) {
-        if (![self.bufferManager isProcessingAudioQueueBuffer]) {
+        NSUInteger freeBuffersCount = [self.bufferManager freeBuffersCount];
+        
+        if (self.bufferCount - freeBuffersCount <= self.bufferCount / 4) {
             self.state = TDAudioQueueStateBuffering;
-            self.buffersToFillBeforeStart = 3 * self.bufferCount / 4;
             [self.delegate audioQueueBuffering:self];
         }
     }
@@ -98,15 +101,17 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     [self.bufferManager enqueueNextBufferOnAudioQueue:self.audioQueue];
 
     if (self.state == TDAudioQueueStateBuffering) {
-        if (self.buffersToFillBeforeStart > 0) {
-            if (--self.buffersToFillBeforeStart == 0) {
-                AudioQueuePrime(self.audioQueue, 0, NULL);
+        NSUInteger freeBuffersCount = [self.bufferManager freeBuffersCount];
+        
+        if (self.bufferCount - freeBuffersCount >= self.buffersToFillBeforeStart) {
+            if (self.isFirstStart) {
+                self.isFirstStart = NO;
                 [self play];
-                [self.delegate audioQueueDidStartPlaying:self];
             }
-        }
-        else {
-            [self play];
+            else {
+                self.state = TDAudioQueueStatePlaying;
+            }
+            
             [self.delegate audioQueueDidStartPlaying:self];
         }
     }

@@ -18,7 +18,9 @@
 @property (strong, nonatomic) TDAudioQueueBufferManager *bufferManager;
 @property (strong, nonatomic) NSCondition *waitForFreeBufferCondition;
 @property (assign, nonatomic) NSUInteger buffersToFillBeforeStart;
+@property (assign, nonatomic) NSUInteger buffersToFillAfterStart;
 @property (assign, nonatomic) NSUInteger bufferCount;
+@property (assign, nonatomic) NSUInteger bufferUnderrunThreshold;
 @property (assign, nonatomic) BOOL isFirstStart;
 
 - (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer;
@@ -34,6 +36,15 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
 @implementation TDAudioQueue
 
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize
+{
+    UInt32 buffersToFillBeforeStart = 3 * bufferCount / 4;
+    UInt32 buffersToFillAfterStart = bufferCount / 4;
+    UInt32 bufferUnderrunThreshold = (bufferCount / 4);
+    
+    return [self initWithBasicDescription:basicDescription bufferCount:bufferCount bufferSize:bufferSize magicCookieData:magicCookieData magicCookieSize:magicCookieSize buffersToFillBeforeStart:(3 * bufferCount / 4) buffersToFillAfterStart:(bufferCount / 4) bufferUnderrunThreashold:(bufferCount / 4)];
+}
+
+- (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize buffersToFillBeforeStart:(UInt32)buffersToFillBeforeStart buffersToFillAfterStart:(UInt32)buffersToFillAfterStart bufferUnderrunThreashold:(UInt32)bufferUnderrunThreshold
 {
     self = [self init];
     if (!self) return nil;
@@ -51,7 +62,9 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     self.waitForFreeBufferCondition = [[NSCondition alloc] init];
     self.state = TDAudioQueueStateBuffering;
     self.bufferCount = bufferCount;
-    self.buffersToFillBeforeStart = 3 * bufferCount / 4;
+    self.buffersToFillBeforeStart = buffersToFillBeforeStart;
+    self.buffersToFillAfterStart = buffersToFillAfterStart;
+    self.bufferUnderrunThreshold = bufferUnderrunThreshold;
     self.isFirstStart = YES;
 
     return self;
@@ -73,7 +86,7 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     else if (self.state == TDAudioQueueStatePlaying) {
         NSUInteger freeBuffersCount = [self.bufferManager freeBuffersCount];
         
-        if (self.bufferCount - freeBuffersCount <= self.bufferCount / 4) {
+        if (self.bufferCount - freeBuffersCount <= self.bufferUnderrunThreshold) {
             self.state = TDAudioQueueStateBuffering;
             [self.delegate audioQueueBuffering:self];
         }
@@ -103,16 +116,28 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     if (self.state == TDAudioQueueStateBuffering) {
         NSUInteger freeBuffersCount = [self.bufferManager freeBuffersCount];
         
-        if (self.bufferCount - freeBuffersCount >= self.buffersToFillBeforeStart) {
-            if (self.isFirstStart) {
-                self.isFirstStart = NO;
-                [self play];
+        if (self.isFirstStart) {
+            if (self.bufferCount - freeBuffersCount >= self.buffersToFillBeforeStart) {
+                if (self.isFirstStart) {
+                    self.isFirstStart = NO;
+                    
+                    UInt32 numberOfFramesPrepared = 0;
+                    
+                    AudioQueuePrime(self.audioQueue, 2, &numberOfFramesPrepared);
+                    [self play];
+                }
+                else {
+                    self.state = TDAudioQueueStatePlaying;
+                }
+                
+                [self.delegate audioQueueDidStartPlaying:self];
             }
-            else {
+        }
+        else {
+            if (self.bufferCount - freeBuffersCount >= self.buffersToFillAfterStart) {
                 self.state = TDAudioQueueStatePlaying;
+                [self.delegate audioQueueDidStartPlaying:self];
             }
-            
-            [self.delegate audioQueueDidStartPlaying:self];
         }
     }
 }

@@ -135,8 +135,11 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
         }
         else {
             if (self.bufferCount - freeBuffersCount >= self.buffersToFillAfterStart) {
-                self.state = TDAudioQueueStatePlaying;
+                [self play];
                 [self.delegate audioQueueDidStartPlaying:self];
+            }
+            else {
+                [TDAudioQueueController pauseAudioQueue:self.audioQueue];
             }
         }
     }

@@ -15,5 +15,6 @@
 + (OSStatus)pauseAudioQueue:(AudioQueueRef)audioQueue;
 + (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue;
 + (OSStatus)finishAudioQueue:(AudioQueueRef)audioQueue;
++ (OSStatus)setVolume:(CGFloat)volume audioQueue:(AudioQueueRef)audioQueue;
 
 @end

@@ -179,6 +179,11 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
     self.state = TDAudioQueueStateStopped;
 }
 
+- (void)setVolume:(CGFloat)volume {
+    [TDAudioQueueController setVolume:volume audioQueue:self.audioQueue];
+}
+
+
 #pragma mark - Cleanup
 
 - (void)dealloc

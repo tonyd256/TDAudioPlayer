@@ -44,5 +44,6 @@ typedef NS_ENUM(NSUInteger, TDAudioQueueState) {
 - (void)pause;
 - (void)stop;
 - (void)finish;
+- (void)setVolume:(CGFloat)volume;
 
 @end

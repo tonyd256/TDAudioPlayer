@@ -38,4 +38,12 @@
     return status;
 }
 
++ (OSStatus)setVolume:(CGFloat)volume audioQueue:(AudioQueueRef)audioQueue {
+    double value = volume;
+    UInt32 sizeOfValue = sizeof(value);
+    
+    return AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, value);
+}
+
+
 @end

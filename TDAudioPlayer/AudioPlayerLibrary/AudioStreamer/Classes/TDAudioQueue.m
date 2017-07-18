@@ -37,10 +37,6 @@ void TDAudioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, Au
 
 - (instancetype)initWithBasicDescription:(AudioStreamBasicDescription)basicDescription bufferCount:(UInt32)bufferCount bufferSize:(UInt32)bufferSize magicCookieData:(void *)magicCookieData magicCookieSize:(UInt32)magicCookieSize
 {
-    UInt32 buffersToFillBeforeStart = 3 * bufferCount / 4;
-    UInt32 buffersToFillAfterStart = bufferCount / 4;
-    UInt32 bufferUnderrunThreshold = (bufferCount / 4);
-    
     return [self initWithBasicDescription:basicDescription bufferCount:bufferCount bufferSize:bufferSize magicCookieData:magicCookieData magicCookieSize:magicCookieSize buffersToFillBeforeStart:(3 * bufferCount / 4) buffersToFillAfterStart:(bufferCount / 4) bufferUnderrunThreashold:(bufferCount / 4)];
 }
 

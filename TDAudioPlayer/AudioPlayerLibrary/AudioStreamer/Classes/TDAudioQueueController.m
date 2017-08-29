@@ -38,12 +38,14 @@
     return status;
 }
 
-+ (OSStatus)setVolume:(CGFloat)volume audioQueue:(AudioQueueRef)audioQueue {
-    double value = volume;
-    UInt32 sizeOfValue = sizeof(value);
-    
-    return AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, value);
++ (OSStatus)resetAudioQueue:(AudioQueueRef)audioQueue
+{
+    OSStatus status = AudioQueueReset(audioQueue);
+    return status;
 }
 
++ (OSStatus)setVolume:(CGFloat)volume audioQueue:(AudioQueueRef)audioQueue {
+    return AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, volume);
+}
 
 @end

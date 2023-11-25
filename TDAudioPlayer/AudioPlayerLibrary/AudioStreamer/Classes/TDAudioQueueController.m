@@ -32,7 +32,18 @@
 
 + (OSStatus)stopAudioQueue:(AudioQueueRef)audioQueue immediately:(BOOL)immediately
 {
-    return AudioQueueStop(audioQueue, immediately);
+    OSStatus status = AudioQueueStop(audioQueue, immediately);
+    return status;
+}
+
++ (OSStatus)resetAudioQueue:(AudioQueueRef)audioQueue
+{
+    OSStatus status = AudioQueueReset(audioQueue);
+    return status;
+}
+
++ (OSStatus)setVolume:(CGFloat)volume audioQueue:(AudioQueueRef)audioQueue {
+    return AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, volume);
 }
 
 @end

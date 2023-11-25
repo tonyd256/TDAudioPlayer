@@ -53,28 +53,28 @@
 
 - (void)freeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer
 {
-    for (NSUInteger i = 0; i < self.bufferCount; i++) {
-        if ([(TDAudioQueueBuffer *)self.audioQueueBuffers[i] isEqual:audioQueueBuffer]) {
-            [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] reset];
-
-            @synchronized(self) {
+    @synchronized(self) {
+        for (NSUInteger i = 0; i < self.bufferCount; i++) {
+            if ([(TDAudioQueueBuffer *)self.audioQueueBuffers[i] isEqual:audioQueueBuffer]) {
+                [(TDAudioQueueBuffer *)self.audioQueueBuffers[i] reset];
                 [self.freeBuffers pushObject:@(i)];
+                break;
             }
-            break;
         }
-    }
 
 #if DEBUG
-    if (self.freeBuffers.count > self.bufferCount >> 1) {
-        NSLog(@"Free Buffers: %lu", (unsigned long)self.freeBuffers.count);
-    }
+        if (self.freeBuffers.count > self.bufferCount >> 1) {
+            NSLog(@"Free Buffers: %lu", (unsigned long)self.freeBuffers.count);
+        }
 #endif
+    }
+
 }
 
 - (TDAudioQueueBuffer *)nextFreeBuffer
 {
-    if (![self hasAvailableAudioQueueBuffer]) return nil;
     @synchronized(self) {
+        if (![self hasAvailableAudioQueueBuffer]) return nil;
         return self.audioQueueBuffers[[[self.freeBuffers topObject] integerValue]];
     }
 }
@@ -99,6 +99,12 @@
 {
     @synchronized(self) {
         return self.freeBuffers.count != self.bufferCount;
+    }
+}
+
+- (NSUInteger)freeBuffersCount {
+    @synchronized (self) {
+        return self.freeBuffers.count;
     }
 }
 

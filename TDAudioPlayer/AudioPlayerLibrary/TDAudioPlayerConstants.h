@@ -16,6 +16,7 @@ extern NSString *const TDAudioPlayerPreviousTrackRequestNotification;
 
 extern NSString *const TDAudioStreamDidFinishPlayingNotification;
 extern NSString *const TDAudioStreamDidStartPlayingNotification;
+extern NSString *const TDAudioStreamBufferingNotification;
 
 extern UInt32 const kTDAudioStreamReadMaxLength;
 extern UInt32 const kTDAudioQueueBufferSize;
